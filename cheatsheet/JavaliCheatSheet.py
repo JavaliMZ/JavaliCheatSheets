@@ -60,22 +60,27 @@ def printCheat(name):
 			print(JavaliCheatSheet.cheat[key].output)
 
 	if not printed:
-		raise
+		log.failure("CheatSheet don't existe...")
 
 
 def selectCategories(categories):
 	print("********************************************")
+	options = {}
 	for index, category in enumerate(categories):
 		log.success(f"{index + 1} - {category}")
+		options[category] = index + 1
 
-	option = int(input("\tSelect one category:     ")) - 1
-	while option < 0 or option >= len(categories):
-		log.failure("Not a valid option\n\n")
-		for index, category in enumerate(categories):
-			log.success(f"{index + 1} - {category}")
-		option = int(input("\tSelect one category:     ")) - 1
-	print()
-	return option
+
+	option = input("\tSelect one category:     ")
+	try:
+		num = int(option) - 1
+		while num < 0 or num >= len(categories):
+			num = int(input("\tSelect a valide category number:     ")) - 1
+		return num
+	except:
+		print(options[option])
+		return options[option]
+
 
 
 def selectCheat(category):
@@ -83,13 +88,19 @@ def selectCheat(category):
 	print("********************************************")
 	log.info(f"For {category}, we have that cheats:\n\n")
 	cheatNameList = []
+	options = {}
+	count = 1
 	for name, cheat in JavaliCheatSheet.cheat.items():
 		if cheat.category == category:
 			cheatNameList.append(name)
-			log.success(name)
-
+			log.success(f"{count} - {name}")
+			options[count] = name
+			count += 1
 	option = input("\tSelect the CheatSheet:     ")
-	return option
+	try:
+		return options[int(option)]
+	except:
+		return option
 
 
 def manualSelection():

@@ -22,6 +22,6 @@ Create a Credential Object for PowerShell:
 
 Cheat(
 	"test",
-	"Linux",
+	"Windows",
 	"""Testing""",
 )
