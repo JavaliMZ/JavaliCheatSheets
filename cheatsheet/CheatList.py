@@ -1,27 +1,40 @@
-def Cheat(name, category, output):
-    global cheatList
-    cheatList.append({"name": name, "category": category, "output": output})
+class Cheat:
+    def __init__(self, name):
+        self.name = name
+        self.category = None
+        self.output = None
+
+    def addToList(self):
+        global cheatList
+        cheatList.append(self)
 
 
 cheatList = []
 
-
-Cheat(
-    "PSCredential",
-    "Windows",
-    """
-Create a Credential Object for PowerShell:
+######################################
+######################################
+######################################
+PSCredential = Cheat("PSCredential")
+PSCredential.category = "Windows"
+PSCredential.output = """Create a Credential Object for PowerShell:
 
 \t[+] $user = 'user'
 \t[+] $pw = 'password'
 \t[+] $secure_pw = ConvertTo-SecureString $pw -AsPlainText -Force
 \t[+] $cred = New-Object System.Management.Automation.PSCredential $user, $secure_pw
-\t[+] Invoke-Command -ComputerName localhost -Credential $cred -ScriptBlock { whoami }
-""",
-)
+\t[+] Invoke-Command -ComputerName localhost -Credential $cred -ScriptBlock { whoami }"""
+PSCredential.addToList()
+######################################
+######################################
+######################################
 
-Cheat(
-	"test",
-	"Windows",
-	"""Testing""",
-)
+######################################
+######################################
+######################################
+Test = Cheat("Test")
+Test.category = "Linux"
+Test.output = "Isto é só um teste..."
+Test.addToList()
+######################################
+######################################
+######################################
