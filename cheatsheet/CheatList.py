@@ -13,28 +13,25 @@ cheatList = []
 
 ######################################
 ######################################
-######################################
+
 PSCredential = Cheat("PSCredential")
 PSCredential.category = "Windows"
-PSCredential.output = """Create a Credential Object for PowerShell:
+PSCredential.output = """\t[*] Create a Credential Object for PowerShell:
 
-\t[+] $user = 'user'
-\t[+] $pw = 'password'
-\t[+] $secure_pw = ConvertTo-SecureString $pw -AsPlainText -Force
-\t[+] $cred = New-Object System.Management.Automation.PSCredential $user, $secure_pw
-\t[+] Invoke-Command -ComputerName localhost -Credential $cred -ScriptBlock { whoami }"""
+$user = 'user'
+$pw = 'password'
+$secure_pw = ConvertTo-SecureString $pw -AsPlainText -Force
+$cred = New-Object System.Management.Automation.PSCredential $user, $secure_pw
+Invoke-Command -ComputerName localhost -Credential $cred -ScriptBlock { whoami }"""
 PSCredential.addToList()
-######################################
-######################################
-######################################
 
 ######################################
 ######################################
-######################################
-Test = Cheat("Test")
+
+Test = Cheat("PSCredenpois")
 Test.category = "Linux"
 Test.output = "Isto é só um teste..."
 Test.addToList()
-######################################
+
 ######################################
 ######################################
