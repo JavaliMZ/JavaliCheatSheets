@@ -96,8 +96,8 @@ def printOptions(category=None):
     if category == None:
         log.success(f"Select the category you want: \n\n")
     else:
-
         log.success(f"Select the wanted CheatSheet in {category.upper()} category.\n\n")
+
     for index, option in enumerate(options):
         print("\t", end="")
         log.info(f"{index} - {option}")
@@ -123,6 +123,7 @@ def main():
         while True:
             input("Press any key to continue...\nCtrl-C to exit...")
             manualSelection()
+
     if len(sys.argv) == 2:
         printCheat(cheatList, sys.argv[1])
 
