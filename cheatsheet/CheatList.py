@@ -117,3 +117,23 @@ evil_winrm.output = """[*] Evil-winrm - Automated tool to bind stable shell when
 
 evil-winrm -i 10.10.10.57 -u 'administrator' -p '1234test'
 """
+
+######################################
+######################################
+
+onesixtyone = Cheat("onesixtyone - 161 UDP - Comunity string - SNMP")
+onesixtyone.category = "Tools"
+onesixtyone.output = """[*] Even if port 161 is filtered or pointed to closed, this tool can find out if port 161 UDP is operational.
+
+onesixtyone 10.10.10.116
+"""
+
+######################################
+######################################
+
+snmpwalk = Cheat("snmpwalk - 161 UDP - Comunity string - SNMP")
+snmpwalk.category = "Tools"
+snmpwalk.output = """[*] snmpwalk - retrieve a subtree of management values using SNMP GETNEXT requests.
+
+snmpwalk -c public -v2c 10.10.10.116 > contents/snmpwalk.out
+"""
