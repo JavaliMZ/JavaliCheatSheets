@@ -14,7 +14,7 @@ red = "\033[31m"
 green = "\033[32m"
 yellow = "\033[33m"
 blue = "\033[34m"
-gray = "\033[90m"
+commentaryColor = "\033[38;5;9m"
 reset = "\033[0m"
 underline = "\033[4m"
 CURSOR_UP_ONE = "\x1b[1A"
@@ -63,9 +63,9 @@ def printCheat(cheatList, name):
 						commented = line.split()[0] == "#"
 						title = line.split()[0] == "[*]"
 						if commented:
-							print(f"{blue}▓ {big + gray}{line}{reset}")
+							print(f"{blue}▓ {big + commentaryColor}{line}{reset}")
 						elif title:
-							print(f"{blue}▓ {big + underline + gray}{line}{reset}")
+							print(f"{blue}▓ {big + underline + green}{line}{reset}")
 						else:
 							print(f"{blue}▓ {reset}{line}")
 					except:
@@ -126,9 +126,19 @@ def manualSelection():
 	printCheat(cheatList, cheatName)
 
 
+def newCheatPanel():
+	name = input("Cheat name: ")
+	category = input("Category: ")
+	output = input("Output: ")
+	
+
+
 def main():
 	signal.signal(signal.SIGINT, signal_handler)
 	banner()
+
+	if sys.argv[1] == "-a":
+		newCheatPanel()
 
 	if len(sys.argv) == 1:
 		manualSelection()
