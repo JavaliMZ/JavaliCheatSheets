@@ -57,7 +57,6 @@ def printCheat(cheatList, name):
                 log.success(f"Category: {underline + yellow}{cheat.category}{reset}\n")
                 print(f"{blue}▓ {reset}", end="")
                 log.success(f"Name:     {yellow}{cheat.name}{reset}\n")
-                print(f"{blue}▓ {reset}")
 
                 for line in cheat.output.split("\n"):
                     try:
@@ -135,7 +134,9 @@ def editCheatListFile():
 
 
 def helpPanel():
-    log.info(f"Usage => search with keyword:  {sys.argv[0].split('/')[-1]} <keyword for search>")
+    log.info(
+        f"Usage => search with keyword:  {sys.argv[0].split('/')[-1]} <keyword for search>"
+    )
     log.info(f"Usage => search with menu:     {sys.argv[0].split('/')[-1]}")
     log.info(f"Usage => add new cheatSheet:   {sys.argv[0].split('/')[-1]} -a")
 
