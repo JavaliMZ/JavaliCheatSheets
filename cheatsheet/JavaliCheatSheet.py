@@ -23,16 +23,16 @@ ERASE_LINE = "\x1b[2K"
 
 
 def signal_handler(sig, frame):
-    sys.exit(1)
+	sys.exit(1)
 
 
 def eraseLastPrintedLine():
-    print(CURSOR_UP_ONE + ERASE_LINE + CURSOR_UP_ONE)
+	print(CURSOR_UP_ONE + ERASE_LINE + CURSOR_UP_ONE)
 
 
 def banner():
-    print(
-        f"""{yellow}
+	print(
+		f"""{yellow}
  ██████╗██╗  ██╗███████╗ █████╗ ████████╗███████╗██╗  ██╗███████╗███████╗████████╗███████╗
 ██╔════╝██║  ██║██╔════╝██╔══██╗╚══██╔══╝██╔════╝██║  ██║██╔════╝██╔════╝╚══██╔══╝██╔════╝
 ██║     ███████║█████╗  ███████║   ██║   ███████╗███████║█████╗  █████╗     ██║   ███████╗
@@ -41,123 +41,126 @@ def banner():
  ╚═════╝╚═╝  ╚═╝╚══════╝╚═╝  ╚═╝   ╚═╝   ╚══════╝╚═╝  ╚═╝╚══════╝╚══════╝   ╚═╝   ╚══════╝
 									   By JavaliMZ                                                                  
 {reset}"""
-    )
+	)
 
 
-def printCheat(cheatList, name):
-    printed = False
-    try:
-        for cheat in cheatList:
-            if name.strip().lower() in cheat.name.strip().lower():
-                maxLen = [len(line) for line in cheat.output.split("\n")]
-                maxLen.sort()
-                print(f"\n{blue}{'▓' * (maxLen[-1] + 4) }{reset}")
-                print(f"{blue}▓ {reset}")
-                print(f"{blue}▓ {reset}", end="")
-                log.success(f"Category: {underline + yellow}{cheat.category}{reset}\n")
-                print(f"{blue}▓ {reset}", end="")
-                log.success(f"Name:     {yellow}{cheat.name}{reset}\n")
+def printCheat(cheatList, names):
+	printed = False
+	if type(names) == str:
+		names = [names]
+	try:
+		for cheat in cheatList:
+			if all(name.strip().lower() in cheat.name.strip().lower() for name in names):
+				maxLen = [len(line) for line in cheat.output.split("\n")]
+				maxLen.sort()
+				print(f"\n{blue}{'▓' * (maxLen[-1] + 4) }{reset}")
+				print(f"{blue}▓ {reset}")
+				print(f"{blue}▓ {reset}", end="")
+				log.success(f"Category: {underline + yellow}{cheat.category}{reset}\n")
+				print(f"{blue}▓ {reset}", end="")
+				log.success(f"Name:     {yellow}{cheat.name}{reset}\n")
 
-                for line in cheat.output.split("\n"):
-                    try:
-                        commented = line.split()[0] == "#"
-                        title = line.split()[0] == "[*]"
-                        if commented:
-                            print(f"{blue}▓ {big + commentaryColor}{line}{reset}")
-                        elif title:
-                            print(f"{blue}▓ {big + underline + green}{line}{reset}")
-                        else:
-                            print(f"{blue}▓ {reset}{line}")
-                    except:
-                        print(f"{blue}▓ {reset}{line}")
+				for line in cheat.output.split("\n"):
+					try:
+						commented = line.split()[0] == "#"
+						title = line.split()[0] == "[*]"
+						if commented:
+							print(f"{blue}▓ {big + commentaryColor}{line}{reset}")
+						elif title:
+							print(f"{blue}▓ {big + underline + green}{line}{reset}")
+						else:
+							print(f"{blue}▓ {reset}{line}")
+					except:
+						print(f"{blue}▓ {reset}{line}")
 
-                print(f"{blue}{'▓' * (maxLen[-1] + 4) }{reset}\n\n")
-                printed = True
-    except:
-        log.critical("Something wrong is not right...")
-        log.critical("Can't print this Cheat...")
-    if not printed:
-        log.failure(f"{big + red}Cheat not found!...{reset}")
+				print(f"{blue}{'▓' * (maxLen[-1] + 4) }{reset}\n\n")
+				printed = True
+
+	except:
+		log.critical("Something wrong is not right...")
+		log.critical("Can't print this Cheat...")
+	if not printed:
+		log.failure(f"{big + red}Cheat not found!...{reset}")
 
 
 def valideOption(possibilities):
-    optionsIndex = [str(index) for index in range(0, len(possibilities))]
+	optionsIndex = [str(index) for index in range(0, len(possibilities))]
 
-    option = input(f"\n\tSelect a valide option... (Number):   \t").strip()
-    eraseLastPrintedLine()
-    while option not in optionsIndex:
-        option = input(
-            f"\t[{red}!{reset}]Select a {green}valide option... (Number){reset}:     \t"
-        ).strip()
-        eraseLastPrintedLine()
+	option = input(f"\n\tSelect a valide option... (Number):   \t").strip()
+	eraseLastPrintedLine()
+	while option not in optionsIndex:
+		option = input(
+			f"\t[{red}!{reset}]Select a {green}valide option... (Number){reset}:     \t"
+		).strip()
+		eraseLastPrintedLine()
 
-    return possibilities[int(option)]
+	return possibilities[int(option)]
 
 
 def printOptions(category=None):
-    options = set()
-    for cheat in cheatList:
-        if category == None:
-            options.add(cheat.category)
-        if cheat.category == category:
-            options.add(cheat.name)
+	options = set()
+	for cheat in cheatList:
+		if category == None:
+			options.add(cheat.category)
+		if cheat.category == category:
+			options.add(cheat.name)
 
-    options = list(options)
-    options.sort()
+	options = list(options)
+	options.sort()
 
-    if category == None:
-        log.success(f"Select the category you want: \n\n")
-    else:
-        log.success(f"Select the wanted CheatSheet in {category.upper()} category.\n\n")
+	if category == None:
+		log.success(f"Select the category you want: \n\n")
+	else:
+		log.success(f"Select the wanted CheatSheet in {category.upper()} category.\n\n")
 
-    for index, option in enumerate(options):
-        print("\t", end="")
-        log.info(f"{index} - {option}")
+	for index, option in enumerate(options):
+		print("\t", end="")
+		log.info(f"{index} - {option}")
 
-    return valideOption(options)
+	return valideOption(options)
 
 
 def manualSelection():
-    category = None
-    name = None
+	category = None
+	name = None
 
-    category = printOptions()
-    cheatName = printOptions(category)
-    printCheat(cheatList, cheatName)
+	category = printOptions()
+	cheatName = printOptions(category)
+	printCheat(cheatList, cheatName)
 
 
 def editCheatListFile():
-    cheatListPath = (
-        "/".join(os.path.realpath(__file__).split("/")[:-1]) + "/CheatList.py"
-    )
-    subprocess.call(["code", cheatListPath])
+	cheatListPath = (
+		"/".join(os.path.realpath(__file__).split("/")[:-1]) + "/CheatList.py"
+	)
+	subprocess.call(["code", cheatListPath])
 
 
 def helpPanel():
-    log.info(
-        f"Usage => search with keyword:  {sys.argv[0].split('/')[-1]} <keyword for search>"
-    )
-    log.info(f"Usage => search with menu:     {sys.argv[0].split('/')[-1]}")
-    log.info(f"Usage => add new cheatSheet:   {sys.argv[0].split('/')[-1]} -a")
+	log.info(
+		f"Usage => search with keyword:  {sys.argv[0].split('/')[-1]} <keyword for search>"
+	)
+	log.info(f"Usage => search with menu:     {sys.argv[0].split('/')[-1]}")
+	log.info(f"Usage => add new cheatSheet:   {sys.argv[0].split('/')[-1]} -a")
 
 
 def main():
-    signal.signal(signal.SIGINT, signal_handler)
-    banner()
+	signal.signal(signal.SIGINT, signal_handler)
+	banner()
 
-    if len(sys.argv) == 1:
-        manualSelection()
-        while True:
-            input("Press any key to continue...\nCtrl-C to exit...")
-            manualSelection()
+	if len(sys.argv) == 1:
+		manualSelection()
+		while True:
+			input("Press any key to continue...\nCtrl-C to exit...")
+			manualSelection()
 
-    if len(sys.argv) == 2:
-        if sys.argv[1] == "-a":
-            editCheatListFile()
-        elif sys.argv[1] == "-h":
-            helpPanel()
-        else:
-            printCheat(cheatList, sys.argv[1])
+	if len(sys.argv) >= 2:
+		if sys.argv[1] == "-a":
+			editCheatListFile()
+		elif sys.argv[1] == "-h":
+			helpPanel()
+		else:
+			printCheat(cheatList, sys.argv[1:])
 
 
 main()
