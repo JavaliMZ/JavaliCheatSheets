@@ -26,7 +26,9 @@ def signal_handler(sig, frame):
 	sys.exit(1)
 
 def clear():
-	print(chr(27) + "[2J"+ chr(27) + "[H")
+	os.system("clear")
+	# print(chr(27) + "[2J"+ chr(27) + "[H")
+	print(chr(27) + "[H")
 
 
 def eraseLastPrintedLine():
