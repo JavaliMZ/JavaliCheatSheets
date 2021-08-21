@@ -25,6 +25,9 @@ ERASE_LINE = "\x1b[2K"
 def signal_handler(sig, frame):
 	sys.exit(1)
 
+def clear():
+	print(chr(27) + "[2J"+ chr(27) + "[H")
+
 
 def eraseLastPrintedLine():
 	print(CURSOR_UP_ONE + ERASE_LINE + CURSOR_UP_ONE)
@@ -33,19 +36,23 @@ def eraseLastPrintedLine():
 def banner():
 	print(
 		f"""{yellow}
- ██████╗██╗  ██╗███████╗ █████╗ ████████╗███████╗██╗  ██╗███████╗███████╗████████╗███████╗
-██╔════╝██║  ██║██╔════╝██╔══██╗╚══██╔══╝██╔════╝██║  ██║██╔════╝██╔════╝╚══██╔══╝██╔════╝
-██║     ███████║█████╗  ███████║   ██║   ███████╗███████║█████╗  █████╗     ██║   ███████╗
-██║     ██╔══██║██╔══╝  ██╔══██║   ██║   ╚════██║██╔══██║██╔══╝  ██╔══╝     ██║   ╚════██║
-╚██████╗██║  ██║███████╗██║  ██║   ██║   ███████║██║  ██║███████╗███████╗   ██║   ███████║
- ╚═════╝╚═╝  ╚═╝╚══════╝╚═╝  ╚═╝   ╚═╝   ╚══════╝╚═╝  ╚═╝╚══════╝╚══════╝   ╚═╝   ╚══════╝
-									   By JavaliMZ                                                                  
+	 ██████╗██╗  ██╗███████╗ █████╗ ████████╗███████╗██╗  ██╗███████╗███████╗████████╗███████╗
+	██╔════╝██║  ██║██╔════╝██╔══██╗╚══██╔══╝██╔════╝██║  ██║██╔════╝██╔════╝╚══██╔══╝██╔════╝
+	██║     ███████║█████╗  ███████║   ██║   ███████╗███████║█████╗  █████╗     ██║   ███████╗
+	██║     ██╔══██║██╔══╝  ██╔══██║   ██║   ╚════██║██╔══██║██╔══╝  ██╔══╝     ██║   ╚════██║
+	╚██████╗██║  ██║███████╗██║  ██║   ██║   ███████║██║  ██║███████╗███████╗   ██║   ███████║
+	 ╚═════╝╚═╝  ╚═╝╚══════╝╚═╝  ╚═╝   ╚═╝   ╚══════╝╚═╝  ╚═╝╚══════╝╚══════╝   ╚═╝   ╚══════╝
+										   By JavaliMZ                                                                  
 {reset}"""
 	)
 
 
 def printCheat(cheatList, names):
+	clear()
 	printed = False
+	_, columns = os.popen('stty size', 'r').read().split()
+	columns = int(columns)
+
 	if type(names) == str:
 		names = [names]
 	try:
@@ -53,7 +60,10 @@ def printCheat(cheatList, names):
 			if all(name.strip().lower() in cheat.name.strip().lower() for name in names):
 				maxLen = [len(line) for line in cheat.output.split("\n")]
 				maxLen.sort()
-				print(f"\n{blue}{'▓' * (maxLen[-1] + 4) }{reset}")
+				separatorLine = maxLen[-1] + 4
+				if separatorLine > columns:
+					separatorLine = columns
+				print(f"\n{blue}{'▓' * separatorLine }{reset}")
 				print(f"{blue}▓ {reset}")
 				print(f"{blue}▓ {reset}", end="")
 				log.success(f"Category: {underline + yellow}{cheat.category}{reset}\n")
@@ -73,12 +83,12 @@ def printCheat(cheatList, names):
 					except:
 						print(f"{blue}▓ {reset}{line}")
 
-				print(f"{blue}{'▓' * (maxLen[-1] + 4) }{reset}\n\n")
+				print(f"{blue}{'▓' * separatorLine }{reset}\n\n")
 				printed = True
 
-	except:
+	except Exception as e:
 		log.critical("Something wrong is not right...")
-		log.critical("Can't print this Cheat...")
+		log.critical(e)
 	if not printed:
 		log.failure(f"{big + red}Cheat not found!...{reset}")
 
@@ -98,6 +108,8 @@ def valideOption(possibilities):
 
 
 def printOptions(category=None):
+	clear()
+	banner()
 	options = set()
 	for cheat in cheatList:
 		if category == None:
@@ -137,6 +149,7 @@ def editCheatListFile():
 
 
 def helpPanel():
+	banner()
 	log.info(
 		f"Usage => search with keyword:  {sys.argv[0].split('/')[-1]} <keyword for search>"
 	)
@@ -146,7 +159,6 @@ def helpPanel():
 
 def main():
 	signal.signal(signal.SIGINT, signal_handler)
-	banner()
 
 	if len(sys.argv) == 1:
 		manualSelection()
