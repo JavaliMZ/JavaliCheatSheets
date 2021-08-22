@@ -2,39 +2,39 @@
 
 <!-- TOC -->
 
-1.  1. Índice
-2.  2. Linux basics
-    1.  1. FIND - search for files in a directory hierarchy
-    1.  2. AWK - pattern scanning and processing language
-    1.  3. TR - Translate, squeeze, and/or delete characters from standard input
-3.  3. Softwares e ferramentas
-    1.  4. SMBClient
-    1.  5. SMBMap
-    1.  6. Nmap Cheat Sheet
-    1.  7. Manual TCP Scan em Bash
-    1.  8. Hydra
-    1.  9. wfuzz
-    1.  10. Wget recursivo
-    1.  11. WPScan - WordPress Security Scanner
-    1.  12. RLWRAP - readline wrapper
-    1.  13. IMAGE - Exiftool (exiftool - Read and write meta information in files)
-    1.  14. steghide
-4.  4. Técnicas e Métodos
-    1.  15. LFI / RFI (Local/Remote File Inclusion)
-    1.  16. Remote port forwarding - por ssh
-    1.  17. Web Shell em PHP
-    1.  18. Change MIME Type of file
-    1.  19. Reverse Shell tricks octal with printf
-5.  5. Get SubDomain - DNS
-6.  6. File Transfere Techniques
-    1.  20. With nc - Linux
-    1.  21. FTP Partilhado / montado
-7.  7. SQL
-    1.  22. MySQL
-    1.  23. MySQL Operator Precedence
-    1.  24. SQL Injection
-    1.  25. CEWL - Html to Password list
-    1.  26. PHP deserialize example:
+-   1. Índice
+-   2. Linux basics
+    -   2.1. FIND - search for files in a directory hierarchy
+    -   2.2. AWK - pattern scanning and processing language
+    -   2.3. TR - Translate, squeeze, and/or delete characters from standard input
+-   3. Softwares e ferramentas
+    -   3.1. SMBClient
+    -   3.2. SMBMap
+    -   3.3. Nmap Cheat Sheet
+    -   3.4. Manual TCP Scan em Bash
+    -   3.5. Hydra
+    -   3.6. wfuzz
+    -   3.7. Wget recursivo
+    -   3.8. WPScan - WordPress Security Scanner
+    -   3.9. RLWRAP - readline wrapper
+    -   3.10. IMAGE - Exiftool (exiftool - Read and write meta information in files)
+    -   3.11. steghide
+-   4. Técnicas e Métodos
+    -   4.1. LFI / RFI (Local/Remote File Inclusion)
+    -   4.2. Remote port forwarding - por ssh
+    -   4.3. Web Shell em PHP
+    -   4.4. Change MIME Type of file
+    -   4.5. Reverse Shell tricks octal with printf
+-   5. Get SubDomain - DNS
+-   6. File Transfere Techniques
+    -   6.1. With nc - Linux
+    -   6.2. FTP Partilhado / montado
+-   7. SQL
+    -   7.1. MySQL
+    -   7.2. MySQL Operator Precedence
+    -   7.3. SQL Injection
+    -   7.4. CEWL - Html to Password list
+    -   7.5. PHP deserialize example:
 
 <!-- /TOC -->
 
@@ -232,7 +232,7 @@ nmap --script-updatedb                            # Update the Script Database n
 
 ```bash
 for port in $(seq 1 65355); do
-	timeout 1 bash -c "echo > /dev/tcp/10.10.10.123/$port" $$ echo "[*] Open Port => $port" &
+	timeout 1 bash -c "echo > /dev/tcp/10.10.10.123/$port" && echo "[*] Open Port => $port" &
 done; wait
 ```
 

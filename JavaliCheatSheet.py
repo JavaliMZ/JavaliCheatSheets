@@ -25,10 +25,13 @@ ERASE_LINE = "\x1b[2K"
 def signal_handler(sig, frame):
 	sys.exit(1)
 
+def moveCursorToFirstLine():
+	print("\033[H", end="")
+
 def clear():
 	os.system("clear")
-	# print(chr(27) + "[2J"+ chr(27) + "[H")
-	print(chr(27) + "[H")
+	moveCursorToFirstLine()
+
 
 
 def eraseLastPrintedLine():
@@ -69,19 +72,20 @@ def printFormatedCheat(cheat):
 	print(f"\n{blue}{'▓' * separatorLine }{reset}")
 	print(f"{blue}▓ {reset}")
 	print(f"{blue}▓ {reset}", end="")
-	log.success(f"Category: {underline + yellow}{cheat.category}{reset}\n")
+	log.success(f"Category: {underline + yellow + cheat.category + reset}\n")
 	print(f"{blue}▓ {reset}", end="")
-	log.success(f"Name:     {yellow}{cheat.name}{reset}\n")
+	log.success(f"Name:     {yellow + cheat.name + reset}\n")
 
 	for line in cheat.output.split("\n"):
 		try:
 			commented = line.split()[0] == "#"
-			title = line.split()[0] == "[*]"
+			title = line[0:3] == "[*]"
 			if commented:
-				print(f"{blue}▓ {big + commentaryColor}{line}{reset}")
+				print(f"{blue}▓ {commentaryColor}{line}{reset}")
 			elif title:
 				print(f"{blue}▓ {big + underline + green}{line}{reset}")
 			else:
+				line = line.replace("#", f"{commentaryColor}#")
 				print(f"{blue}▓ {reset}{line}")
 		except:
 			print(f"{blue}▓ {reset}{line}")
@@ -107,9 +111,9 @@ def printCheat(cheatList, names):
 				if cheat.name == listOfCheatNamesToPrint[0]:
 					printFormatedCheat(cheat)
 					return
-		
-		cheatName = printOptions(filtered_list=listOfCheatNamesToPrint)
-		printCheat( cheatList,cheatName)
+		elif len(listOfCheatNamesToPrint) > 1:
+			cheatName = printOptions(filtered_list=listOfCheatNamesToPrint)
+			printCheat( cheatList,cheatName)
 
 	except Exception as e:
 		log.critical("Something wrong is not right...")
