@@ -539,7 +539,9 @@ done
 ######################################
 ######################################
 
-find_and_grep = Cheat("Find - Grep for Basic enumeration Linux (Clear Usernames or passes, SUID)")
+find_and_grep = Cheat(
+    "Find - Grep for Basic enumeration Linux (Clear Usernames or passes, SUID)"
+)
 find_and_grep.category = "Linux"
 find_and_grep.output = """[*] Find - Grep for Basic enumeration Linux
 
@@ -625,7 +627,9 @@ tcpdump tcp dst 192.168.1.7 80 and tcp dst 10.5.5.252 21 # tcpdump tcp dst [ip] 
 ######################################
 ######################################
 
-capabilities = Cheat("Capabilities - setcap / getcap / setuid - Basic enumeration Linux")
+capabilities = Cheat(
+    "Capabilities - setcap / getcap / setuid - Basic enumeration Linux"
+)
 capabilities.category = "Linux"
 capabilities.output = """[*] Capabilities - setcap / getcap / setuid
 
