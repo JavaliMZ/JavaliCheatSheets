@@ -25,13 +25,14 @@ ERASE_LINE = "\x1b[2K"
 def signal_handler(sig, frame):
 	sys.exit(1)
 
+
 def moveCursorToFirstLine():
 	print("\033[H", end="")
+
 
 def clear():
 	os.system("clear")
 	moveCursorToFirstLine()
-
 
 
 def eraseLastPrintedLine():
@@ -51,24 +52,26 @@ def banner():
 {reset}"""
 	)
 
+
 def getMaxColumnSize():
-	_, columns = os.popen('stty size', 'r').read().split()
+	_, columns = os.popen("stty size", "r").read().split()
 	return int(columns)
+
 
 def normalizeNames(names):
 	if type(names) == str:
 		names = [names]
 	return names
 
+
 def printFormatedCheat(cheat):
 	clear()
 	banner()
 	maxColumnSize = getMaxColumnSize()
-	maxLen = [len(line) for line in cheat.output.split("\n")]
-	maxLen.sort()
-	separatorLine = maxLen[-1] + 4
-	if separatorLine > maxColumnSize:
-		separatorLine = maxColumnSize
+	maxLenList = [len(line) for line in cheat.output.split("\n")]
+	maxLenList.sort()
+	separatorLine = maxLenList[-1] if maxLenList[-1] < maxColumnSize else maxColumnSize
+
 	print(f"\n{blue}{'▓' * separatorLine }{reset}")
 	print(f"{blue}▓ {reset}")
 	print(f"{blue}▓ {reset}", end="")
@@ -93,19 +96,19 @@ def printFormatedCheat(cheat):
 
 
 def printCheat(cheatList, names):
-	clear()
 	cheatExist = False
 	listOfCheatNamesToPrint = []
 	names = normalizeNames(names)
 
 	try:
 		for cheat in cheatList:
-			areAllWordsInCheatName = all(name.strip().lower() in cheat.name.strip().lower() for name in names)
+			areAllWordsInCheatName = all(
+				name.strip().lower() in cheat.name.strip().lower() for name in names
+			)
 			if areAllWordsInCheatName:
 				cheatExist = True
 				listOfCheatNamesToPrint.append(cheat.name)
 
-		
 		if len(listOfCheatNamesToPrint) == 1:
 			for cheat in cheatList:
 				if cheat.name == listOfCheatNamesToPrint[0]:
@@ -113,7 +116,7 @@ def printCheat(cheatList, names):
 					return
 		elif len(listOfCheatNamesToPrint) > 1:
 			cheatName = printOptions(filtered_list=listOfCheatNamesToPrint)
-			printCheat( cheatList,cheatName)
+			printCheat(cheatList, cheatName)
 
 	except Exception as e:
 		log.critical("Something wrong is not right...")
@@ -158,14 +161,18 @@ def printOptions(category=None, filtered_list=None):
 	elif filtered_list != None:
 		log.success(f"To much Cheats? Select only one in the list")
 	else:
-		log.success(f"Select the wanted CheatSheet in {yellow + big + category.upper() + reset} category.\n\n")
+		log.success(
+			f"Select the wanted CheatSheet in {yellow + big + category.upper() + reset} category.\n\n"
+		)
 
 	for index, option in enumerate(options):
 		print("\t", end="")
 		if filtered_list:
 			for cheat in cheatList:
 				if option == cheat.name:
-					log.info(f"{green + big }{index:2}{reset} => {yellow + big}{cheat.category}{reset} - {option}")
+					log.info(
+						f"{green + big }{index:2}{reset} => {yellow + big}{cheat.category}{reset} - {option}"
+					)
 		else:
 			log.info(f"{green + big }{index:2}{reset} => {option}")
 
