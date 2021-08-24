@@ -577,7 +577,6 @@ ls -aRl /etc/ | awk '$1 ~ /^.....w/' 2>/dev/null    # Group
 ls -aRl /etc/ | awk '$1 ~ /w.$/' 2>/dev/null        # Other
 ls -aRl /etc/ | awk '$1 ~ /w.$/' 2>/dev/null | grep -vE "^l|^d"
 
-
 find /etc/ -readable -type f 2>/dev/null               # Anyone
 find /etc/ -readable -type f -maxdepth 1 2>/dev/null   # Anyone
 """

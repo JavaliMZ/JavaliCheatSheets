@@ -79,7 +79,14 @@ def printFormatedCheat(cheat):
 	print(f"{blue}▓ {reset}", end="")
 	log.success(f"Name:     {yellow + cheat.name + reset}\n")
 
-	for line in cheat.output.split("\n"):
+	for lineNumber, line in enumerate(cheat.output.split("\n")):
+		if lineNumber >= 20 and lineNumber % 20 == 0:
+			if sys.platform == "linux":
+				os.system("""bash -c 'read -n 1 -s -r -p "\n\033[100;6;1mMore..."'""")
+			else:
+				print("\n\033[100;6;1mMore...")
+				os.system("PAUSE")
+			print(f"\033[F\033[F{reset + blue}▓")
 		try:
 			commented = line.split()[0] == "#"
 			title = line[0:3] == "[*]"
