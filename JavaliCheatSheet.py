@@ -66,9 +66,11 @@ def normalizeNames(names):
 
 def pressAnyKeyToContinue(text):
     if sys.platform == "linux":
-        os.system(f"""bash -c 'read -n 1 -s -r -p "\n\033[100;6;1m{text}...{reset}"'""")
+        os.system(
+            f"""bash -c 'read -n 1 -s -r -p "{reset}\n\033[100;6;1m{text}...{reset}"'"""
+        )
     else:
-        print(f"\n\033[100;6;1m{text}...{reset}")
+        print(f"{reset}\n\033[100;6;1m{text}...{reset}")
         os.system("PAUSE")
 
 
