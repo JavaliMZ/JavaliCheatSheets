@@ -5,6 +5,7 @@ import sys
 import signal
 import os
 import subprocess
+from time import sleep
 from pwn import log
 from CheatList import cheatList
 
@@ -78,7 +79,10 @@ def printFormatedCheat(cheat):
     clear()
     banner()
     maxColumnSize = getMaxColumnSize()
-    maxLenList = [len(line) for line in cheat.output.split("\n")]
+    maxLenList = [
+        len(line) + 4 for line in cheat.output.replace("\t", "    ").split("\n")
+    ]
+    maxLenList.append(len(cheat.name) + 18)
     maxLenList.sort()
     separatorLine = maxLenList[-1] if maxLenList[-1] < maxColumnSize else maxColumnSize
 
@@ -123,10 +127,12 @@ def printCheat(cheatList, names):
                 listOfCheatNamesToPrint.append(cheat.name)
 
         if len(listOfCheatNamesToPrint) == 1:
-            for cheat in cheatList:
-                if cheat.name == listOfCheatNamesToPrint[0]:
-                    printFormatedCheat(cheat)
-                    return
+            cheat = [
+                cheat for cheat in cheatList if cheat.name == listOfCheatNamesToPrint[0]
+            ][0]
+            printFormatedCheat(cheat)
+            return
+
         elif len(listOfCheatNamesToPrint) > 1:
             cheatName = printOptions(filtered_list=listOfCheatNamesToPrint)
             printCheat(cheatList, cheatName)

