@@ -48,8 +48,9 @@ def helpPanel():
     log.info(
         f"Usage => search with keyword:  {sys.argv[0].split('/')[-1]} <keyword for search>"
     )
-    log.info(f"Usage => search with menu:     {sys.argv[0].split('/')[-1]}")
-    log.info(f"Usage => add new cheatSheet:   {sys.argv[0].split('/')[-1]} -a")
+    log.info(f"Usage => search with menu:         {sys.argv[0].split('/')[-1]}")
+    log.info(f"Option -a => add new cheatSheet:   {sys.argv[0].split('/')[-1]} -a")
+    log.info(f"Option -i => print an Indice:      {sys.argv[0].split('/')[-1]} -i")
 
 
 def signal_handler(sig, frame):
@@ -184,6 +185,20 @@ def printFormatedCheat(cheat):
     os.system("rm /tmp/temp.txt")
 
 
+def printIndice(cheatList):
+    clear()
+    categories = getCategories(cheatList)
+    log.success(f"{big + blue}INDICE{reset}\n\n")
+    for category in categories:
+        log.success(f"{big + green + category + reset}")
+        subCategories = getSubCategories(cheatList, category)
+        for subCategory in subCategories:
+            cheatNames = getCheatName(cheatList, category, subCategory)
+            for cheatName in cheatNames:
+                print("", end="")
+                print(f"{big + yellow + subCategory + reset:^35} => {cheatName}")
+
+
 def findAndGetCorrectCheatNames(cheatList, names):
     cheatDict = {}
     for cheat in cheatList:
@@ -235,6 +250,8 @@ def main():
             editCheatListFile()
         elif sys.argv[1] == "-h" or sys.argv[1] == "--help":
             helpPanel()
+        elif sys.argv[1] == "-i":
+            printIndice(cheatList)
         else:
             cheat = findAndGetCorrectCheatNames(cheatList, " ".join(sys.argv[1:]))
             printFormatedCheat(cheat)

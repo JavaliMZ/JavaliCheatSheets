@@ -231,7 +231,7 @@ file_transfere_windows_smbserver = Cheat(
     "File Transfere Windows - SmbServer.py (Impacket)"
 )
 file_transfere_windows_smbserver.category = "Windows"
-file_transfere_windows_iwr.subCategory = "File-Transfere"
+file_transfere_windows_smbserver.subCategory = "File Transfere"
 file_transfere_windows_smbserver.output = """[*] Create Shared Folder by the Internet with SmbServer.py (Impacket)
 
 # On kali
@@ -1369,7 +1369,7 @@ openssl genrsa -out privKey.key 2048
 
 juicyPotato = Cheat("JuicyPotato.exe - Windows - PrivEsc - SeImpersonatePrivilege")
 juicyPotato.category = "Windows"
-juicyPotato.subCategory = "PrivEsc"
+juicyPotato.subCategory = "PrivEsc via group"
 juicyPotato.output = """[*] If in life you see SeImpersonatePrivilege, just use JuicyPotato!! =)
 
 # Download JuicyPotato.exe and set a server http
