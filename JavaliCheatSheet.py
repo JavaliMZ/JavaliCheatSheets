@@ -211,7 +211,7 @@ def findAndGetCorrectCheatNames(cheatList, names):
 			finalCheatList.append(cheatDict[cheatName])
 
 	if len(finalCheatList) > 1:
-		finalCheatName = getChoice(cheatNames, "Personalized")
+		finalCheatName = getChoice([cheat.name for cheat in finalCheatList], "Personalized")
 		return cheatDict[finalCheatName]
 	if len(finalCheatList) == 0:
 		log.failure("Could not find a cheat with the given arguments")
