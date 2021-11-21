@@ -30,7 +30,7 @@ def debug(message):
 	sleep(3)
 
 
-def banner():
+def getBanner():
 	banner = f"""{yellow}
 	 ██████╗██╗  ██╗███████╗ █████╗ ████████╗███████╗██╗  ██╗███████╗███████╗████████╗███████╗
 	██╔════╝██║  ██║██╔════╝██╔══██╗╚══██╔══╝██╔════╝██║  ██║██╔════╝██╔════╝╚══██╔══╝██╔════╝
@@ -44,7 +44,7 @@ def banner():
 
 
 def helpPanel():
-	print(banner())
+	print(getBanner())
 	log.info(f"Usage => search with keyword:      {sys.argv[0].split('/')[-1]} <keyword for search>")
 	log.info(f"Usage => search with menu:         {sys.argv[0].split('/')[-1]}")
 	log.info(f"Option -a => add new cheatSheet:   {sys.argv[0].split('/')[-1]} -a")
@@ -113,7 +113,7 @@ def getCheatName(cheats, category, subCategory):
 
 def getChoice(options, category=None):
 	clear()
-	print(banner())
+	print(getBanner())
 
 	if category == None:
 		log.success(f"Select the category you want: \n\n")
@@ -146,7 +146,7 @@ def getChoice(options, category=None):
 def printFormatedCheat(cheat):
 	clear()
 	createTempFile()
-	appendToTempFile(banner())
+	appendToTempFile(getBanner())
 	maxColumnSize = getMaxColumnSize()
 	maxLenList = [
 		len(line) + TAB_SIZE for line in cheat.output.replace("\t", "    ").split("\n")
@@ -185,7 +185,7 @@ def printFormatedCheat(cheat):
 
 def printIndice(cheatList):
 	clear()
-	print(banner())
+	print(getBanner())
 	categories = getCategories(cheatList)
 	log.success(f"{big + blue}INDICE{reset}\n\n")
 	for category in categories:
