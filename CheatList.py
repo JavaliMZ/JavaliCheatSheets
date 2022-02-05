@@ -636,6 +636,8 @@ find_and_grep.output = """[*] Find - Grep for Basic enumeration Linux
 grep -i user [filename]
 grep -i pass [filename]
 grep -C 5 "password" [filename]
+grep -Ri "password" .
+
 find / -name "*php" -type f -print0 2>/dev/null | xargs -0 grep -i -n -E "pass|user" | grep -vE ":.*//|:.*\*"
 
 # Permissions
