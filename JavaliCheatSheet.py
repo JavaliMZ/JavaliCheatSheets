@@ -119,8 +119,8 @@ def get_choice(options, category=None):
 
 	while option not in map(str, range(len(options))):
 		option = input(
-				f"\t[{Color.RED}!{Color.RESET}]Select a {Color.GREEN}valide option... (Number){Color.RESET}:     \t"
-			).strip()
+			f"\t[{Color.RED}!{Color.RESET}]Select a {Color.GREEN}valide option... (Number){Color.RESET}:     \t"
+		).strip()
 		erase_last_printed_line()
 
 	return options[int(option)]
@@ -221,7 +221,9 @@ def find_and_get_correct_cheat_names(cheat_list, name):
 			final_cheats_list.append(cheat_dict[cheat_name])
 
 	if len(final_cheats_list) > 1:
-		finalCheatName = get_choice(list(map(lambda cheat: cheat.name, final_cheats_list)), "Personalized")
+		finalCheatName = get_choice(
+			list(map(lambda cheat: cheat.name, final_cheats_list)), "Personalized"
+		)
 		return cheat_dict[finalCheatName]
 	if len(final_cheats_list) == 0:
 		log.failure("Could not find a cheat with the given arguments")
@@ -242,10 +244,8 @@ def manual_selection():
 
 
 def edit_cheat_list_file():
-	cheat_listPath = (
-		"/".join(os.path.realpath(__file__).split("/")[:-1])
-		+ "/cheat_sheets/cheat_list.py"
-	)
+	cheat_listPath = "/".join(os.path.realpath(__file__).split("/")[:-1])
+	cheat_listPath += "/cheat_sheets/cheat_list.py"
 	subprocess.call(["code", cheat_listPath])
 
 
