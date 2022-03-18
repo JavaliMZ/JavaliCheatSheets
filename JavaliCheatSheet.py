@@ -1,4 +1,4 @@
-#!/usr/bin/python3.9
+#!/usr/bin/python 
 # coding: utf-8
 
 from operator import sub
@@ -6,8 +6,8 @@ import sys
 import signal
 import os
 import subprocess
-from pwn import log
-from cheat_sheets import cheat_list, Color
+from pwn import log, options
+from cheat_sheets import cheat_list, Color, get_options
 
 
 # Global Var
@@ -102,28 +102,33 @@ def get_choice(options, category=None):
 	clear()
 	print(banner())
 
+	title = ""
 	if category == None:
-		log.success(f"Select the category you want: \n\n")
+		title = f"Select the category you want: \n\n"
 	else:
-		log.success(
-			f"Select the wanted CheatSheet in {Color.YELLOW + Color.BOLD + category.upper() + Color.RESET} category.\n\n"
-		)
+		title = f"Select the wanted CheatSheet in {Color.YELLOW + Color.BOLD + category.upper() + Color.RESET} category.\n\n"
+	# for index, option in enumerate(options):
+	# 	log.info(
+	# 		f"{Color.GREEN + Color.BOLD}{index:2}{Color.RESET} => {Color.YELLOW + Color.BOLD}{option}{Color.RESET}"
+	# 	)
 
-	for index, option in enumerate(options):
-		log.info(
-			f"{Color.GREEN + Color.BOLD}{index:2}{Color.RESET} => {Color.YELLOW + Color.BOLD}{option}{Color.RESET}"
-		)
+	# option = input(f"\n\tSelect a valide option... (Number):   \t").strip()
+	# erase_last_printed_line()
 
-	option = input(f"\n\tSelect a valide option... (Number):   \t").strip()
-	erase_last_printed_line()
+	# while option not in map(str, range(len(options))):
+	# 	option = input(
+	# 		f"\t[{Color.RED}!{Color.RESET}]Select a {Color.GREEN}valide option... (Number){Color.RESET}:     \t"
+	# 	).strip()
+	# 	erase_last_printed_line()
 
-	while option not in map(str, range(len(options))):
-		option = input(
-			f"\t[{Color.RED}!{Color.RESET}]Select a {Color.GREEN}valide option... (Number){Color.RESET}:     \t"
-		).strip()
-		erase_last_printed_line()
+	# return options[int(option)]
 
-	return options[int(option)]
+	pretty_options = []
+	for option in options:
+		pretty_options += [f"{Color.YELLOW + Color.BOLD}{option}{Color.RESET}"]
+
+	option = get_options(title, pretty_options, 0)
+	return options[option]
 
 
 def line_separator(len_line):
