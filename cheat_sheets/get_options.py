@@ -1,4 +1,5 @@
 import six
+import string
 from pwnlib import term
 
 def get_options(prompt, opts, default = None):
@@ -99,7 +100,7 @@ def get_options(prompt, opts, default = None):
                     return cur
 
             
-            elif k in tuple(map(str, range(len(opts) + 1))):
+            elif k in min(tuple(string.digits), tuple(map(str, range(len(opts) + 1))), key=len):
                 was_digit = True
                 d = str(k)
                 n = int(ds + d)

