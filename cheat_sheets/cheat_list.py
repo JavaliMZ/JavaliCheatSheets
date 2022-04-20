@@ -2057,6 +2057,8 @@ rsaDecrypt.output = """[*] Decrypt RSA keys
 
 # GOOGLE: RSA step by step decrypt - cryptool portal
 
+# RsaCtfTool: https://github.com/Ganapati/RsaCtfTool
+
 """
 
 ######################################
@@ -2346,4 +2348,28 @@ raw_leak = "0x57f6a1c0 0x170 0x56585d85 0x7 0x2a 0x26 0x1 0x2 0x5658696c 0x57f6a
 print(get_legible_info_from_memleak(raw_leak))
 # ]XV*&liXVÀ¡öW@£öWHTB{why_d1d_1_s4v3_th3_fl4g_0n_th3_5t4ck?!}h,ü³ö÷XVÈË¬ÿAdXVtÌ¬ÿ|Ì¬ÿh,àË¬ÿ!ïÚ÷°ö÷°ö÷!ïÚ÷tÌ¬ÿ|Ì¬ÿÌ¬ÿtÌ¬ÿ°ö÷
 ø÷pÌ¬ÿ°ö÷
+"""
+
+######################################
+######################################
+
+locate_offset_with_pwntools = create_new_cheat("Find Offset with Pwntools and coredump file")
+locate_offset_with_pwntools.category = "Python"
+locate_offset_with_pwntools.sub_category = "pwntools"
+locate_offset_with_pwntools.output = """[*] Find Offset with Pwntools and coredump file in BufferOverflow
+
+from pwn import *
+
+
+elf = ELF("./vuln")
+context_byte_arch = 8
+
+p = process("./vuln")
+p.sendline(cyclic(200, n=context_byte_arch))
+p.wait()
+
+core = p.corefile
+
+print cyclic_find(core.read(core.rsp, context_byte_arch), n=context_byte_arch)
+
 """
