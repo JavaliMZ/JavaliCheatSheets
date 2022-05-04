@@ -2373,3 +2373,45 @@ core = p.corefile
 print cyclic_find(core.read(core.rsp, context_byte_arch), n=context_byte_arch)
 
 """
+
+
+######################################
+######################################
+
+bit_flop = create_new_cheat("CBC byte flipping attack")
+bit_flop.category = "Python"
+bit_flop.sub_category = "Cryptography"
+bit_flop.output = """[*] CBC byte flipping attack - bit_flop 1 byte for trying to change admin=0 to admin=1 (for exemple)
+
+import requests
+from base64 import b64decode, b64encode
+
+
+# Functions
+def getCookie(url):
+	s = requests.Session()
+	s.get(url)
+	return s.cookies.get_dict()["auth_name"]
+
+
+def bit_flip(pos, bit, cookie):
+	data = b64decode(b64decode(cookie))
+	data = bytearray(data)
+	data[pos] ^= bit
+	return b64encode(b64encode(data)).decode()
+
+
+
+# Global variables
+url = "http://mercury.picoctf.net:25992/"
+cookie = getCookie(url)
+
+for i in range(10):
+	for j in range(256):
+		cookie = bit_flip(i, j, cookie)
+		r = requests.get(url, cookies={"auth_name": cookie})
+		if "picoCTF{" in r.text:
+			print(r.text)
+			exit(0)
+
+"""
