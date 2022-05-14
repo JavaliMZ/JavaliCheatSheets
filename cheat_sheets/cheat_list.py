@@ -2415,3 +2415,44 @@ for i in range(10):
 			exit(0)
 
 """
+
+
+######################################
+######################################
+
+open_port_to_the_net = create_new_cheat("Open a port to the internet - ngrok - portfowarding")
+open_port_to_the_net.category = "Web"
+open_port_to_the_net.sub_category = "Proxy"
+open_port_to_the_net.output = """[*] Create a proxy with ngrok, for forwarding a port to the internet
+
+# Need to register and get de auth_token
+# Go to https://dashboard.ngrok.com/get-started/your-authtoken
+# Copy the token and execute the following command
+
+ngrok config add-authtoken xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+# Then, ngrok will work
+# Example for forwarding port 80 to the internet
+
+ngrok http 80
+
+# You can forward ssh port 22 to the internet (you don't forward ssh, you just forward a protocol like tcp for example)
+
+ngrok tcp 22
+"""
+
+######################################
+######################################
+
+oletools = create_new_cheat("oletools - olevba - Extract VBA code from Office files - Word, Excel, PowerPoint...")
+oletools.category = "Tools"
+oletools.sub_category = "Office"
+oletools.output = """[*] oletools - olevba - Extract VBA code from Office files
+
+# Install oletools
+pip install oletools
+
+# Extract VBA code from Office files
+olevba <file> | less
+"""
+
