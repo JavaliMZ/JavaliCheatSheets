@@ -40,6 +40,8 @@ Invoke-Command -ComputerName localhost -Credential $cred -ScriptBlock { whoami }
 
 # Get the password from a Secure password
 (Import-CliXml -Path user.txt).GetNetworkCredential().password
+# or
+$cred.getNetworkCredential() | fl
 """
 
 ######################################
@@ -1774,6 +1776,18 @@ vncdecrypt.sub_category = "VNC"
 vncdecrypt.output = """[*] Decrypt passwords stored in VNC files
 
 echo -n d7a514d8c556aade | xxd -r -p | openssl enc -des-cbc --nopad --nosalt -K e84ad660c4721ae0 -iv 0000000000000000 -d
+"""
+
+######################################
+######################################
+
+vnc_instalator = create_new_cheat("Tightvnc instalation oneLiner")
+vnc_instalator.category = "Tools"
+vnc_instalator.sub_category = "VNC"
+vnc_instalator.output = """[*] Install Tightvnc with only one command after get the .msi file
+
+cmd /c msiexec /i tightvnc.msi /quiet /norestart ADDLOCAL="Server,Viewer" VIEWER_ASSOCIATE_VNC_EXTENSION=1 SERVER_REGISTER_AS_SERVICE=1 SERVER_ADD_FIREWALL_EXCEPTION=1 VIEWER_ADD_FIREWALL_EXCEPTION=1 SERVER_ALLOW_SAS=1 SET_USEVNCAUTHENTICATION=1 VALUE_OF_USEVNCAUTHENTICATION=1 SET_PASSWORD=1 VALUE_OF_PASSWORD=password SET_USECONTROLAUTHENTICATION=1 VALUE_OF_USECONTROLAUTHENTICATION=1 SET_CONTROLPASSWORD=1 VALUE_OF_CONTROLPASSWORD=password
+
 """
 
 ######################################
