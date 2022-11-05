@@ -1725,30 +1725,30 @@ defaultCredentials.output = """[*] Search for “Password”
 dir /s /W *pass* == *cred* == *vnc* == *.config* | findstr /i/v "\\\\windows"
 
 #Search suspicious files from content
-findstr /D:C:\ /si password *.xml *.ini *.txt #A lot of output can be generated
-findstr /D:C:\ /M /SI password *.xml *.ini *.txt 2>nul | findstr /V /I "\\\\AppData\\\\Local \\\\WinXsX ApnDatabase.xml \\\\UEV\\\\InboxTemplates \\\\Microsoft.Windows.CloudExperienceHost" 2>nul
+findstr /D:C:\\ /si password *.xml *.ini *.txt #A lot of output can be generated
+findstr /D:C:\\ /M /SI password *.xml *.ini *.txt 2>nul | findstr /V /I "\\\\AppData\\\\Local \\\\WinXsX ApnDatabase.xml \\\\UEV\\\\InboxTemplates \\\\Microsoft.Windows.CloudExperienceHost" 2>nul
 
 
 [*] Search Password in Registry
 
 # Autologin
-reg query "HKLM\SOFTWARE\Microsoft\Windows NT\Currentversion\Winlogon" 2>nul  
+reg query "HKLM\\SOFTWARE\\Microsoft\\Windows NT\\Currentversion\\Winlogon" 2>nul  
 
-reg query "HKLM\SOFTWARE\Microsoft\Windows NT\Currentversion\Winlogon" 2>nul | findstr /i "DefaultDomainName DefaultUserName DefaultPassword AltDefaultDomainName AltDefaultUserName AltDefaultPassword LastUsedUsername"
-reg query "HKCU\Software\ORL\WinVNC3\Password"
-reg query "HKLM\SYSTEM\CurrentControlSet\Services\SNMP" /s
-reg query "HKCU\Software\TightVNC\Server"
+reg query "HKLM\\SOFTWARE\\Microsoft\\Windows NT\\Currentversion\\Winlogon" 2>nul | findstr /i "DefaultDomainName DefaultUserName DefaultPassword AltDefaultDomainName AltDefaultUserName AltDefaultPassword LastUsedUsername"
+reg query "HKCU\\Software\\ORL\\WinVNC3\\Password"
+reg query "HKLM\\SYSTEM\\CurrentControlSet\\Services\\SNMP" /s
+reg query "HKCU\\Software\\TightVNC\\Server"
 
 # Check the values saved in each session, user/password could be there
-reg query "HKCU\Software\SimonTatham\PuTTY\Sessions" /s  
-reg query "HKCU\Software\OpenSSH\Agent\Key"
+reg query "HKCU\\Software\\SimonTatham\\PuTTY\\Sessions" /s  
+reg query "HKCU\\Software\\OpenSSH\\Agent\\Key"
 
 # Search for passwords inside all the registry
 reg query HKLM /f password /t REG_SZ /s #Look for registries in HKLM that contains "password"
 reg query HKCU /f password /t REG_SZ /s #Look for registries in HKCU that contains "password"
 
 [*] With winPEAS.exe
-.\winPEAS.exe quiet filesinfo userinfo
+.\\winPEAS.exe quiet filesinfo userinfo
 """
 
 ######################################
@@ -2619,4 +2619,22 @@ powershell -c "Get-NetFirewallRule -Direction OutBound -Action Allow -Enable Tru
 
 powershell -c "Get-NetFirewallRule -Direction OutBound -Action Block -Enable True | Format-Table -Property Name, DisplayName, DisplayGroup, @{Name='Protocol';Expression={($PSItem | Get-NetFirewallPortFilter).Protocol}}, @{Name='LocalPort'; Expression={($PSItem | Get-NetFirewallPortFilter).LocalPort}}, @{Name='RemotePort';Expression={($PSItem | Get-NetFirewallPortFilter).RemotePort}}, @{Name='RemoteAddress';Expression={($PSItem | Get-NetFirewallAddressFilter).RemoteAddress}}, Enabled, Profile, Direction"
 
+"""
+
+
+######################################
+
+compile_windows = create_new_cheat("Compile Windows and exec on Linux - mingw wine")
+compile_windows.category = "Linux"
+compile_windows.sub_category = "Bash"
+compile_windows.output = """[*] Compile Windows on Linux
+
+# Install mingw-w64
+sudo apt-get install mingw-w64
+
+# Compile
+i686-w64-mingw32-gcc -o <output>.exe <input>.c
+
+# Run on Linux
+wine <output>.exe
 """
