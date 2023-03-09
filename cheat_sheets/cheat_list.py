@@ -2807,9 +2807,67 @@ select rtrim(xmlagg(xmlelement(e, table_name || ‘,’)).extract(‘//text()’
 # Blind SQLi in order by clause
 
 order by case when ((select 1 from user_tables where substr(lower(table_name), 1, 1) = ‘a’ and rownum = 1)=1) then column_name1 else column_name2 end — you must know 2 column names with the same datatype
-
-
-
-
 """
 
+
+configGeralSwitch              = create_new_cheat("Geral Commands of Switch IOS (Internet Operative System)")
+configGeralSwitch.category     = "IOS"
+configGeralSwitch.sub_category = "Configuration"
+configGeralSwitch.output       = """[*] Geral Commands of Switch IOS (Internet Operative System)
+
+# Save configs
+
+enable
+copy running-config startup-config  # Saves the running configuration to the startup configuration
+copy startup-config running-config  # Loads the startup configuration into the running configuration
+show running-config                 # Displays the running configuration
+
+# Set line console password
+
+enable
+configure terminal
+line console 0
+password <password>
+login                   # This force the user to enter the password
+
+# Set line vty password
+
+enable
+configure terminal
+line vty 0 15
+password <password>
+login                   # This force the user to enter the password
+
+# Set password and secret for enable mode
+
+enable
+configure terminal
+enable secret <password>
+enable password <password>
+
+# Encrype all passwords
+
+enable
+configure terminal
+service password-encryption
+
+# Set banner
+
+enable
+configure terminal
+banner motd <message>  # This banner is displayed when the user logs in
+
+# Set hostname
+
+enable
+configure terminal
+hostname <name>
+
+# Set Static IP
+
+enable
+configure terminal
+interface Vlan 1
+ip address <ip> <mask>   # where ip is like 192.168.150 and mask is like 255.255.255.0 (for example...)
+no shutdown              # This command is necessary to activate the interface. If you don't use this command, the interface will be shutdown
+"""
