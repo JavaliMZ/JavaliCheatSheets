@@ -2810,7 +2810,7 @@ order by case when ((select 1 from user_tables where substr(lower(table_name), 1
 """
 
 
-configGeralSwitch              = create_new_cheat("Geral Commands of Switch IOS (Internet Operative System)")
+configGeralSwitch              = create_new_cheat("Geral Commands of Switch IOS (Internet Operative System) da Cisco")
 configGeralSwitch.category     = "IOS"
 configGeralSwitch.sub_category = "Configuration"
 configGeralSwitch.output       = """[*] Geral Commands of Switch IOS (Internet Operative System)
