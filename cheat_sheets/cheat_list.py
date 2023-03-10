@@ -2828,7 +2828,7 @@ enable
 configure terminal
 line console 0
 password <password>
-login                   # This force the user to enter the password
+login                   # Enable login mode. This force the user to enter the password
 
 # Set line vty password
 
@@ -2836,7 +2836,7 @@ enable
 configure terminal
 line vty 0 15
 password <password>
-login                   # This force the user to enter the password
+login                   # Enable login mode. This force the user to enter the password
 
 # Set password and secret for enable mode
 
