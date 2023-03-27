@@ -2871,3 +2871,17 @@ interface Vlan 1
 ip address <ip> <mask>   # where ip is like 192.168.150 and mask is like 255.255.255.0 (for example...)
 no shutdown              # This command is necessary to activate the interface. If you don't use this command, the interface will be shutdown
 """
+
+allowAndDisablePing = create_new_cheat("Allow and Disable Ping in Windows - Firewall - ICMP")
+allowAndDisablePing.category     = "Windows"
+allowAndDisablePing.sub_category = "Firewall"
+allowAndDisablePing.output       = """[*] Allow and Disable Ping in Windows - Firewall - ICMP
+
+# Allow Ping
+netsh advfirewall firewall add rule name="ICMP Allow incoming V4 echo request" protocol=icmpv4:8,any dir=in action=allow
+netsh advfirewall firewall add rule name="ICMP Allow incoming V6 echo request" protocol=icmpv6:128,any dir=in action=allow
+
+# Remove new rules
+netsh advfirewall firewall delete rule name="ICMP Allow incoming V4 echo request"
+netsh advfirewall firewall delete rule name="ICMP Allow incoming V6 echo request"
+"""
