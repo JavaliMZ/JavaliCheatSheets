@@ -2885,3 +2885,34 @@ netsh advfirewall firewall add rule name="ICMP Allow incoming V6 echo request" p
 netsh advfirewall firewall delete rule name="ICMP Allow incoming V4 echo request"
 netsh advfirewall firewall delete rule name="ICMP Allow incoming V6 echo request"
 """
+
+configGeralRouter              = create_new_cheat("Geral Commands of Router IOS (Internet Operative System) da Cisco")
+configGeralRouter.category     = "IOS"
+configGeralRouter.sub_category = "Configuration"
+configGeralRouter.output       = """[*] Geral Commands of Router IOS (Internet Operative System)
+
+# Verificar configurações interfaces
+show ip interface brief
+show ipv6 interface brief
+
+show interfaces
+show ip interface
+show ipv6 interface
+
+# Verificar roteamento
+show ip route
+show ipv6 route
+
+
+
+[*] Configuring router interfaces
+
+# Em modo enable
+interface FastEthernet 0/0
+description <description>
+ip address <ip> <mask>   # where ip is like 192.168.150 and mask is like 255.255.255.0
+ipv6 address <ip>/<mask> # where ip is like 2001:db8:acad:10::1 and mask is like 64
+no shutdown              # This command is necessary to activate the interface. 
+                         # If you don't use this command, the interface will be shutdown
+exit
+"""
