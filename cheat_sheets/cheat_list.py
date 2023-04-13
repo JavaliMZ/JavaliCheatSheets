@@ -2648,7 +2648,11 @@ sqloracle.output       = """[*] SQL - Oracle - Geral comands
 
 # https: //hacknopedia.com/2022/05/23/oracle-sql-injection-cheat-sheet/
 
-Show databases: SELECT TABLESPACE_NAME FROM USER_TABLESPACES;
+SELECT TABLESPACE_NAME FROM USER_TABLESPACES;
+SELECT TABLE_NAME FROM USER_TABLES;
+
+# Gravar as alterações
+
 
 # Version
 
