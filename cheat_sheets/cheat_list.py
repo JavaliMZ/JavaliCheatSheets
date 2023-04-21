@@ -2640,10 +2640,10 @@ wine <output>.exe
 """
 
 
-sqloracle              = create_new_cheat("SQL - Oracle - Geral comands")
-sqloracle.category     = "Tools"
+sqloracle = create_new_cheat("SQL - Oracle - Geral comands")
+sqloracle.category = "Tools"
 sqloracle.sub_category = "SQL oracle"
-sqloracle.output       = """[*] SQL - Oracle - Geral comands
+sqloracle.output = """[*] SQL - Oracle - Geral comands
 
 
 # https: //hacknopedia.com/2022/05/23/oracle-sql-injection-cheat-sheet/
@@ -2814,10 +2814,12 @@ order by case when ((select 1 from user_tables where substr(lower(table_name), 1
 """
 
 
-configGeralSwitch              = create_new_cheat("Geral Commands of Switch IOS (Internet Operative System) da Cisco")
-configGeralSwitch.category     = "IOS"
+configGeralSwitch = create_new_cheat(
+    "Geral Commands of Switch IOS (Internet Operative System) da Cisco"
+)
+configGeralSwitch.category = "IOS"
 configGeralSwitch.sub_category = "Configuration"
-configGeralSwitch.output       = """[*] Geral Commands of Switch IOS (Internet Operative System)
+configGeralSwitch.output = """[*] Geral Commands of Switch IOS (Internet Operative System)
 
 # Save configs
 
@@ -2876,10 +2878,12 @@ ip address <ip> <mask>   # where ip is like 192.168.150 and mask is like 255.255
 no shutdown              # This command is necessary to activate the interface. If you don't use this command, the interface will be shutdown
 """
 
-allowAndDisablePing = create_new_cheat("Allow and Disable Ping in Windows - Firewall - ICMP")
-allowAndDisablePing.category     = "Windows"
+allowAndDisablePing = create_new_cheat(
+    "Allow and Disable Ping in Windows - Firewall - ICMP"
+)
+allowAndDisablePing.category = "Windows"
 allowAndDisablePing.sub_category = "Firewall"
-allowAndDisablePing.output       = """[*] Allow and Disable Ping in Windows - Firewall - ICMP
+allowAndDisablePing.output = """[*] Allow and Disable Ping in Windows - Firewall - ICMP
 
 # Allow Ping
 netsh advfirewall firewall add rule name="ICMP Allow incoming V4 echo request" protocol=icmpv4:8,any dir=in action=allow
@@ -2890,10 +2894,12 @@ netsh advfirewall firewall delete rule name="ICMP Allow incoming V4 echo request
 netsh advfirewall firewall delete rule name="ICMP Allow incoming V6 echo request"
 """
 
-configGeralRouter              = create_new_cheat("Geral Commands of Router IOS (Internet Operative System) da Cisco")
-configGeralRouter.category     = "IOS"
+configGeralRouter = create_new_cheat(
+    "Geral Commands of Router IOS (Internet Operative System) da Cisco"
+)
+configGeralRouter.category = "IOS"
 configGeralRouter.sub_category = "Configuration"
-configGeralRouter.output       = """[*] Geral Commands of Router IOS (Internet Operative System)
+configGeralRouter.output = """[*] Geral Commands of Router IOS (Internet Operative System)
 
 # Verificar configurações interfaces
 show ip interface brief
@@ -2919,4 +2925,14 @@ ipv6 address <ip>/<mask> # where ip is like 2001:db8:acad:10::1 and mask is like
 no shutdown              # This command is necessary to activate the interface. 
                          # If you don't use this command, the interface will be shutdown
 exit
+
+[*] Configuring NAT
+interface GigabitEthernet 0/1/0
+ip nat outside
+
+interface FastEthernet 0/1
+ip nat inside
+
+ip nat inside source list 1 interface GigabitEthernet 0/1/0 overload
+access-list 1 permit ip 192.168.1.0 any
 """
