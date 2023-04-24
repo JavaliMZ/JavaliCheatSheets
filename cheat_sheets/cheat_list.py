@@ -2920,19 +2920,26 @@ show ipv6 route
 # Em modo enable
 interface FastEthernet 0/0
 description <description>
-ip address <ip> <mask>   # where ip is like 192.168.150 and mask is like 255.255.255.0
-ipv6 address <ip>/<mask> # where ip is like 2001:db8:acad:10::1 and mask is like 64
-no shutdown              # This command is necessary to activate the interface. 
-                         # If you don't use this command, the interface will be shutdown
+ip address <ip> <mask>       # where ip is like 192.168.150.0 and mask is like 255.255.255.0
+ipv6 address <ip>/<mask>     # where ip is like 2001:db8:acad:10::1 and mask is like 64
+no shutdown                  # This command is necessary to activate the interface. 
+                             # If you don't use this command, the interface will be shutdown
 exit
 
 [*] Configuring NAT
-interface GigabitEthernet 0/1/0
+
+interface GigabitEthernet 0/1/0                                          # Ligação ao ISP
 ip nat outside
 
-interface FastEthernet 0/1
+interface FastEthernet 0/1                                               # Exemplo de rede interna
+ip nat inside
+interface GigabitEthernet 0/2/0                                          # Exemplo de router auxiliar
 ip nat inside
 
-ip nat inside source list 1 interface GigabitEthernet 0/1/0 overload
-access-list 1 permit ip 192.168.1.0 any
+
+ip nat inside source list 1 interface GigabitEthernet 0/1/0 overload     # Rede interna <list de 1 a 99>
+access-list 1 permit 192.168.1.0 0.0.0.255                               # NOTA: A máscara é invertida
+
+ip nat inside source list 100 interface GigabitEthernet 0/2/0 overload   # router auxiliar <list de 100 a 199>
+access-list 100 permit ip 192.168.100.0 0.0.0.255 any                    # NOTA: A máscara é invertida
 """
