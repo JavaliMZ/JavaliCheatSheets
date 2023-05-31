@@ -2913,8 +2913,6 @@ show ipv6 interface
 show ip route
 show ipv6 route
 
-
-
 [*] Configuring router interfaces
 
 # Em modo enable
@@ -2942,4 +2940,7 @@ access-list 1 permit 192.168.1.0 0.0.0.255                               # NOTA:
 
 ip nat inside source list 100 interface GigabitEthernet 0/2/0 overload   # router auxiliar <list de 100 a 199>
 access-list 100 permit ip 192.168.100.0 0.0.0.255 any                    # NOTA: A máscara é invertida
+
+[*] Activar Routing ipv6 (ipv4 está activo por defeito)
+ipv6 unicast-routing
 """
