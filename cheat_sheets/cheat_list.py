@@ -2942,5 +2942,22 @@ ip nat inside source list 100 interface GigabitEthernet 0/2/0 overload   # route
 access-list 100 permit ip 192.168.100.0 0.0.0.255 any                    # NOTA: A máscara é invertida
 
 [*] Activar Routing ipv6 (ipv4 está activo por defeito)
+
 ipv6 unicast-routing
+ip route 10.0.4.0 255.255.255.0 10.0.3.2  # ipv4
+ip route 10.0.4.0 255.255.255.0 Serial0/1/1  # ipv4 (Mais rápido)
+ip route <network> <mask> <next_hop ip or interface> [distance]  # ipv4
+
+ipv6 route 2001:db8:acad:2::/64 2001:db8:acad:1::2  # ipv6
+ipv6 route 2001:db8:acad:2::/64 Serial0/1/1  # ipv6 (Mais rápido)
+
+# Default route
+ip route 0.0.0.0 0.0.0.0 Serial0/1/1  # ipv4
+ipv6 route ::/0 Serial0/1/1  # ipv6
+
+# Floating static route
+ip route 0.0.0.0 0.0.0.0 172.16.2.2
+ip route 0.0.0.0 0.0.0.0 10.10.10.2 5  # Adiciona-se uma metrica
+ipv6 route ::/0 2001:db8:acad:2::2
+ipv6 route ::/0 2001:db8:feed:10::2 5  # Adiciona-se uma metrica
 """
