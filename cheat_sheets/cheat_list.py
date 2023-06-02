@@ -2960,4 +2960,10 @@ ip route 0.0.0.0 0.0.0.0 172.16.2.2
 ip route 0.0.0.0 0.0.0.0 10.10.10.2 5  # Adiciona-se uma metrica
 ipv6 route ::/0 2001:db8:acad:2::2
 ipv6 route ::/0 2001:db8:feed:10::2 5  # Adiciona-se uma metrica
+
+# Protocolo RIP
+router rip
+version 2
+network <network>  # ipv4
+passive-interface <interface>  # ipv4
 """
