@@ -2890,6 +2890,42 @@ configure terminal
 interface Vlan 1
 ip address <ip> <mask>   # where ip is like 192.168.150 and mask is like 255.255.255.0 (for example...)
 no shutdown              # This command is necessary to activate the interface. If you don't use this command, the interface will be shutdown
+
+##########
+## VLAN ##
+##########
+
+# Create VLAN
+configure terminal
+vlan <vlan number>
+name <name>
+exit
+
+# Delete a VLAN - The VLAN need to be empty
+configure terminal
+no vlan <vlan number>
+exit
+
+# Assign VLAN to interface
+configure terminal
+interface <interface>
+switchport mode access
+switchport access vlan <vlan number>
+exit
+
+# Remove VLAN to interface
+configure terminal
+interface <interface>
+no switchport access vlan <vlan number>
+exit
+
+# Configure TRUNK
+configure terminal
+interface <interface>
+switchport mode trunk
+switchport trunk allowed vlan <vlan number>,<vlan number>,<vlan number>,...
+switchport trunk native vlan <vlan number>        # native vlan is the vlan that is not tagged
+
 """
 
 allowAndDisablePing = create_new_cheat(
