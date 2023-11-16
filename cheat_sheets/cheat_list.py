@@ -2926,6 +2926,17 @@ switchport mode trunk
 switchport trunk allowed vlan <vlan number>,<vlan number>,<vlan number>,...
 switchport trunk native vlan <vlan number>        # native vlan is the vlan that is not tagged
 
+# ROUTER-ON-A-STICK
+
+# Create subinterface
+configure terminal
+interface <interface>.<subinterface>  # GibabitEthernet 0/0.10
+encapsulation dot1Q <vlan number>     # encapsulation dot1Q 10
+ip address <ip> <mask>                # where ip is like 172.17.10.1 255.255.255.0
+exit
+
+interface g/0/0
+no shutdown
 """
 
 allowAndDisablePing = create_new_cheat(
