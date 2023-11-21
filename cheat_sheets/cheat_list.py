@@ -1,4 +1,4 @@
-# pylint: disable=all
+# type: ignore
 
 import os
 
@@ -2881,7 +2881,14 @@ banner motd <message>  # This banner is displayed when the user logs in
 
 enable
 configure terminal
-hostname <name>
+hostname <name>"""
+
+configVlanSwitch = create_new_cheat(
+    "VLAN Commands of Switch IOS (Internet Operative System)"
+)
+configVlanSwitch.category = "IOS"
+configVlanSwitch.sub_category = "Configuration"
+configVlanSwitch.output = """[*] VLAN Commands of Switch IOS (Internet Operative System)
 
 # Set Static IP
 
@@ -2937,6 +2944,36 @@ exit
 
 interface g/0/0
 no shutdown
+
+#################
+## Access-list ##
+#################
+
+# uma ACL por interface e por direção
+# Standart - 1-99 - Mais perto da origem
+# Extended - 100-199 - Mais perto do destino
+
+# Create access-list
+configure terminal
+access-list <number> <permit|deny> <protocol> <source> <destination> <port> [established]
+exit
+
+# Apply access-list to interface
+configure terminal
+interface <interface>
+ip access-group <number> <in|out>
+
+# Create named access-list
+configure terminal
+ip access-list <standard|extended> <name>
+[permit|deny|remark] <protocol> <source> <destination> <port>
+exit
+
+# Apply named access-list to interface
+configure terminal
+interface <interface>
+ip access-group <name> <in|out>
+
 """
 
 allowAndDisablePing = create_new_cheat(
