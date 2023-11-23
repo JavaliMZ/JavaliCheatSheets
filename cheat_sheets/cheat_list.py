@@ -2888,7 +2888,7 @@ configVlanSwitch = create_new_cheat(
 )
 configVlanSwitch.category = "IOS"
 configVlanSwitch.sub_category = "Configuration"
-configVlanSwitch.output = """[*] VLAN Commands of Switch IOS (Internet Operative System)
+configVlanSwitch.output = """[*] VLAN Commands of Switch IOS (Internet Operative System) (cisco)
 
 # Set Static IP
 
@@ -2973,8 +2973,25 @@ exit
 configure terminal
 interface <interface>
 ip access-group <name> <in|out>
-
 """
+configRouterOSPF = create_new_cheat(
+    "OSPF Commands of Router IOS (Internet Operative System) da Cisco"
+)
+configRouterOSPF.category = "IOS"
+configRouterOSPF.sub_category = "Configuration"
+configRouterOSPF.output = """[*] OSPF Commands of Router IOS (Internet Operative System) (cisco)
+
+# Enable OSPF
+configure terminal
+router ospf <process id>  # process id is a number between 1 and 65535
+network <network> <wildcard mask> area <area id>  # where network is like
+
+passive-interface <interface>  # This command is used to disable OSPF on an interface
+auto-cost reference-bandwidth <bandwidth>  # This command is used to change the reference bandwidth for the OSPF cost calculation
+
+exit
+"""
+
 
 allowAndDisablePing = create_new_cheat(
     "Allow and Disable Ping in Windows - Firewall - ICMP"
