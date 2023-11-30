@@ -3135,3 +3135,26 @@ Set-LocalUser -Name "User1" -Password (ConvertTo-SecureString -AsPlainText "NewP
 $Password = Read-Host -AsSecureString
 Set-LocalUser -Name "User1" -Password $Password -Description "New description"
 """
+
+
+configDHCPInCiscoRouter = create_new_cheat("Config DHCP in Cisco Router")
+configDHCPInCiscoRouter.category = "IOS"
+configDHCPInCiscoRouter.sub_category = "Cisco"
+configDHCPInCiscoRouter.output = """[*] Config DHCP in Cisco Router
+
+ip dhcp excluded-address <ip inicial> <ip final>  # Exemplo: ip dhcp excluded-address 192.168.10.1 192.168.10.9
+ip dhcp excluded-address 192.168.10.254
+ip dhcp pool <pool name>  # Exemplo: ip dhcp pool LAN-POOL-1
+network <network> <mask>  # Exemplo: network
+default-router <ip>  # Exemplo: default-router
+dns-server <ip>  # Exemplo: dns-server
+domain-name <name>  # Exemplo: domain-name
+lease <days> <hours> <minutes>  # Exemplo: lease 0 0 30
+end
+
+
+# DHCP Helper
+interface <interface>
+ip helper-address <ip>  # Exemplo: ip helper-address 192.168.11.6
+end
+"""
