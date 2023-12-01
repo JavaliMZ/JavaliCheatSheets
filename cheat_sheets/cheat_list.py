@@ -584,6 +584,7 @@ mimeChanger.sub_category = "Utility"
 mimeChanger.output = """[*] Change MIME Type of file...
 
 # https://en.wikipedia.org/wiki/List_of_file_signatures
+# https://www.garykessler.net/library/file_sigs.html
 # This methode will overwrite first bytes...
 
 xxd -r -p -o 0 <(echo FF D8 FF DB) shell.php.jpg
