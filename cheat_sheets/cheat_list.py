@@ -2885,11 +2885,11 @@ configure terminal
 hostname <name>"""
 
 configVlanSwitch = create_new_cheat(
-    "VLAN Commands of Switch IOS (Internet Operative System)"
+    "VLAN Commands of Switch IOS (Internet Operative System) - ACL"
 )
 configVlanSwitch.category = "IOS"
 configVlanSwitch.sub_category = "Configuration"
-configVlanSwitch.output = """[*] VLAN Commands of Switch IOS (Internet Operative System) (cisco)
+configVlanSwitch.output = """[*] VLAN Commands of Switch IOS (Internet Operative System) (cisco) - ACL
 
 # Set Static IP
 
