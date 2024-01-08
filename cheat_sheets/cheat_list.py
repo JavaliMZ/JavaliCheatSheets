@@ -3050,12 +3050,14 @@ ip nat inside
 interface GigabitEthernet 0/2/0                                          # Exemplo de router auxiliar
 ip nat inside
 
-
+# PAT:
 ip nat inside source list 1 interface GigabitEthernet 0/1/0 overload     # Rede interna <list de 1 a 99>
 access-list 1 permit 192.168.1.0 0.0.0.255                               # NOTA: A máscara é invertida
 
 ip nat inside source list 100 interface GigabitEthernet 0/2/0 overload   # router auxiliar <list de 100 a 199>
 access-list 100 permit ip 192.168.100.0 0.0.0.255 any                    # NOTA: A máscara é invertida
+
+show ip nat translations                                                 # Permite ver as traduções
 
 [*] Activar Routing ipv6 (ipv4 está activo por defeito)
 
