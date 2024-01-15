@@ -2950,30 +2950,33 @@ no shutdown
 ## Access-list ##
 #################
 
-# uma ACL por interface e por direção
-# Standart - 1-99 - Mais perto da origem
-# Extended - 100-199 - Mais perto do destino
+# Uma ACL por interface e por direção
+# Standard - 1-99 (mais próximo da origem)
+# Extended - 100-199 (mais próximo do destino)
 
-# Create access-list
+# Criar uma access-list padrão ou estendida
 configure terminal
-access-list <number> <permit|deny> <protocol> <source> <destination> <port> [established]
+access-list <number> <permit|deny> <protocol> <source> <destination> [<port>] [established]
 exit
 
-# Apply access-list to interface
+# Aplicar access-list à interface
 configure terminal
 interface <interface>
 ip access-group <number> <in|out>
-
-# Create named access-list
-configure terminal
-ip access-list <standard|extended> <name>
-[permit|deny|remark] <protocol> <source> <destination> <port>
 exit
 
-# Apply named access-list to interface
+# Criar uma access-list nomeada
+configure terminal
+ip access-list <standard|extended> <name>
+[permit|deny|remark] <protocol> <source> <destination> [<port>]
+exit
+
+# Aplicar access-list nomeada à interface
 configure terminal
 interface <interface>
 ip access-group <name> <in|out>
+exit
+
 """
 configRouterOSPF = create_new_cheat(
     "OSPF Commands of Router IOS (Internet Operative System) da Cisco"
