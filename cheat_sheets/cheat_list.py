@@ -2934,6 +2934,15 @@ switchport mode trunk
 switchport trunk allowed vlan <vlan number>,<vlan number>,<vlan number>,...
 switchport trunk native vlan <vlan number>        # native vlan is the vlan that is not tagged
 
+# Reset VLAN removing flash configs
+configure terminal
+delete flash:vlan.dat
+
+
+# Save VLAN Configs
+copy running-config startup-config  # Saves the running configuration to the startup configuration
+reload
+
 # ROUTER-ON-A-STICK
 
 # Create subinterface
@@ -3163,4 +3172,52 @@ end
 interface <interface>
 ip helper-address <ip>  # Exemplo: ip helper-address 192.168.11.6
 end
+"""
+
+configMACFilterInCiscoRouter = create_new_cheat("Config MAC Filter in Cisco Router")
+configMACFilterInCiscoRouter.category = "IOS"
+configMACFilterInCiscoRouter.sub_category = "Cisco"
+configMACFilterInCiscoRouter.output = """[*] Config MAC Filter in Cisco Router
+
+# Set MAC Mode Access to interface
+enable
+configure terminal
+    interface <interface>
+        switchport mode access
+        # Static secure MAC Address - Manual Mac
+        switchport port-security mac-address <mac address>
+        # Dynamic secure Mac Address
+        switch port-security maximum <number of mac address>
+        # Sticky secure Mac Address - Manual Mac
+        switchport port-security mac-address sticky
+        
+        # Violation Mode
+        switchport port-security violation <protect|restrict|shutdown>
+"""
+
+configSSHInCiscoRouter = create_new_cheat("Config SSH in Cisco Router")
+configSSHInCiscoRouter.category = "IOS"
+configSSHInCiscoRouter.sub_category = "Cisco"
+configSSHInCiscoRouter.output = """[*] Config SSH in Cisco Router
+
+# Enable SSH
+enable
+configure terminal
+    ip domain-name <domain name>  # Exemplo: ip domain-name cisco.com
+    crypto key generate rsa  # Exemplo: crypto key generate rsa
+    username <username> privilege 15 secret <password>  
+    # Exemplo: username admin privilege 15 secret cisco
+    line vty 0 4
+        login local
+        transport input ssh
+        exit
+    exit
+    ip ssh version 2
+    ip ssh time-out 60
+    ip ssh authentication-retries 2
+    
+    service password-encryption
+    exit
+     
+show ip ssh
 """
