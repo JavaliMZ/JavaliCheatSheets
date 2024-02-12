@@ -552,7 +552,7 @@ wpscan --url www.website.com              # Non-intrusive scan
     -t 50                                 # Force 50 threads
     --cookie-string COOKIE                # Cookie string to use in requests, format: cookie1=value1[; cookie2=value2]
     --wp-content-dir /DIR                 # Specific correct /path when is not the default
-    --wp-plugins-dir /DIR                 # Specific correct /path when is not the default
+    --wp-plugins-dir /DIR                 # Speci/home/javali/.local/binfic correct /path when is not the default
     --enumerate [OPTIONS]                 # Valid options: vp (Vulnerable plugins),
                                           #                ap (All plugins),
                                           #                p (Plugins),
@@ -597,7 +597,7 @@ crontabs = create_new_cheat("Crontabs - Basic enumeration Linux")
 crontabs.category = "Linux"
 crontabs.sub_category = "Enumeration"
 crontabs.output = """[*] Crontabs - Basic enumeration Linux
-
+/home/javali/.local/bin
 /dev/shm  # comparável ao c:\\windows\temp
 crontab -l
 ls -alh /var/spool/cron
@@ -636,7 +636,7 @@ cron_checker.output = """[*] CronCheck.sh - Simple Bash Script to check diferent
 
 old=$(ps -eo command)
 
-echo -e "Start at: $(date +%H:%M:%S)"
+echo -e "Start at: $(date +%H:%M:%S)"/home/javali/.local/bin
 while true; do
         echo -ne "Now: $(date +%H:%M:%S)\\r"
         new=$(ps -eo command)
@@ -680,7 +680,7 @@ find / -perm -222 -type d 2>/dev/null     # world-writeable folders
 find / -perm -o w -type d 2>/dev/null     # world-writeable folders
 find / -perm -o x -type d 2>/dev/null     # world-executable folders
 find / \( -perm -o w -perm -o x \) -type d 2>/dev/null   # world-writeable & executable folders
-
+/home/javali/.local/bin
 find / -xdev -type d \( -perm -0002 -a ! -perm -1000 \) -print   # world-writeable files
 find /dir -xdev \( -nouser -o -nogroup \) -print   # Noowner files
 
@@ -3221,3 +3221,13 @@ configure terminal
      
 show ip ssh
 """
+
+regrub = create_new_cheat("Regrub")
+regrub.category = "Linux"
+regrub.sub_category = "Boot"
+regrub.output = """[*] Regrub - Reenter passfrase for decrypt disk
+
+# After a decrypt fail, you need to enter 3 commands
+cryptomount hd0,msdos0 # hd0,msdos0 is the disk and partition
+insmod normal
+normal"""
