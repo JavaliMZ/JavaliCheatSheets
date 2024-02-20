@@ -664,6 +664,10 @@ grep -Ri "password" .
 
 find / -name "*php" -type f -print0 2>/dev/null | xargs -0 grep -i -n -E "pass|user" | grep -vE ":.*//|:.*\*"
 
+# Grep recursivo por links
+
+grep -Eohr "(http|https)://[a-zA-Z0-9./?=_%:-]*" . | sort -u
+
 # Permissions
 
 find / -perm -1000 -type d 2>/dev/null   # Sticky bit - Only the owner of the directory or the owner of a file can delete or rename here.
