@@ -3235,3 +3235,16 @@ regrub.output = """[*] Regrub - Reenter passfrase for decrypt disk
 cryptomount hd0,msdos0 # hd0,msdos0 is the disk and partition
 insmod normal
 normal"""
+
+mobileAudit = create_new_cheat("Mobile Security Framework (MobSF)")
+mobileAudit.category = 'Mobile'
+mobileAudit.sub_category = 'Pentest'
+mobileAudit.output = """[*] Mobile Security Framework (MobSF)
+
+# https://github.com/MobSF/Mobile-Security-Framework-MobSF
+# Quick Setup
+
+docker pull opensecurity/mobile-security-framework-mobsf:latest
+docker run -it --rm -p 8000:8000 opensecurity/mobile-security-framework-mobsf:latest
+
+"""
