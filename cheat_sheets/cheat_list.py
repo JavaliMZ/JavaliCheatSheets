@@ -3248,3 +3248,11 @@ docker pull opensecurity/mobile-security-framework-mobsf:latest
 docker run -it --rm -p 8000:8000 opensecurity/mobile-security-framework-mobsf:latest
 
 """
+
+dateStampViewer = create_new_cheat("Date Stamp Viewer")
+dateStampViewer.category = 'Linux'
+dateStampViewer.sub_category = 'Pentest'
+dateStampViewer.output = """[*] Check date with a timestap
+
+date --date=@1709030464
+"""
