@@ -2108,7 +2108,7 @@ updateWPPlugins.output = """[*] Update wordlist of wp-plugins for discover plugi
 
 # The default location of plugins in wordpress is http://site.com/wp-content/plugins/<pluginName>
 
-for i in $(seq 1 1757); do curl https://github.com/orgs/wp-plugins/repositories?page=$i | grep "name codeRepository" | grep -oP 'href=".*?"' | sed 's/href="//g' | tr -d '"'; done >> wp-plugins_by_javali.txt
+for i in $(seq 1 1757); do curl "https://github.com/orgs/wp-plugins/repositories?page=$i" | jq -r '.payload.repositories[].name' >> wp-plugins_by_javali.txt; done
 
 # Change wp-plugins/ by wp-content/plugins/
 """
