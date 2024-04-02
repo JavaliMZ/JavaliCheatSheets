@@ -3256,3 +3256,30 @@ dateStampViewer.output = """[*] Check date with a timestap
 
 date --date=@1709030464
 """
+
+javascriptNoneToBlockConsole = create_new_cheat("Javascript - None to block in console")
+javascriptNoneToBlockConsole.category = 'Web'
+javascriptNoneToBlockConsole.sub_category = 'Javascript'
+javascriptNoneToBlockConsole.output = """[*] Javascript - None to block in console
+
+# Allow copy past
+allow pasting
+
+# oneliner to turn all displey none to disply block of all elements
+document.querySelectorAll('[style*="display: none"]').forEach(el => el.style.display = 'block'); 
+"""
+
+pentestReportPromptChatGPT = create_new_cheat("Pentest Report Prompt Chat GPT")
+pentestReportPromptChatGPT.category = 'Tools'
+pentestReportPromptChatGPT.sub_category = 'AI'
+pentestReportPromptChatGPT.output = """[*] Pentest Report Prompt Chat GPT
+
+
+I'm a security professional working on a Penetration Test report. I'd like your help to translate my findings into clear and concise sections for the report. For each issue I describe, can you generate the following sections:
+
+Title: Briefly describe the issue (e.g., SQL Injection Vulnerability in Login Form)
+Severity (Information, Low, Medium, or High): Assess the potential impact of the issue.
+Description: Provide a detailed explanation of the vulnerability, including a Proof of Concept (POC) if available (avoid including any sensitive information).
+Impact: Explain the potential consequences of exploiting the vulnerability.
+Mitigation: Recommend specific actions to address the vulnerability.
+"""
