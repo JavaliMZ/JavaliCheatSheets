@@ -3283,3 +3283,18 @@ Description: Provide a detailed explanation of the vulnerability, including a Pr
 Impact: Explain the potential consequences of exploiting the vulnerability.
 Mitigation: Recommend specific actions to address the vulnerability.
 """
+
+usefullRegexForGrep = create_new_cheat("Usefull Regex for Grep")
+usefullRegexForGrep.category = 'Linux'
+usefullRegexForGrep.sub_category = 'Regex'
+usefullRegexForGrep.output = """[*] Usefull Regex for Grep
+
+# Get Full URLs (With href | src | url | link)
+grep -oP '(?<=href="|src="|url="|link=")[^"]*'
+
+# Get IP Address
+grep -oP '\\b(?:[0-9]{1,3}\.){3}[0-9]{1,3}\\b'
+
+# Get Email Address
+grep -oP '\\b[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Z|a-z]{2,}\\b'
+"""
