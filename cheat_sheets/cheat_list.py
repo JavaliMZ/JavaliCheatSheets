@@ -10,7 +10,7 @@ from .color import Color
 def get_ip():
     ip = (
         os.popen(
-            """/bin/ip add | grep "tun0" | grep "inet" | tr "/" " " | awk '{print$2}'"""
+            """/usr/sbin/ip add | grep "tun0" | grep "inet" | tr "/" " " | awk '{print$2}'"""
         )
         .read()
         .strip()
@@ -3297,4 +3297,14 @@ grep -oP '\\b(?:[0-9]{1,3}\.){3}[0-9]{1,3}\\b'
 
 # Get Email Address
 grep -oP '\\b[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Z|a-z]{2,}\\b'
+"""
+
+tryNewPasswordLuks = create_new_cheat("Try new password in LUKS")
+tryNewPasswordLuks.category = 'Linux'
+tryNewPasswordLuks.sub_category = 'LUKS'
+tryNewPasswordLuks.output = """[*] Try new password in LUKS
+
+cryptomount hd0,<partition>
+insmod normal
+normal
 """
