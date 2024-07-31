@@ -5,7 +5,6 @@ import os
 import signal
 import subprocess
 import sys
-from operator import sub
 
 from pwn import log, options
 
