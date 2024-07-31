@@ -273,4 +273,5 @@ def main():
             print_formated_cheat(cheat)
 
 
-main()
+if __name__ == '__main__':
+    main()
